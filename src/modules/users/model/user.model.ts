@@ -40,6 +40,6 @@ export class UserType {
 
   @Field()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   groupId:string;
 }

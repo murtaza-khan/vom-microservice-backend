@@ -19,7 +19,7 @@ export class AuthResolver {
     @Args('password') password: string,
   ) {
     // used any instead of User
-    const user: any = { email, password, userRole: UserRoles.NORMAL };
+    const user: any = { email, password, userRole: UserRoles.EMPLOYEE };
     try {
       const response: any = await this.userService.create(user);
       const payload: Payload = {

@@ -1,4 +1,4 @@
-import { IsString, IsEmail, IsNotEmpty } from 'class-validator';
+import { IsString, IsEmail, IsNotEmpty, IsOptional } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
 
 @InputType()
@@ -8,12 +8,10 @@ export class CreateUserInput {
   @IsNotEmpty()
   firtName: string;
 
-
   @Field()
   @IsString()
   @IsNotEmpty()
   lastName: string;
-
 
   @Field()
   @IsEmail()
@@ -36,8 +34,6 @@ export class CreateUserInput {
   @IsNotEmpty()
   userRole?: string;
 
-  
-
   @Field()
   @IsString()
   @IsNotEmpty()
@@ -46,6 +42,6 @@ export class CreateUserInput {
 
   @Field()
   @IsString()
-  @IsNotEmpty()
-  groupId:string;
+  @IsOptional()
+  groupId: string;
 }

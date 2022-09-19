@@ -75,7 +75,7 @@ export class UserService {
     }
 
     if (
-      role == UserRoles.NORMAL &&
+      role == UserRoles.EMPLOYEE &&
       newUser.userRole != user.userRole &&
       newUser.userRole != null &&
       newUser.userRole != undefined
@@ -163,12 +163,15 @@ export class UserService {
 
   createUserFromCSV(csvFileData: any) {
     let result: any;
+    console.log(csvFileData)
     csvFileData.forEach(async (singleUser: UserType) => {
+      singleUser.userRole = UserRoles.EMPLOYEE;
+      singleUser.groupId = "null";
       const createdUser = new this.userModel(singleUser);
       result = await createdUser.save();
     });
-    Logger.log(`Successfully Save User Data from CSV`);
-    return { status: true, message: "Successfully Save User Data" };
+    Logger.log(`Users data saved successfully from CSV`);
+    return { status: true, message: "Users data saved successfully" };
   }
 
 }

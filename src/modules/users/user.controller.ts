@@ -12,16 +12,15 @@ export class UserController {
         private readonly csvParser: CsvParser) { }
 
     @Post('/createUsersFromCSV')
-    @UseInterceptors(
-        FileInterceptor('file')
-        )
+    @UseInterceptors(FileInterceptor('file'))
     async uploadFile(@UploadedFile() file: Express.Multer.File) {
-
-        const csvStream = Readable.from(file.buffer);
-        // const csvStream = fs.createReadStream(stream);
-        const entities = await this.csvParser.parse(csvStream, Entity, null, null, { separator: ',' });
-        return this.userService.createUserFromCSV(entities.list);
-
+        try{
+            const csvStream = Readable.from(file.buffer);
+            const entities = await this.csvParser.parse(csvStream, Entity, null, null, { separator: ',' });
+            return this.userService.createUserFromCSV(entities.list);
+        } catch(error) {
+            throw (error);
+        }
     }
 
 }

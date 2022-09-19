@@ -1,4 +1,7 @@
 export enum UserRoles {
-    'NORMAL' = 'Normal',
-    'ADMIN' = 'Admin',
+    'SUPER_ADMIN' = 'super',
+    'AFFLIATE' = 'affliate',
+    'ADMIN' = 'admin',
+    'GROUP_MANAGER' = 'group_manager',
+    'EMPLOYEE' = 'employee',
 }

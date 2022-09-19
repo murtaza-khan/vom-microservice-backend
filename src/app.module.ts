@@ -12,6 +12,8 @@ import { CsvModule } from 'nest-csv-parser'
 // import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 const host = process.env.DATABASE_HOST || 'localhost';
+const db = process.env.DB_NAME;
+
 @Module({
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -23,8 +25,7 @@ const host = process.env.DATABASE_HOST || 'localhost';
       },
       driver: ApolloDriver,
     }),
-    // MongooseModule.forRoot(`mongodb://${host}/timekeeper`),
-    MongooseModule.forRoot(`mongodb://${host}/timekeeper`),
+    MongooseModule.forRoot(`mongodb://${host}/${db}`),
     UserModule,
     AuthModule,
     CsvModule

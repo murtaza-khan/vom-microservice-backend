@@ -2,13 +2,13 @@ scalar Email
 
 type User {
   id: ID!
-  firstName:String!
+  firstName: String!
   lastName: String!
   email: String!
   phone:String!
   userRole: String!
-  organization : String!
-  groupId : String!
+  organization: String!
+  groupId: String!
 }
 
 enum UserRole {
