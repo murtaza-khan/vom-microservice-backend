@@ -18,10 +18,10 @@ export class UserResolver {
     private userService: UserService
     ) {}
 
-  // @Roles("Admin")
+  @Roles("Admin")
   @Query(returns => UserType)
-  async getUser(@Args('email') email: string) {
-    return await this.userService.getUser(email);
+  async getUser() {
+      return await this.userService.getUsers();
   }
 
   // @Mutation(returns => UserType)
@@ -58,6 +58,11 @@ export class UserResolver {
   @Mutation(returns => UserType)
   async deleteUser(@Args('email') email: string) {
       return await this.userService.deleteUserByEmail(email);
+  }
+
+  @Mutation(returns => UserType)
+  async deleteUserById(@Args("userId") userId :string){
+    return await this.userService.deleteUserById(userId);
   }
 
   @Mutation(returns => UserType)

@@ -39,7 +39,7 @@ type Auth {
 
 type Query {
   users: [User!]
-  getUser(email: Email!): User
+  getUser(userId: String): [User!]
 }
 
 type Mutation {
@@ -52,4 +52,5 @@ type Mutation {
   createUserFromCSV(csvFile: String!) : String
   createUser(createUser: UpdateUser!): User
   deleteUser(email: Email!): User
+  deleteUserById(userId: String!) : User
 }

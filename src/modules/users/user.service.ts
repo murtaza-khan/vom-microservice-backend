@@ -3,6 +3,7 @@ import {
   HttpException,
   HttpStatus,
   ForbiddenException,
+  Logger
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -19,23 +20,25 @@ export class UserService {
     @InjectModel('User') private readonly userModel: Model<UserType>,
   ) {}
 
-  async showAll(): Promise<User[]> {
-    return await this.userModel.find();
+  async getUsers(): Promise<User[]> {
+      Logger.log(`User retreieved successfully`);
+      return await this.userModel.find();
   }
 
-  async getUser(email: string): Promise<UserType> {
-    return await this.userModel.findOne({
-      email,
-    });
+  async getUser(userId: any): Promise<UserType> {
+    const id = userId;
+    return await this.userModel.findOne({_id:id});
   }
 
   async create(userDTO: User): Promise<UserType> {
     const { email } = userDTO;
     const user = await this.userModel.findOne({ email });
     if (user) {
+      Logger.log(`User already exists with email: ${email}`);
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
     const createdUser = new this.userModel(userDTO);
+    Logger.log(`User Created with Data : ${createdUser}`);
     return await createdUser.save();
   }
 
@@ -43,12 +46,14 @@ export class UserService {
     const { email, password } = userDTO;
     const user = await this.userModel.findOne({ email });
     if (!user) {
+      Logger.log(`Invalid credentials`);
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
 
     if (await bcrypt.compare(password, user.password)) {
       return user;
     } else {
+      Logger.log(`Invalid credentials`);
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }
   }
@@ -116,9 +121,10 @@ export class UserService {
     const user = await this.userModel.findOne({ _id: id });
 
     if (user === undefined || user === null) {
+      Logger.log(`User doesn't exists : ${user}`);
       throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
     }
-
+    Logger.log(`User delete with id : ${id}`);
     return await this.userModel.findByIdAndRemove(id);
   }
 
@@ -126,9 +132,10 @@ export class UserService {
     const user = await this.userModel.findOne({ email });
 
     if (user === undefined || user === null) {
+      Logger.log(`User doesn't exists : ${user}`);
       throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
     }
-
+    Logger.log(`User delete with emaik : ${email}`);
     return await this.userModel.findOneAndDelete({ email });
   }
 
@@ -136,6 +143,7 @@ export class UserService {
     const user = await this.userModel.findOne({ organization: orgId });
 
     if (user === undefined || user === null) {
+      Logger.log(`User doesn't exists : ${user}`);
       throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
     }
 
@@ -146,6 +154,7 @@ export class UserService {
     const user = await this.userModel.findOne({ groupId: groupId });
 
     if (user === undefined || user === null) {
+      Logger.log(`User doesn't exists : ${user}`);
       throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
     }
 
@@ -158,6 +167,7 @@ export class UserService {
       const createdUser = new this.userModel(singleUser);
       result = await createdUser.save();
     });
+    Logger.log(`Successfully Save User Data from CSV`);
     return { status: true, message: "Successfully Save User Data" };
   }
 

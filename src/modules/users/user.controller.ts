@@ -3,6 +3,7 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import { CsvParser } from "nest-csv-parser";
 import { UserService } from "./user.service";
+import { Readable } from 'stream'
 const fs = require('fs');
 
 @Controller('user')
@@ -12,15 +13,12 @@ export class UserController {
 
     @Post('/createUsersFromCSV')
     @UseInterceptors(
-        FileInterceptor('file' , {
-            storage : diskStorage({
-                destination : './csvFiles',
-            })
-        })
+        FileInterceptor('file')
         )
     async uploadFile(@UploadedFile() file: Express.Multer.File) {
-        
-        const csvStream = fs.createReadStream(file.path);
+
+        const csvStream = Readable.from(file.buffer);
+        // const csvStream = fs.createReadStream(stream);
         const entities = await this.csvParser.parse(csvStream, Entity, null, null, { separator: ',' });
         return this.userService.createUserFromCSV(entities.list);
 
@@ -29,10 +27,10 @@ export class UserController {
 }
 
 class Entity {
-    firstName: any
-    lastname: any
-    email : any
-    password : any
-    phone : any
-    organization : any
+    firstName: string
+    lastname: string
+    email: string
+    password: string
+    phone: string
+    organization: string
 }

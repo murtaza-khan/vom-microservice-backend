@@ -23,6 +23,7 @@ const host = process.env.DATABASE_HOST || 'localhost';
       },
       driver: ApolloDriver,
     }),
+    // MongooseModule.forRoot(`mongodb://${host}/timekeeper`),
     MongooseModule.forRoot(`mongodb://${host}/timekeeper`),
     UserModule,
     AuthModule,
