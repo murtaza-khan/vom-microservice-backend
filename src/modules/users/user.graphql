@@ -1,0 +1,55 @@
+scalar Email
+
+type User {
+  id: ID!
+  firstName:String!
+  lastName: String!
+  email: String!
+  phone:String!
+  userRole: String!
+  organization : String!
+  groupId : String!
+}
+
+enum UserRole {
+  Normal
+  Admin
+}
+
+input UserType {
+  email: String!
+  password: String!
+}
+
+input UpdateUser {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  phone: String!
+  userRole: String
+  organization: String!
+  groupId : String
+}
+
+type Auth {
+  email: String!
+  token: String!
+}
+
+type Query {
+  users: [User!]
+  getUser(email: Email!): User
+}
+
+type Mutation {
+  login(email: Email!, password: String!): Auth
+  register(email: Email!, password: String!): Auth
+  editUser(id: String!, user: UpdateUser!): User
+  updateUsers(id: String! , user: UpdateUser!) : User
+  getUsersByOrgId(orgId: String!) : User
+  getUsersByGroupId(groupId: String!) : User
+  createUserFromCSV(csvFile: String!) : String
+  createUser(createUser: UpdateUser!): User
+  deleteUser(email: Email!): User
+}
