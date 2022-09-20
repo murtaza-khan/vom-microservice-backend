@@ -12,6 +12,17 @@ export const UserSchema = new mongoose.Schema({
   groupId : {type : String , required : true}
 });
 
+export const UserSchemaInGroup = new mongoose.Schema({
+  firstName: { type: String, required: true },
+  lastName : { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: false },
+  phone :{ type: String, required: true },
+  userRole: { type: String, required: true },
+  organization : { type: String, required: true },
+  groupId : {type : String , required : true}
+});
+
 export interface IUser extends mongoose.Document {
   password: string
 }

@@ -183,6 +183,7 @@ export class UserService {
         // throw new HttpException(error ,  HttpStatus.BAD_REQUEST);
       }
     }
+    Logger.log(`Create Users from CSV File : ${csvFileData}`);
     return {
       failedImports: failedToImport,
       successImports: successImports,

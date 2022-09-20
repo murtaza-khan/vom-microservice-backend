@@ -9,6 +9,7 @@ import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
 import { LoggingInterceptor } from './core/interceptors/logging.interceptor';
 import { join } from 'path';
 import { CsvModule } from 'nest-csv-parser'
+import { GroupsModule } from './modules/groups/groups.module';
 // import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 const host = process.env.DATABASE_HOST || 'localhost';
@@ -28,7 +29,8 @@ const db = process.env.DB_NAME;
     MongooseModule.forRoot(`mongodb://${host}/${db}`),
     UserModule,
     AuthModule,
-    CsvModule
+    CsvModule,
+    GroupsModule
   ],
   controllers: [],
   providers: [
