@@ -18,16 +18,16 @@ import { UserType } from './model/user.model';
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<UserType>,
-  ) {}
+  ) { }
 
   async getUsers(): Promise<User[]> {
-      Logger.log(`User retreieved successfully`);
-      return await this.userModel.find();
+    Logger.log(`User retreieved successfully`);
+    return await this.userModel.find();
   }
 
   async getUser(userId: any): Promise<UserType> {
     const id = userId;
-    return await this.userModel.findOne({_id:id});
+    return await this.userModel.findOne({ _id: id });
   }
 
   async create(userDTO: User): Promise<UserType> {
@@ -161,17 +161,34 @@ export class UserService {
     return user;
   }
 
-  createUserFromCSV(csvFileData: any) {
+  async createUserFromCSV(csvFileData: any) {
     let result: any;
-    console.log(csvFileData)
-    csvFileData.forEach(async (singleUser: UserType) => {
-      singleUser.userRole = UserRoles.EMPLOYEE;
-      singleUser.groupId = "null";
-      const createdUser = new this.userModel(singleUser);
-      result = await createdUser.save();
-    });
-    Logger.log(`Users data saved successfully from CSV`);
-    return { status: true, message: "Users data saved successfully" };
+    let failedToImport: any[] = [];
+    let successImports: any[] = [];
+
+    for (const singleUser of csvFileData) {
+      try {
+        singleUser.userRole = UserRoles.EMPLOYEE;
+        singleUser.groupId = "null";
+        const createdUser = new this.userModel(singleUser);
+        result = await createdUser.save();
+        if (result) {
+          successImports.push(result);
+        } else {
+          failedToImport.push(singleUser);
+        }
+      }
+      catch (error) {
+        failedToImport.push({ user: singleUser, error: error });
+        // throw new HttpException(error ,  HttpStatus.BAD_REQUEST);
+      }
+    }
+    return {
+      failedImports: failedToImport,
+      successImports: successImports,
+      status: true
+    };
+
   }
 
 }

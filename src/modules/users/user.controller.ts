@@ -19,7 +19,7 @@ export class UserController {
             const entities = await this.csvParser.parse(csvStream, Entity, null, null, { separator: ',' });
             return this.userService.createUserFromCSV(entities.list);
         } catch(error) {
-            throw (error);
+            throw Error(error);
         }
     }
 
