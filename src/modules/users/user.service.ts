@@ -99,10 +99,10 @@ export class UserService {
       groupId: newUser.organization || user.organization,
     };
 
-    const updatedUser = await this.userModel.findOneAndUpdate(
+    const updatedUser = await this.userModel.findByIdAndUpdate(
       { _id: id },
       {
-        // ...updateUser,
+        ...updateUser,
       },
       {
         new: true,
