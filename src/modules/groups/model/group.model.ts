@@ -21,6 +21,6 @@ export class GroupType {
 
 
   @Field()
-  @IsNotEmpty()
-  users:[CreateUserInput];
+  @IsOptional()
+  users:[string];
 }

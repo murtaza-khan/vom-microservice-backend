@@ -5,14 +5,14 @@ input UserInput {
   phone:String!
   userRole: String!
   organization : String!
-  groupId : String!
+  groupId : String
 }
 
 input GroupInput {
     id:ID
     name : String!
-    createdAt : String!
-    users : [UserInput]!
+    createdAt : String
+    users : [String]
 }
 
 type UserTypet {
@@ -23,22 +23,18 @@ type UserTypet {
   phone:String!
   userRole: String!
   organization : String!
-  groupId : String!
+  groupId : String
 }
 
 type GroupType {
     id:ID!
     name:String!
     createdAt:String!
-    users:[UserTypet]!
+    users:[UserTypet]
 }
 
 type Query {
     groups :[GroupType!]
-}
-
-input deleteGroup {
-  id : String
 }
 
 type Mutation {

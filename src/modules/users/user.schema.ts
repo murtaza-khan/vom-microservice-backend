@@ -9,7 +9,7 @@ export const UserSchema = new mongoose.Schema({
   phone :{ type: String, required: true },
   userRole: { type: String, required: true },
   organization : { type: String, required: true },
-  groupId : {type : String , required : true}
+  groupId : {type : String , required : false}
 });
 
 export const UserSchemaInGroup = new mongoose.Schema({
@@ -20,7 +20,7 @@ export const UserSchemaInGroup = new mongoose.Schema({
   phone :{ type: String, required: true },
   userRole: { type: String, required: true },
   organization : { type: String, required: true },
-  groupId : {type : String , required : true}
+  groupId : {type : String , required : false}
 });
 
 export interface IUser extends mongoose.Document {
