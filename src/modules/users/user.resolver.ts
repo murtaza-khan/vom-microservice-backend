@@ -37,7 +37,6 @@ export class UserResolver {
   // async create(@Args() args: any, @CurrentUser() user: User) {
   async createUser(@Args() args: any) {
     const { createUser } = args;
-    console.log(args);
     const response = await this.userService.create(createUser);
     return response;
   }

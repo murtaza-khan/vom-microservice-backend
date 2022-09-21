@@ -34,7 +34,6 @@ type Auth {
 }
 
 type Query {
-  users: [User!]
   getUser(userId: String): [User!]
 }
 

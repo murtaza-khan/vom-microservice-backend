@@ -1,18 +1,6 @@
-input UserInput {
-  firstName:String!
-  lastName: String!
-  email: String!
-  phone:String!
-  userRole: String!
-  organization : String!
-  groupId : String
-}
-
 input GroupInput {
-    id:ID
-    name : String!
-    createdAt : String
-    users : [String]
+  id: ID
+  name : String!
 }
 
 type UserTypet {
