@@ -10,6 +10,7 @@ import { LoggingInterceptor } from './core/interceptors/logging.interceptor';
 import { join } from 'path';
 import { CsvModule } from 'nest-csv-parser'
 import { GroupsModule } from './modules/groups/groups.module';
+import { OrganizationModule } from './modules/organization/organization.module';
 // import { HttpExceptionFilter } from './filters/http-exception.filter';
 
 const host = process.env.DATABASE_HOST || 'localhost';
@@ -30,7 +31,8 @@ const db = process.env.DB_NAME;
     UserModule,
     AuthModule,
     CsvModule,
-    GroupsModule
+    GroupsModule,
+    OrganizationModule
   ],
   controllers: [],
   providers: [

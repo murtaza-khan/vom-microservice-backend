@@ -1,0 +1,46 @@
+input OrgInput {
+    name: String!
+    address: String!
+    logo: String!
+    BN: String!
+}
+
+type UserTypet {
+  id:ID!
+  firstName:String!
+  lastName: String!
+  email: String!
+  phone:String!
+  userRole: String!
+  organization : String!
+  groupId : String
+}
+
+type GroupType {
+    id:ID!
+    name:String!
+    createdAt:String!
+    users:[UserTypet]
+}
+
+type OrgType {
+    id: ID!
+    name: String!
+    address: String!
+    logo: String!
+    BN: String!
+    createdAt: String!
+    subscriptionDate: String!
+    subscriptionStatus: String!
+    groups: [GroupType]
+    affiliate: UserTypet
+    admin: [UserTypet]
+}
+
+type Query {
+    organizations:[OrgType!]
+}
+
+type Mutation {
+    createOrganization(orgData: OrgInput!): OrgType
+}
