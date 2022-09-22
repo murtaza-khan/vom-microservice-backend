@@ -10,8 +10,8 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../../core/decorators/roles.decorator';
 import { UserRoles } from '../../shared/user-roles';
 
-// @UseGuards(GraphqlAuthGuard)
-// @UseGuards(RolesGuard)
+@UseGuards(GraphqlAuthGuard)
+@UseGuards(RolesGuard)
 @Resolver()
 export class UserResolver {
   constructor(
@@ -34,8 +34,8 @@ export class UserResolver {
   // }
 
   @Mutation(returns => UserType)
-  // async create(@Args() args: any, @CurrentUser() user: User) {
-  async createUser(@Args() args: any) {
+  async createUser(@Args() args: any, @CurrentUser() user: any) {
+  // async createUser(@Args() args: any) {
     const { createUser } = args;
     console.log(args);
     const response = await this.userService.create(createUser);
