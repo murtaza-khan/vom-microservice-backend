@@ -3,7 +3,9 @@ import {
   HttpException,
   HttpStatus,
   ForbiddenException,
-  Logger
+  Logger,
+  forwardRef,
+  Inject
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -13,15 +15,18 @@ import * as bcrypt from 'bcrypt';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserRoles } from '../../shared/user-roles';
 import { UserType } from './model/user.model';
+import { GroupsService } from '../groups/groups.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<UserType>,
+    @Inject(forwardRef(() => GroupsService))
+    private groupsService: GroupsService
   ) { }
 
   async getUsers(): Promise<User[]> {
-    Logger.log(`User retreieved successfully`);
+    Logger.log(`Users retreieved successfully`);
     return await this.userModel.find();
   }
 
@@ -30,16 +35,25 @@ export class UserService {
     return await this.userModel.findOne({ _id: id });
   }
 
-  async create(userDTO: User): Promise<UserType> {
+  async create(userDTO: User): Promise<any> {
+    let group:any;
     const { email } = userDTO;
     const user = await this.userModel.findOne({ email });
     if (user) {
       Logger.log(`User already exists with email: ${email}`);
-      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+      throw new HttpException(`User already exists with email : ${email}`, HttpStatus.BAD_REQUEST);
     }
     const createdUser = new this.userModel(userDTO);
-    Logger.log(`User Created with Data : ${createdUser}`);
-    return await createdUser.save();
+    if(userDTO.groupId != undefined){
+      group = await this.groupsService.findGroupById(userDTO.groupId);
+    }
+    // if(group !=undefined && createdUser){
+    //   group.users.push(createdUser._id);
+    //   this.groupsService.update(group)
+    // }
+    
+    const userCreated = await createdUser.save();
+    return Logger.log(`User Created Successfully with id ${userCreated._id}`);
   }
 
   async findByLogin(userDTO: CreateUserInput) {
@@ -121,7 +135,7 @@ export class UserService {
     const user = await this.userModel.findOne({ _id: id });
 
     if (user === undefined || user === null) {
-      Logger.log(`User doesn't exists : ${user}`);
+      Logger.log(`User doesn't exists aginst id: ${id}`);
       throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
     }
     Logger.log(`User delete with id : ${id}`);
@@ -132,7 +146,7 @@ export class UserService {
     const user = await this.userModel.findOne({ email });
 
     if (user === undefined || user === null) {
-      Logger.log(`User doesn't exists : ${user}`);
+      Logger.log(`User doesn't exists against email: ${email}`);
       throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
     }
     Logger.log(`User delete with emaik : ${email}`);
@@ -143,23 +157,42 @@ export class UserService {
     const user = await this.userModel.findOne({ organization: orgId });
 
     if (user === undefined || user === null) {
-      Logger.log(`User doesn't exists : ${user}`);
+      Logger.log(`User doesn't exists`);
       throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
     }
 
     return user;
   }
 
-  async getUsersByGroupId(groupId: string) {
-    const user = await this.userModel.findOne({ groupId: groupId });
-
-    if (user === undefined || user === null) {
-      Logger.log(`User doesn't exists : ${user}`);
-      throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
+  async getUsersByGroupId(groupId: string):Promise<any> {
+    try {
+      const user = await this.userModel.find({ groupId: groupId });
+      if (user === undefined || user === null) {
+        Logger.log(`User doesn't exists against group id: ${groupId}`);
+        throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
+      }
+      return user;
     }
+    catch (error) {
+      console.log(error);
+    }
+  }
 
+  async getUsersByUserId(userId: string) {
+    let user;
+    try{
+      user = await this.userModel.findOne({ _id: userId });
+      if (user === undefined || user === null) {
+        Logger.log(`User doesn't exists againt id : ${userId}`);
+        throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
+      }
+    }
+    catch (error){
+      // console.log(error);
+    }
     return user;
   }
+
 
   async createUserFromCSV(csvFileData: any) {
     let result: any;
@@ -183,6 +216,7 @@ export class UserService {
         // throw new HttpException(error ,  HttpStatus.BAD_REQUEST);
       }
     }
+    Logger.log(`Create Users from CSV File`);
     return {
       failedImports: failedToImport,
       successImports: successImports,

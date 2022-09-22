@@ -8,13 +8,9 @@ type User {
   phone:String!
   userRole: String!
   organization: String!
-  groupId: String!
+  groupId: String
 }
 
-enum UserRole {
-  Normal
-  Admin
-}
 
 input UserType {
   email: String!
@@ -38,7 +34,6 @@ type Auth {
 }
 
 type Query {
-  users: [User!]
   getUser(userId: String): [User!]
 }
 
