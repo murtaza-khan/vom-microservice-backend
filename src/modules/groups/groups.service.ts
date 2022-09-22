@@ -31,7 +31,7 @@ export class GroupsService {
         }
         groupDTO.createdAt = new Date().toISOString();
         const createdGroup = new this.groupsModel(groupDTO);
-        Logger.log(`group create successfuly`);
+        Logger.log(`group create successfuly ${createdGroup._id}`);
         return await createdGroup.save();
     }
 
