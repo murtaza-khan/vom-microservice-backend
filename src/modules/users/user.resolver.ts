@@ -18,7 +18,9 @@ export class UserResolver {
     private userService: UserService
     ) {}
 
-  @Roles("Admin")
+  // @Roles("Admin")
+  @Roles("employee")
+
   @Query(returns => UserType)
   async getUser() {
       return await this.userService.getUsers();
