@@ -22,7 +22,8 @@ export class UserResolver {
   @Roles("employee")
 
   @Query(returns => UserType)
-  async getUser() {
+  async getUser(@CurrentUser() user: any) {
+    console.log("CurrentUser " , user);
       return await this.userService.getUsers();
   }
 
