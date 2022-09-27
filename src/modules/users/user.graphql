@@ -46,6 +46,6 @@ type Mutation {
   getUsersByGroupId(groupId: String!) : User
   createUserFromCSV(csvFile: String!) : String
   createUser(createUser: UpdateUser!): User
-  deleteUser(email: Email!): User
+  deleteUserByEmail(email: Email!): User
   deleteUserById(userId: String!) : User
 }

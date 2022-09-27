@@ -14,7 +14,7 @@ import { GroupsModule } from '../groups/groups.module';
     CsvModule,
     forwardRef(() => GroupsModule)
   ],
-  providers: [UserService, UserResolver, EmailScalar],
+  providers: [UserService, UserResolver, EmailScalar ],
   exports: [
     UserService,
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),

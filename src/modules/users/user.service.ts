@@ -53,7 +53,8 @@ export class UserService {
     // }
     
     const userCreated = await createdUser.save();
-    return Logger.log(`User Created Successfully with id ${userCreated._id}`);
+    Logger.log(`User Created Successfully with id ${userCreated._id}`);
+    return userCreated;
   }
 
   async findByLogin(userDTO: CreateUserInput) {
@@ -188,6 +189,23 @@ export class UserService {
       }
     }
     catch (error){
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      // console.log(error);
+    }
+    return user;
+  }
+
+  async getUsersByUserEmail(email: string) {
+    let user;
+    try{
+      user = await this.userModel.findOne({ email });
+      if (user === undefined || user === null) {
+        Logger.log(`User doesn't exists againt email : ${email}`);
+        throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
+      }
+    }
+    catch (error){
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
       // console.log(error);
     }
     return user;
