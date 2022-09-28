@@ -1,7 +1,7 @@
 import { Resolver, Query, Args, Context, Mutation } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { UpdateUserInput } from './dto/update-user.input';
-import { UseGuards, UnauthorizedException, SetMetadata, Inject, HttpException, HttpStatus } from '@nestjs/common';
+import { UseGuards, UnauthorizedException, SetMetadata, Inject, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
 import { GraphqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { CurrentUser } from '../../core/decorators/user.decorator';
 import { User } from '../../shared/types/user';
@@ -47,6 +47,20 @@ export class UserResolver {
     @Args('user') user: UpdateUserInput,
     @CurrentUser() currentUser: User,
   ) {
+    const isUser = await this.userService.getUsersByUserId(id);
+    if(isUser != null){
+      const validateTole = await validRole(currentUser.userRole, isUser.userRole);
+      if(id === currentUser.id || validateTole){
+        return await this.userService.update(id, user, currentUser.userRole);
+      }
+      else{
+        throw new UnauthorizedException();
+      }
+    }
+    else {
+      throw new BadRequestException();
+    }
+    return;
     if (id === currentUser.id || currentUser.userRole === UserRoles.ADMIN) {
       return await this.userService.update(id, user, currentUser.userRole);
     } else {

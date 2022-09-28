@@ -89,35 +89,34 @@ export class UserService {
       throw new HttpException('Email is already used', HttpStatus.BAD_REQUEST);
     }
 
-    if (
-      role == UserRoles.EMPLOYEE &&
-      newUser.userRole != user.userRole &&
-      newUser.userRole != null &&
-      newUser.userRole != undefined
-    ) {
-      throw new ForbiddenException("Normal users can't change roles");
-    }
+    // if (
+    //   role == UserRoles.EMPLOYEE &&
+    //   newUser.userRole != user.userRole &&
+    //   newUser.userRole != null &&
+    //   newUser.userRole != undefined
+    // ) {
+    //   throw new ForbiddenException("Normal users can't change roles");
+    // }
 
-    let userRole: UserRoles;
-    if (role === UserRoles.ADMIN) userRole = newUser.userRole;
-    else if (role === undefined || role === null) user.userRole;
-    else userRole = user.userRole;
+    // let userRole: UserRoles;
+    // if (role === UserRoles.ADMIN) userRole = newUser.userRole;
+    // else if (role === undefined || role === null) user.userRole;
+    // else userRole = user.userRole;
 
-    const updateUser: CreateUserInput = {
-      email: newUser.email || user.email,
-      password: newUser.password || user.password,
-      userRole: userRole,
-      firtName: newUser.firstName || user.firstName,
-      lastName: newUser.lastName || user.lastName,
-      phone: newUser.phone || user.phone,
-      organization: newUser.organization || user.organization,
-      groupId: newUser.organization || user.organization,
-    };
+    // const updateUser: any = {
+    //   email: newUser.email || user.email,
+    //   password: newUser.password || user.password,
+    //   firtName: newUser.firstName || user.firstName,
+    //   lastName: newUser.lastName || user.lastName,
+    //   phone: newUser.phone || user.phone,
+    //   organization: newUser.organization || user.organization,
+    //   groupId: newUser.organization || user.organization,
+    // };
 
     const updatedUser = await this.userModel.findByIdAndUpdate(
       { _id: id },
       {
-        ...updateUser,
+        ...newUser,
       },
       {
         new: true,

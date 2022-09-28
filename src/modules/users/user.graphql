@@ -17,7 +17,7 @@ input UserType {
   password: String!
 }
 
-input UpdateUser {
+input CreateUser {
   firstName: String!
   lastName: String!
   email: String!
@@ -25,6 +25,16 @@ input UpdateUser {
   phone: String!
   userRole: String
   organization: String!
+  groupId : String
+}
+
+input UpdateUser {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  phone: String
+  organization: String
   groupId : String
 }
 
@@ -45,7 +55,7 @@ type Mutation {
   getUsersByOrgId(orgId: String!) : User
   getUsersByGroupId(groupId: String!) : User
   createUserFromCSV(csvFile: String!) : String
-  createUser(createUser: UpdateUser!): User
+  createUser(createUser: CreateUser!): User
   deleteUserByEmail(email: Email!): User
   deleteUserById(userId: String!) : User
 }

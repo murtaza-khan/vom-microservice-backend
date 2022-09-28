@@ -24,7 +24,8 @@ export class AuthResolver {
       const response: any = await this.userService.create(user);
       const payload: Payload = {
         email: response.email,
-        role: response.userRole
+        role: response.userRole,
+        organization : response.organization
       };
   
       const token = await this.authService.signPayload(payload);
@@ -41,9 +42,11 @@ export class AuthResolver {
   ) {
     const user: any = { email, password };
     const response: User = await this.userService.findByLogin(user);
+    console.log(response);
     const payload: Payload = {
       email: response.email,
-      role: response.userRole
+      role: response.userRole,
+      organization : response.organization
     };
 
     const token = await this.authService.signPayload(payload);
