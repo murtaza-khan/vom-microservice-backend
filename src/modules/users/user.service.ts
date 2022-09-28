@@ -16,13 +16,14 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { UserRoles } from '../../shared/user-roles';
 import { UserType } from './model/user.model';
 import { GroupsService } from '../groups/groups.service';
+import { OrganizationService } from '../organization/organization.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<UserType>,
-    @Inject(forwardRef(() => GroupsService))
-    private groupsService: GroupsService
+    @Inject(forwardRef(() => GroupsService)) private groupsService: GroupsService,
+    @Inject(forwardRef(() => OrganizationService)) private OrganizationService: OrganizationService
   ) { }
 
   async getUsers(): Promise<User[]> {
@@ -42,6 +43,10 @@ export class UserService {
     if (user) {
       Logger.log(`User already exists with email: ${email}`);
       throw new HttpException(`User already exists with email : ${email}`, HttpStatus.BAD_REQUEST);
+    }
+    let org:any;
+    if(userDTO.organization != undefined){
+      org = await this.OrganizationService.getOrgById(userDTO.organization);
     }
     const createdUser = new this.userModel(userDTO);
     if(userDTO.groupId != undefined){

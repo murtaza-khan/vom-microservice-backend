@@ -24,7 +24,7 @@ input CreateUser {
   password: String!
   phone: String!
   userRole: String
-  organization: String!
+  organization: String
   groupId : String
 }
 
@@ -34,7 +34,6 @@ input UpdateUser {
   email: String
   password: String
   phone: String
-  organization: String
   groupId : String
 }
 

@@ -91,4 +91,20 @@ export class OrganizationService {
         }
     }
 
+    async getOrgById(orgId: string) {
+        try {
+            const org = await this.orgModel.findOne({ _id: orgId });
+            if (org) {
+                return org;
+            }
+            else {
+                Logger.log(`Organization is not exist against id ${orgId}`);
+                throw new HttpException(`Organization is not exist against id ${orgId}`, HttpStatus.BAD_REQUEST);
+            }
+        }
+        catch (error) {
+            throw new HttpException(error, HttpStatus.BAD_GATEWAY);
+        }
+    }
+
 }

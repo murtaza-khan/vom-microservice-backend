@@ -7,12 +7,14 @@ import { EmailScalar } from '../../core/scalars/email.scalar';
 import { UserController } from './user.controller';
 import { CsvModule } from 'nest-csv-parser';
 import { GroupsModule } from '../groups/groups.module';
+import { OrganizationModule } from '../organization/organization.module';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     CsvModule,
-    forwardRef(() => GroupsModule)
+    forwardRef(() => GroupsModule),
+    forwardRef(() => OrganizationModule)
   ],
   providers: [UserService, UserResolver, EmailScalar ],
   exports: [

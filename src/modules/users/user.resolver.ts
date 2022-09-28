@@ -33,6 +33,12 @@ export class UserResolver {
     }
     const validateTole = await validRole(currentUser.userRole, createUser.userRole);
     if (validateTole) {
+      if(createUser.userRole === UserRoles.ADMIN && !createUser.organization){
+        throw new HttpException(`Orgnization Id is required for Admin`, HttpStatus.BAD_REQUEST);
+      }
+      if(currentUser.userRole === UserRoles.ADMIN || currentUser.userRole === UserRoles.GROUP_MANAGER){
+        createUser.organization = currentUser.organization;
+      }
       const response = await this.userService.create(createUser);
       return response;
     }

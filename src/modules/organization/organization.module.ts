@@ -8,10 +8,10 @@ import { OrgSchema } from './organization.schema';
   imports:[
     MongooseModule.forFeature([{ name: 'Organization' , schema: OrgSchema}])
   ],
+  providers: [OrganizationResolver, OrganizationService],
   exports :[
-    MongooseModule.forFeature([{ name: 'Organization' , schema: OrgSchema}])
-
+    MongooseModule.forFeature([{ name: 'Organization' , schema: OrgSchema}]),
+    OrganizationService
   ],
-  providers: [OrganizationResolver, OrganizationService]
 })
 export class OrganizationModule {}
