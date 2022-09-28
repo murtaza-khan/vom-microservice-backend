@@ -11,6 +11,6 @@ export interface Organization extends Document {
   subscriptionDate: string;
   subscriptionStatus: string;
   groups: [Group];
-  affiliate: User;
+  affiliateId: string;
   admin: [User];
 }

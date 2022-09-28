@@ -48,8 +48,8 @@ export class OrgType {
   groups:[GroupType];
 
   @Field()
-  @IsOptional()
-  affiliate:CreateUserInput;
+  @IsNotEmpty()
+  affiliateId:string;
 
   @Field()
   @IsOptional()

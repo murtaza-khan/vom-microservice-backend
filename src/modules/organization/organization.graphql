@@ -42,7 +42,7 @@ type OrgType {
     subscriptionDate: String!
     subscriptionStatus: String!
     groups: [GroupType]
-    affiliate: UserTypet
+    affiliateId: String
     admin: [UserTypet]
 }
 

@@ -82,12 +82,20 @@ export class OrganizationService {
         }
     }
 
-    async getOrgsByAffiliateId(affiliateId:any){
-        try{
-            return null;
+    async getOrgsByAffiliateId(affiliateId:string){
+        try {
+            const org = await this.orgModel.findOne({ affiliateId : affiliateId });
+            if (org) {
+                return org;
+            }
+            else {
+                Logger.log(`Organization is not exist against id ${affiliateId}`);
+                throw new HttpException(`Organization is not exist against id ${affiliateId}`, HttpStatus.BAD_REQUEST);
+            }
         }
-        catch(error){
-            throw new HttpException(error, HttpStatus.BAD_REQUEST);
+        catch (error) {
+            console.log(error);
+            throw new HttpException(error, HttpStatus.BAD_GATEWAY);
         }
     }
 

@@ -4,5 +4,6 @@ export const OrgSchema = new mongoose.Schema({
     address: { type: String, required: true },
     logo: { type: String, required: true },
     BN: { type: String, required: true },
+    affiliateId : { type : String , required : true},
     createdAt : { type: String, required: false },
 });
