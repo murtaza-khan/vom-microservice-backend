@@ -84,7 +84,8 @@ export class OrganizationService {
 
     async getOrgsByAffiliateId(affiliateId:string){
         try {
-            const org = await this.orgModel.findOne({ affiliateId : affiliateId });
+            // const org = await this.orgModel.findOne({ affiliateId : affiliateId });
+            const org = await this.orgModel.find({ affiliateId : affiliateId });
             if (org) {
                 return org;
             }
