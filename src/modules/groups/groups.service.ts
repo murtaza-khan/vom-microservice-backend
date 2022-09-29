@@ -2,6 +2,7 @@ import { forwardRef, HttpException, HttpStatus, Inject, Injectable , Logger } fr
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Group } from 'src/shared/types/groups';
+import { UserRoles } from 'src/shared/user-roles';
 import { UserService } from '../users/user.service';
 import { GroupType } from './model/group.model';
 
@@ -22,12 +23,16 @@ export class GroupsService {
     }
 
     async create(groupDTO: Group): Promise<any> {
-
         const name = groupDTO.name;
         const group = await this.groupsModel.findOne({ name });
         if (group) {
             Logger.log(`group alredy exist with name ${name}`);
             throw new HttpException(`group alredy exist with name ${name}`, HttpStatus.BAD_REQUEST);
+        }
+        const user = await this.userService.getUsersByUserId(groupDTO.managerId);
+        if (user.userRole != UserRoles.GROUP_MANAGER) {
+            Logger.log(`Please Provide a valid managerId`);
+            throw new HttpException(`Please Provide a valid managerId`, HttpStatus.BAD_REQUEST);
         }
         groupDTO.createdAt = new Date().toISOString();
         const createdGroup = new this.groupsModel(groupDTO);
@@ -37,6 +42,13 @@ export class GroupsService {
 
 
     async update(updateGroupDto:any) : Promise<any>{
+        if (updateGroupDto.managerId != undefined) {
+            const user = await this.userService.getUsersByUserId(updateGroupDto.managerId);
+            if (user.userRole != UserRoles.GROUP_MANAGER) {
+                Logger.log(`Please Provide a valid managerId`);
+                throw new HttpException(`Please Provide a valid managerId`, HttpStatus.BAD_REQUEST);
+            }
+        }
         const id = updateGroupDto.id;
         const group = await this.groupsModel.findOne({_id:id});
         if(group){

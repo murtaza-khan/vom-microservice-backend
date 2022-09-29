@@ -188,8 +188,8 @@ export class UserService {
     try{
       user = await this.userModel.findOne({ _id: userId });
       if (user === undefined || user === null) {
-        Logger.log(`User doesn't exists againt id : ${userId}`);
-        throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
+        Logger.log(`Invalid id ${userId}`);
+        throw new HttpException(`Invalid id ${userId}`, HttpStatus.BAD_REQUEST);
       }
     }
     catch (error){
