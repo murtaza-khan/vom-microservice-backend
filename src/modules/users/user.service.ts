@@ -216,7 +216,7 @@ export class UserService {
   }
 
 
-  async createUserFromCSV(csvFileData: any) {
+  async createUserFromCSV(csvFileData: any , organizationId: string , groupId: string) {
     let result: any;
     let failedToImport: any[] = [];
     let successImports: any[] = [];
@@ -224,7 +224,8 @@ export class UserService {
     for (const singleUser of csvFileData) {
       try {
         singleUser.userRole = UserRoles.EMPLOYEE;
-        singleUser.groupId = "null";
+        singleUser.groupId = groupId;
+        singleUser.organization = organizationId;
         const createdUser = new this.userModel(singleUser);
         result = await createdUser.save();
         if (result) {

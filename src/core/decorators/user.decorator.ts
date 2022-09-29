@@ -5,3 +5,10 @@ export const CurrentUser = createParamDecorator(
     return ctx.getArgByIndex(2).req.user;
   }
 );
+
+export const CurrentUserController = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    return request.user;
+  }
+);
