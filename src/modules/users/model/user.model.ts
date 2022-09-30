@@ -35,7 +35,7 @@ export class UserType {
 
   @Field()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   organization: string;
 
   @Field()
