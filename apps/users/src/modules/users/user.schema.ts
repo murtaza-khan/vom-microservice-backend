@@ -3,31 +3,19 @@ import * as bcrypt from 'bcrypt';
 
 export const UserSchema = new mongoose.Schema({
   firstName: { type: String, required: true },
-  lastName : { type: String, required: true },
+  lastName: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true },
-  phone :{ type: String, required: true },
+  phone: { type: String, required: true },
   userRole: { type: String, required: true },
-  organization : { type: String, required: true },
-  groupId : {type : String , required : false}
+  organization: { type: String, required: false },
+  groupId: { type: String, required: false }
 });
-
-export const UserSchemaInGroup = new mongoose.Schema({
-  firstName: { type: String, required: true },
-  lastName : { type: String, required: true },
-  email: { type: String, required: true },
-  password: { type: String, required: false },
-  phone :{ type: String, required: true },
-  userRole: { type: String, required: true },
-  organization : { type: String, required: true },
-  groupId : {type : String , required : false}
-});
-
 export interface IUser extends mongoose.Document {
   password: string
 }
 
-UserSchema.pre<IUser>('save', async function(next: mongoose.HookNextFunction) {
+UserSchema.pre<IUser>('save', async function (next: mongoose.HookNextFunction) {
   try {
     if (!this.isModified('password')) {
       return next();
@@ -40,7 +28,7 @@ UserSchema.pre<IUser>('save', async function(next: mongoose.HookNextFunction) {
   }
 });
 
-UserSchema.pre('findOneAndUpdate', async function(
+UserSchema.pre('findOneAndUpdate', async function (
   next: mongoose.HookNextFunction,
 ) {
   const updateFields = this.getUpdate();

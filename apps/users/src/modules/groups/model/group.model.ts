@@ -15,11 +15,16 @@ export class GroupType {
   name: string;
 
   @Field()
+  @IsString()
+  @IsNotEmpty()
+  managerId: string;
+
+  @Field()
   @IsOptional()
   createdAt: string;
 
 
   @Field()
   @IsOptional()
-  users:[CreateUserInput];
+  users: [CreateUserInput];
 }

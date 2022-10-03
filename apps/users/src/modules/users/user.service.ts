@@ -36,26 +36,26 @@ export class UserService {
   }
 
   async create(userDTO: User): Promise<any> {
-    let group:any;
+    let group: any;
     const { email } = userDTO;
     const user = await this.userModel.findOne({ email });
     if (user) {
       Logger.log(`User already exists with email: ${email}`);
       throw new HttpException(`User already exists with email : ${email}`, HttpStatus.BAD_REQUEST);
     }
-    let org:any;
-    if(userDTO.organization != undefined){
+    let org: any;
+    if (userDTO.organization != undefined) {
       org = await this.OrganizationService.getOrgById(userDTO.organization);
     }
     const createdUser = new this.userModel(userDTO);
-    if(userDTO.groupId != undefined){
+    if (userDTO.groupId != undefined) {
       group = await this.groupsService.findGroupById(userDTO.groupId);
     }
     // if(group !=undefined && createdUser){
     //   group.users.push(createdUser._id);
     //   this.groupsService.update(group)
     // }
-    
+
     const userCreated = await createdUser.save();
     Logger.log(`User Created Successfully with id ${userCreated._id}`);
     return userCreated;
@@ -168,7 +168,7 @@ export class UserService {
     return user;
   }
 
-  async getUsersByGroupId(groupId: string):Promise<any> {
+  async getUsersByGroupId(groupId: string): Promise<any> {
     try {
       const user = await this.userModel.find({ groupId: groupId });
       if (user === undefined || user === null) {
@@ -184,14 +184,14 @@ export class UserService {
 
   async getUsersByUserId(userId: string) {
     let user;
-    try{
+    try {
       user = await this.userModel.findOne({ _id: userId });
       if (user === undefined || user === null) {
-        Logger.log(`User doesn't exists againt id : ${userId}`);
-        throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
+        Logger.log(`Invalid id ${userId}`);
+        throw new HttpException(`Invalid id ${userId}`, HttpStatus.BAD_REQUEST);
       }
     }
-    catch (error){
+    catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
       // console.log(error);
     }
@@ -200,14 +200,14 @@ export class UserService {
 
   async getUsersByUserEmail(email: string) {
     let user;
-    try{
+    try {
       user = await this.userModel.findOne({ email });
       if (user === undefined || user === null) {
         Logger.log(`User doesn't exists againt email : ${email}`);
         throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
       }
     }
-    catch (error){
+    catch (error) {
       throw new HttpException(error, HttpStatus.BAD_REQUEST);
       // console.log(error);
     }
@@ -215,7 +215,7 @@ export class UserService {
   }
 
 
-  async createUserFromCSV(csvFileData: any) {
+  async createUserFromCSV(csvFileData: any, organizationId: string, groupId: string) {
     let result: any;
     let failedToImport: any[] = [];
     let successImports: any[] = [];
@@ -223,7 +223,8 @@ export class UserService {
     for (const singleUser of csvFileData) {
       try {
         singleUser.userRole = UserRoles.EMPLOYEE;
-        singleUser.groupId = "null";
+        singleUser.groupId = groupId;
+        singleUser.organization = organizationId;
         const createdUser = new this.userModel(singleUser);
         result = await createdUser.save();
         if (result) {
@@ -247,3 +248,4 @@ export class UserService {
   }
 
 }
+

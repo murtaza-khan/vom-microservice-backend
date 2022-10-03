@@ -1,6 +1,12 @@
 input GroupInput {
+  name : String!
+  managerId : String!
+}
+
+input UpdateeGroupInput {
   id: ID
   name : String!
+  managerId : String
 }
 
 type UserTypet {
@@ -17,6 +23,7 @@ type UserTypet {
 type GroupType {
     id:ID!
     name:String!
+    managerId: String
     createdAt:String!
     users:[UserTypet]
 }
@@ -27,6 +34,6 @@ type Query {
 
 type Mutation {
   createGroup(groupData: GroupInput!): GroupType
-  updateGroup(groupData: GroupInput!): GroupType
+  updateGroup(groupData: UpdateeGroupInput!): GroupType
   deleteGroupById(groupId : String!) : String 
 }

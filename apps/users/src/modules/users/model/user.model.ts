@@ -18,7 +18,7 @@ export class UserType {
   @Field()
   @IsEmail()
   email: string;
-  
+
   @Field()
   @IsString()
   @IsNotEmpty()
@@ -35,11 +35,11 @@ export class UserType {
 
   @Field()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   organization: string;
 
   @Field()
   @IsString()
   @IsOptional()
-  groupId:string;
+  groupId: string;
 }

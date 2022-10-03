@@ -7,9 +7,9 @@ import { OrgType } from './model/org.model';
 @Injectable()
 export class OrganizationService {
 
-    constructor(@InjectModel('Organization') private readonly orgModel: Model<OrgType>){}
+    constructor(@InjectModel('Organization') private readonly orgModel: Model<OrgType>) { }
 
-    async getOrgs(){
+    async getOrgs() {
         const orgs = await this.orgModel.find();
         return orgs;
     }
@@ -27,7 +27,7 @@ export class OrganizationService {
             Logger.log(`organization created successfully with id ${createdOrg._id}`);
             return await createdOrg.save();
         }
-        else{
+        else {
             Logger.log(`failed to create organization`);
             throw new HttpException(`failed to create organization`, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -58,33 +58,34 @@ export class OrganizationService {
         }
     }
 
-    async deleteOrgById(orgId:string){
-        try{
-            const org = await this.orgModel.findOne({_id : orgId});
-            if(org){
+    async deleteOrgById(orgId: string) {
+        try {
+            const org = await this.orgModel.findOne({ _id: orgId });
+            if (org) {
                 const isDeleted = await this.orgModel.findByIdAndRemove(orgId);
-                if(isDeleted){
+                if (isDeleted) {
                     Logger.log(`organization deleted with id ${orgId}`);
                     return "Oranization deleted successfully";
                 }
-                else{
+                else {
                     Logger.log(`Failed to delete Organization with id ${orgId}`);
-                    throw new HttpException(`Failed to delete Organization` , HttpStatus.INTERNAL_SERVER_ERROR);
+                    throw new HttpException(`Failed to delete Organization`, HttpStatus.INTERNAL_SERVER_ERROR);
                 }
             }
-            else{
+            else {
                 Logger.log(`organization is not exist againt id ${orgId}`);
-                throw new HttpException(`organization is not exist againt id ${orgId}` , HttpStatus.BAD_REQUEST);
+                throw new HttpException(`organization is not exist againt id ${orgId}`, HttpStatus.BAD_REQUEST);
             }
         }
-        catch(error){
+        catch (error) {
             throw new HttpException(error, HttpStatus.BAD_REQUEST);
         }
     }
 
-    async getOrgsByAffiliateId(affiliateId:string){
+    async getOrgsByAffiliateId(affiliateId: string) {
         try {
-            const org = await this.orgModel.findOne({ affiliateId : affiliateId });
+            // const org = await this.orgModel.findOne({ affiliateId : affiliateId });
+            const org = await this.orgModel.find({ affiliateId: affiliateId });
             if (org) {
                 return org;
             }
