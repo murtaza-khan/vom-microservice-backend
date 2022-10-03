@@ -1,0 +1,32 @@
+input GroupInput {
+  id: ID
+  name : String!
+}
+
+type UserTypet {
+  id:ID!
+  firstName:String!
+  lastName: String!
+  email: String!
+  phone:String!
+  userRole: String!
+  organization : String!
+  groupId : String
+}
+
+type GroupType {
+    id:ID!
+    name:String!
+    createdAt:String!
+    users:[UserTypet]
+}
+
+type Query {
+    groups :[GroupType!]
+}
+
+type Mutation {
+  createGroup(groupData: GroupInput!): GroupType
+  updateGroup(groupData: GroupInput!): GroupType
+  deleteGroupById(groupId : String!) : String 
+}
