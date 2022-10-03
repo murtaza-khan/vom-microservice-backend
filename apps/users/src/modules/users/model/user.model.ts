@@ -29,7 +29,7 @@ export class UserType {
   @IsNotEmpty()
   phone: string;
 
-  @Field()
+  @Field(() => [UserRoles])
   @IsOptional()
   userRole: UserRoles;
 

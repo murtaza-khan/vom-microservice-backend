@@ -34,7 +34,7 @@ export class UpdateUserInput {
   // @Args('phone')
   phone?: string;
   
-  @Field({ nullable: true })
+  @Field(() => [UserRoles])
   @IsString()
   @IsOptional()
   userRole?: UserRoles;
