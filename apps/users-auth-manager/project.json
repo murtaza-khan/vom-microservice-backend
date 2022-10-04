@@ -1,16 +1,16 @@
 {
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "apps/users/src",
+  "sourceRoot": "apps/users-auth-manager/src",
   "projectType": "application",
   "targets": {
     "build": {
       "executor": "@nrwl/node:webpack",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/users",
-        "main": "apps/users/src/main.ts",
-        "tsConfig": "apps/users/tsconfig.app.json",
-        "assets": ["apps/users/src/assets"]
+        "outputPath": "dist/apps/users-auth-manager",
+        "main": "apps/users-auth-manager/src/main.ts",
+        "tsConfig": "apps/users-auth-manager/tsconfig.app.json",
+        "assets": ["apps/users-auth-manager/src/assets"]
       },
       "configurations": {
         "production": {
@@ -19,8 +19,8 @@
           "inspect": false,
           "fileReplacements": [
             {
-              "replace": "apps/users/src/environments/environment.ts",
-              "with": "apps/users/src/environments/environment.prod.ts"
+              "replace": "apps/users-auth-manager/src/environments/environment.ts",
+              "with": "apps/users-auth-manager/src/environments/environment.prod.ts"
             }
           ]
         }
@@ -29,11 +29,11 @@
     "serve": {
       "executor": "@nrwl/node:node",
       "options": {
-        "buildTarget": "users:build"
+        "buildTarget": "users-auth-manager:build"
       },
       "configurations": {
         "production": {
-          "buildTarget": "users:build:production"
+          "buildTarget": "users-auth-manager:build:production"
         }
       }
     },
@@ -41,14 +41,14 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["apps/users/**/*.ts"]
+        "lintFilePatterns": ["apps/users-auth-manager/**/*.ts"]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/users"],
+      "outputs": ["coverage/apps/users-auth-manager"],
       "options": {
-        "jestConfig": "apps/users/jest.config.ts",
+        "jestConfig": "apps/users-auth-manager/jest.config.ts",
         "passWithNoTests": true
       }
     }

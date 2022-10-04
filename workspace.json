@@ -3,7 +3,7 @@
   "version": 2,
   "projects": {
     "common": "libs/common",
-    "users": "apps/users",
+    "users-auth-manager": "apps/users-auth-manager",
     "vom-backend": "apps/vom-backend",
     "vom-frontend": "apps/vom-frontend",
     "vom-frontend-e2e": "apps/vom-frontend-e2e",
