@@ -16,7 +16,7 @@ export class GroupsService {
         Logger.log("get all groups");
         const groups = await this.groupsModel.find();
         for (const group of groups) {
-            const user = await this.userService.getUsersByGroupId(group._id);
+            const user = await this.userService.getUsersByGroupId(group.id);
             group.users = user;
         }
         return groups;
@@ -29,7 +29,7 @@ export class GroupsService {
             Logger.log(`group alredy exist with name ${name}`);
             throw new HttpException(`group alredy exist with name ${name}`, HttpStatus.BAD_REQUEST);
         }
-        const user = await this.userService.getUsersByUserId(groupDTO.id);
+        const user = await this.userService.getUsersByUserId(groupDTO.managerId);
         if (user.userRole != UserRoles.GROUP_MANAGER) {
             Logger.log(`Please Provide a valid managerId`);
             throw new HttpException(`Please Provide a valid managerId`, HttpStatus.BAD_REQUEST);

@@ -15,7 +15,9 @@ export interface IUser extends mongoose.Document {
   password: string
 }
 
-UserSchema.pre<IUser>('save', async function (next: mongoose.HookNextFunction) {
+// next: mongoose.HookNextFunction
+
+UserSchema.pre<IUser>('save', async function (next) {
   try {
     if (!this.isModified('password')) {
       return next();
@@ -29,7 +31,7 @@ UserSchema.pre<IUser>('save', async function (next: mongoose.HookNextFunction) {
 });
 
 UserSchema.pre('findOneAndUpdate', async function (
-  next: mongoose.HookNextFunction,
+  next,
 ) {
   const updateFields = this.getUpdate();
   // console.log("updateFields: ", updateFields)
