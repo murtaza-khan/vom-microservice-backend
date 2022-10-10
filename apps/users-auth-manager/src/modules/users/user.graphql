@@ -39,6 +39,7 @@ input UpdateUser {
 
 type Auth {
   email: String!
+  role: String!
   token: String!
 }
 

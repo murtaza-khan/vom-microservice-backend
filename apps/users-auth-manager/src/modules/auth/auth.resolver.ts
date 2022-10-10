@@ -48,6 +48,6 @@ export class AuthResolver {
     };
 
     const token = await this.authService.signPayload(payload);
-    return { email: response.email, token };
+    return { email: response.email, role: response.userRole ,  token };
   }
 }
