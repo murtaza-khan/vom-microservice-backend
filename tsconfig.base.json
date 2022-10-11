@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@vom/common": ["libs/common/src/index.ts"],
       "@vom/vom-helpers": ["libs/vom-helpers/src/index.ts"],
       "@vom/vom-ui": ["libs/vom-ui/src/index.ts"]
     }
