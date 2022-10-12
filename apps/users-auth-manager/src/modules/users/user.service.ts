@@ -25,9 +25,22 @@ export class UserService {
     @Inject(forwardRef(() => OrganizationService)) private OrganizationService: OrganizationService
   ) { }
 
-  async getUsers(): Promise<User[]> {
-    Logger.log(`Users retreieved successfully`);
-    return await this.userModel.find();
+  async getUsers(currentUser:any): Promise<User[]> {
+    if(currentUser.userRole === UserRoles.SUPER_ADMIN){
+      Logger.log(`Users retreieved successfully by ${currentUser.userRole}`);
+      return await this.userModel.find();
+    }
+    else if(currentUser.userRole === UserRoles.AFFLIATE){
+      const organization = await this.OrganizationService.getOrgsByAffiliateId(currentUser.id);
+      const organizationIds = organization.map((i: any) => {return i.id});
+      Logger.log(`Users retreieved successfully by ${currentUser.userRole}`);
+      return await this.userModel.find({ organization: organizationIds });
+    }
+    else{
+      Logger.log(`Users retreieved successfully by ${currentUser.userRole}`);
+      return await this.userModel.find({ organization: currentUser.organization });
+    }
+    
   }
 
   async getUser(userId: any): Promise<UserType> {
