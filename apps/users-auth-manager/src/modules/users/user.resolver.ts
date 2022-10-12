@@ -20,8 +20,8 @@ export class UserResolver {
   // @Roles("super")
 
   @Query(returns => UserType)
-  async getUser(@CurrentUser() user: any) {
-    return await this.userService.getUsers();
+  async getUser(@CurrentUser() user: any, @CurrentUser() currentUser: any) {
+    return await this.userService.getUsers(currentUser);
   }
 
   @Mutation(returns => UserType)

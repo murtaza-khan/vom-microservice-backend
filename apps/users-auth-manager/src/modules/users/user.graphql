@@ -7,7 +7,7 @@ type User {
   email: String!
   phone:String!
   userRole: String!
-  organization: String!
+  organization: String
   groupId: String
 }
 
