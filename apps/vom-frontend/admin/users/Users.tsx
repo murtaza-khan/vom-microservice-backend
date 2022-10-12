@@ -1,17 +1,14 @@
 import * as React from "react";
 import { Datagrid,
-  EmailField,
   List,
   TextField,
-  Create ,
-  SimpleForm ,
-  TextInput,
   TopToolbar,
   CreateButton,
   ExportButton,
  } from 'react-admin';
 import { ImportButton } from "react-admin-import-csv";
-// User File Importnpm audit
+
+// User File Import
 export const ListActions = (props)=> {
   const { className, basePath } = props;
   return (
@@ -39,19 +36,3 @@ export const UserList = (props) => (
         </Datagrid>
     </List>
 );
-// For Create New User Form
-export const userCreate = props => {
-  return (
-    <Create {...props}>
-      <>
-        <SimpleForm>
-          <TextInput source="firstName" />
-          <TextInput source="lastName" />
-          <TextInput source="email" />
-          <TextInput source="password" />
-          <TextInput source="phone" />
-        </SimpleForm>
-      </>
-    </Create>
-  );
-};

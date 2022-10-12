@@ -2,10 +2,15 @@ import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
 const apiUrl = "http://localhost:3003/graphql";
 
+const getToken = () => {
+  let token = localStorage.getItem('loginUser') ? JSON.parse(localStorage.getItem('loginUser')).token : null;
+  return "Bearer " + token;
+}
+
 const client = new ApolloClient({
 
     uri: apiUrl,
-    headers: { "x-graphql-token": "YYY", Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im1hbmFnZXJAZ21haWwuY29tIiwicm9sZSI6Imdyb3VwX21hbmFnZXIiLCJpYXQiOjE2NjU1ODEzNTcsImV4cCI6MTY2NTYyNDU1N30.SEXlMfrhXh9MjlQYb4BIwQIiQAEQ6W_gDej8co7P4yY' },
+    headers: { "x-graphql-token": "YYY", Authorization: getToken() },
     cache: new InMemoryCache(),
     defaultOptions: {
         watchQuery: {
@@ -101,6 +106,7 @@ export const dataProvider =
                 email: params.data.email,
                 password: params.data.password,
                 phone: params.data.phone,
+                userRole: params.data.userRole
               },
             },
           })
