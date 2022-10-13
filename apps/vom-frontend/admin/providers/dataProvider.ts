@@ -1,9 +1,9 @@
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
-const apiUrl = "http://localhost:3003/graphql";
+const apiUrl = "http://localhost:5000/graphql";
 
 const getToken = () => {
-  let token = localStorage.getItem('loginUser') ? JSON.parse(localStorage.getItem('loginUser')).token : null;
+  const token = localStorage.getItem('loginUser') ? JSON.parse(localStorage.getItem('loginUser')).token : null;
   return "Bearer " + token;
 }
 
@@ -58,7 +58,7 @@ export const dataProvider =
         })
         .then(async (result) => ({
             data: await (result.data.getUser),
-            total: result.data.getUser.length
+            total: 3
         }))
     },
     login: async (params: any) => {
@@ -134,7 +134,6 @@ export const dataProvider =
             }));
         },
       deleteMany: async (resource, params) => {
-        console.log(params)
         return await client
           .mutate({
             mutation: gql`
@@ -146,7 +145,17 @@ export const dataProvider =
 
             }`,
             variables: {
-              id:await params.data.ids[0],
+
+                 id: (params.ids.forEach(element => {
+                  console.log(element)
+                  return element
+
+                 })),
+
+
+
+
+
             },
           })
           .then(async result => ({

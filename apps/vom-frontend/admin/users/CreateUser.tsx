@@ -44,7 +44,7 @@ export const CreateUser = props => {
               <TextInput type="password" source="password" isRequired fullWidth />
             </Box>
           </Box>
-          
+
         </SimpleForm>
       </>
     </Create>
