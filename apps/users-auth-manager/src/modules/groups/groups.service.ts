@@ -22,7 +22,8 @@ export class GroupsService {
         return groups;
     }
 
-    async create(groupDTO: Group): Promise<any> {
+    async create(groupDTO: Group , currentUser:any): Promise<any> {
+        console.log("groupDTO",  groupDTO);
         const name = groupDTO.name;
         const group = await this.groupsModel.findOne({ name });
         if (group) {
@@ -35,6 +36,7 @@ export class GroupsService {
             throw new HttpException(`Please Provide a valid managerId`, HttpStatus.BAD_REQUEST);
         }
         groupDTO.createdAt = new Date().toISOString();
+        groupDTO.organizationId = currentUser.organization;
         const createdGroup = new this.groupsModel(groupDTO);
         Logger.log(`group create successfuly ${createdGroup._id}`);
         return await createdGroup.save();

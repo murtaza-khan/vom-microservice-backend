@@ -16,7 +16,7 @@ export class GroupsService {
         Logger.log("get all groups");
         const groups =  await this.groupsModel.find();
         for(const group of groups){
-            const user = await this.userService.getUsersByGroupId(group._id);
+            const user = await this.userService.getUsersByGroupId(group.id);
             group.users = user;
         }
         return groups;
