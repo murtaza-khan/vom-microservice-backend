@@ -198,7 +198,7 @@ export class UserService {
   async getUsersByUserId(id: string) {
     let user;
     try {
-      user = await this.userModel.find({ _id: id });
+      user = await this.userModel.findOne({ _id: id });
       if (user === undefined || user === null) {
         Logger.log(`Invalid id ${id}`);
         throw new HttpException(`Invalid id ${id}`, HttpStatus.BAD_REQUEST);

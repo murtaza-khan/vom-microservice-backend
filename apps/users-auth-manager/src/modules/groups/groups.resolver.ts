@@ -6,6 +6,7 @@ import { UserRoles } from '@vom/common';
 import { GraphqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { UseGuards } from '@nestjs/common';
+import { CurrentUser } from '../../core/decorators/user.decorator';
 
 @UseGuards(GraphqlAuthGuard)
 @UseGuards(RolesGuard)
@@ -19,10 +20,15 @@ export class GroupsResolver {
     return await this.groupsService.getGroups();
   }
 
+  @Query()
+  async getGroupByOrgId(@Args('orgId') orgId: any) {
+    return await this.groupsService.getGroups();
+  }
+
   @Roles(UserRoles.ADMIN)
   @Mutation()
-  async createGroup(@Args('groupData') groupData: Group) {
-    return await this.groupsService.create(groupData);
+  async createGroup(@Args('groupData') groupData: Group, @CurrentUser() currentUser: any) {
+    return await this.groupsService.create(groupData , currentUser);
   }
 
   @Roles(UserRoles.ADMIN)
