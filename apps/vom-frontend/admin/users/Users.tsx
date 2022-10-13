@@ -5,6 +5,8 @@ import { Datagrid,
   TopToolbar,
   CreateButton,
   ExportButton,
+  DeleteButton,
+  EditButton,
  } from 'react-admin';
 import { ImportButton } from "react-admin-import-csv";
 
@@ -13,9 +15,11 @@ export const ListActions = (props)=> {
   const { className, basePath } = props;
   return (
     <TopToolbar className={className}>
-      <CreateButton basePath={basePath} />
-      <ExportButton basePath={basePath} />
+      <CreateButton {...props} />
+      <ExportButton {...props} />
       <ImportButton {...props} />
+      <DeleteButton {...props} />
+      <EditButton {...props} />
     </TopToolbar>
   );
 };
@@ -33,7 +37,8 @@ export const UserList = (props) => (
             {/* <TextField source="website" /> */}
             <TextField source="groupId" />
             <TextField source="userRole" />
-
+            <EditButton/>
+            <DeleteButton/>
         </Datagrid>
     </List>
 );

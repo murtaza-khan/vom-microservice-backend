@@ -111,7 +111,7 @@ export const dataProvider =
             },
           })
           .then(async result => ({
-            data: await result.data.create,
+            data: await result.data.createUser,
           }));
       },
     // Import CSV File  User Provider
@@ -133,33 +133,76 @@ export const dataProvider =
               data: await result.data.create,
             }));
         },
-      deleteMany: async (resource, params) => {
+        // Delete user Provider
+       delete: async (resource, params) => {
         return await client
           .mutate({
             mutation: gql`
               mutation deleteUserById($id:String!){
               deleteUserById(userId:$id){
                 firstName
-
               }
 
             }`,
             variables: {
-
-                 id: (params.ids.forEach(element => {
-                  console.log(element)
-                  return element
-
-                 })),
-
-
-
-
-
+                 id: params.id,
             },
           })
           .then(async result => ({
             data: await result.data
           }));
       },
+      // Update User provider
+      update: async (resource, params) => {
+        return await client
+          .mutate({
+            mutation: gql`
+              mutation editUser($id: String!, $userEditD: UpdateUser!) {
+                editUser(id: $id, user: $userEditD) {
+                    id
+                  firstName
+                  lastName
+                  email
+                  phone
+                  userRole
+                }
+              }
+            `,
+            variables: {
+              id: params.data.id,
+              userEditD: {
+                firstName: params.data.firstName,
+                lastName: params.data.lastName,
+                email: params.data.email,
+                password: params.data.password,
+                phone: params.data.phone,
+              },
+            },
+          })
+          .then(async result => ({
+            data: await result.data,
+          }));
+      },
+      // Get one for update Provider
+      getOne: async (resource, params) => {
+        console.log(params)
+        return await client.query({
+            query: gql`
+            query getUser($id:String){
+                getUser(userId:$id){
+                  id
+                  firstName
+                  lastName
+                  phone
+                  userRole
+                }
+              }`,
+            variables: {
+                  id: params.id,
+            },
+          }).then(result=>({
+              data:params
+          }))
+        },
+
 }
