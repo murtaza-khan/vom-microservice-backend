@@ -111,7 +111,7 @@ export const dataProvider =
             },
           })
           .then(async result => ({
-            data: await result.data.create,
+            data: await result.data.createUser,
           }));
       },
     // Import CSV File  User Provider
