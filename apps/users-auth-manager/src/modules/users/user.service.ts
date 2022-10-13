@@ -25,9 +25,22 @@ export class UserService {
     @Inject(forwardRef(() => OrganizationService)) private OrganizationService: OrganizationService
   ) { }
 
-  async getUsers(): Promise<User[]> {
-    Logger.log(`Users retreieved successfully`);
-    return await this.userModel.find();
+  async getUsers(currentUser:any): Promise<User[]> {
+    if(currentUser.userRole === UserRoles.SUPER_ADMIN){
+      Logger.log(`Users retreieved successfully by ${currentUser.userRole}`);
+      return await this.userModel.find();
+    }
+    else if(currentUser.userRole === UserRoles.AFFLIATE){
+      const organization = await this.OrganizationService.getOrgsByAffiliateId(currentUser.id);
+      const organizationIds = organization.map((i: any) => {return i.id});
+      Logger.log(`Users retreieved successfully by ${currentUser.userRole}`);
+      return await this.userModel.find({ organization: organizationIds });
+    }
+    else{
+      Logger.log(`Users retreieved successfully by ${currentUser.userRole}`);
+      return await this.userModel.find({ organization: currentUser.organization });
+    }
+    
   }
 
   async getUser(userId: any): Promise<UserType> {
@@ -77,7 +90,7 @@ export class UserService {
     }
   }
 
-  async update(id: string, newUser: UpdateUserInput, role: UserRoles) {
+  async update(id: string, newUser: UpdateUserInput, currentUser:any) {
     const user: User = await this.userModel.findOne({ _id: id });
     const userWithEmail = await this.userModel.findOne({
       email: newUser.email,
@@ -182,13 +195,13 @@ export class UserService {
     }
   }
 
-  async getUsersByUserId(userId: string) {
+  async getUsersByUserId(id: string) {
     let user;
     try {
-      user = await this.userModel.findOne({ _id: userId });
+      user = await this.userModel.find({ _id: id });
       if (user === undefined || user === null) {
-        Logger.log(`Invalid id ${userId}`);
-        throw new HttpException(`Invalid id ${userId}`, HttpStatus.BAD_REQUEST);
+        Logger.log(`Invalid id ${id}`);
+        throw new HttpException(`Invalid id ${id}`, HttpStatus.BAD_REQUEST);
       }
     }
     catch (error) {
