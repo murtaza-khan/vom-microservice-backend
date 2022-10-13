@@ -21,8 +21,9 @@ export class UserResolver {
 
   @Query(returns => UserType)
   async getUser(@Args('userId') userId: any, @CurrentUser() currentUser: any) {
+    console.log("userId", userId);
     if(userId){
-      return await this.userService.getUsersByUserId(userId);
+      return await this.userService.getSingleUser(userId);
     }
     else{
       return await this.userService.getUsers(currentUser);
