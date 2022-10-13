@@ -37,6 +37,7 @@ export const dataProvider =
               id
               firstName
               lastName
+              email
               phone
               groupId
               userRole
@@ -193,6 +194,7 @@ export const dataProvider =
                   id
                   firstName
                   lastName
+                  email
                   phone
                   userRole
                 }
@@ -201,7 +203,7 @@ export const dataProvider =
                   id: params.id,
             },
           }).then(result=>({
-              data:params
+            data: result.data.getUser[0]
           }))
         },
 

@@ -31,7 +31,8 @@ export const UserList = (props) => (
             <TextField source="id" />
             <TextField source="firstName" />
             {/* <TextField source="username" /> */}
-            <TextField source="lastName" />
+              <TextField source="lastName" />
+              <TextField source="email" />
             {/* <TextField source="address.street" /> */}
             <TextField source="phone" />
             {/* <TextField source="website" /> */}
