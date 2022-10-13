@@ -3,7 +3,7 @@ import { dataProvider } from "./dataProvider";
 
 const authProvider: AuthProvider = {
     login: async ({ username, password }) => {
-        
+
         const { data } = await dataProvider.login({ email: username, password: password });
 
         localStorage.setItem('loginUser', JSON.stringify(data));

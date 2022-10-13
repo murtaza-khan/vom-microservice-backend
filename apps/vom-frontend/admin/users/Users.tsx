@@ -22,8 +22,8 @@ export const ListActions = (props)=> {
 
 // User List
 export const UserList = (props) => (
-    <List {...props} actions={<ListActions />} >
-        <Datagrid rowClick="edit">
+    <List {...props}  actions={<ListActions />} >
+        <Datagrid bulkActionButtons={false}>
             <TextField source="id" />
             <TextField source="firstName" />
             {/* <TextField source="username" /> */}
@@ -33,6 +33,7 @@ export const UserList = (props) => (
             {/* <TextField source="website" /> */}
             <TextField source="groupId" />
             <TextField source="userRole" />
+
         </Datagrid>
     </List>
 );
