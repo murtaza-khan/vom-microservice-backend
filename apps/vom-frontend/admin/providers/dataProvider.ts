@@ -1,6 +1,6 @@
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
-const apiUrl = "http://localhost:5000/graphql";
+const apiUrl = "http://localhost:3003/graphql";
 
 const getToken = () => {
   const token = localStorage.getItem('loginUser') ? JSON.parse(localStorage.getItem('loginUser')).token : null;
