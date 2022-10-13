@@ -46,9 +46,14 @@ type OrgType {
     admin: [UserTypet]
 }
 
+type OrgByAffliate {
+    id: ID!
+    name: String!
+}
+
 type Query {
     getOrgs:[OrgType!]
-    getOrgsByAffiliateId(affiliateId : String!):[OrgType!]
+    getOrgsByAffiliateId(affiliateId : String!):[OrgByAffliate!]
 }
 
 type Mutation {

@@ -20,8 +20,14 @@ export class UserResolver {
   // @Roles("super")
 
   @Query(returns => UserType)
-  async getUser(@CurrentUser() user: any, @CurrentUser() currentUser: any) {
-    return await this.userService.getUsers(currentUser);
+  async getUser(@Args('userId') userId: any, @CurrentUser() currentUser: any) {
+    console.log("userId", userId);
+    if(userId){
+      return await this.userService.getSingleUser(userId);
+    }
+    else{
+      return await this.userService.getUsers(currentUser);
+    }
   }
 
   @Mutation(returns => UserType)
@@ -55,7 +61,7 @@ export class UserResolver {
     if(isUser != null){
       const validateTole = await validRole(currentUser.userRole, isUser.userRole);
       if(id === currentUser.id || validateTole){
-        return await this.userService.update(id, user, currentUser.userRole);
+        return await this.userService.update(id, user, currentUser);
       }
       else{
         throw new UnauthorizedException();
