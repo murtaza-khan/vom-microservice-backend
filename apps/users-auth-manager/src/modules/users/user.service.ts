@@ -90,7 +90,7 @@ export class UserService {
     }
   }
 
-  async update(id: string, newUser: UpdateUserInput, role: UserRoles) {
+  async update(id: string, newUser: UpdateUserInput, currentUser:any) {
     const user: User = await this.userModel.findOne({ _id: id });
     const userWithEmail = await this.userModel.findOne({
       email: newUser.email,
@@ -195,13 +195,13 @@ export class UserService {
     }
   }
 
-  async getUsersByUserId(userId: string) {
+  async getUsersByUserId(id: string) {
     let user;
     try {
-      user = await this.userModel.findOne({ _id: userId });
+      user = await this.userModel.find({ _id: id });
       if (user === undefined || user === null) {
-        Logger.log(`Invalid id ${userId}`);
-        throw new HttpException(`Invalid id ${userId}`, HttpStatus.BAD_REQUEST);
+        Logger.log(`Invalid id ${id}`);
+        throw new HttpException(`Invalid id ${id}`, HttpStatus.BAD_REQUEST);
       }
     }
     catch (error) {
