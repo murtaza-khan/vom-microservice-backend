@@ -211,6 +211,22 @@ export class UserService {
     return user;
   }
 
+  async getSingleUser(id: string) {
+    let user;
+    try {
+      user = await this.userModel.find({ _id: id });
+      if (user === undefined || user === null) {
+        Logger.log(`Invalid id ${id}`);
+        throw new HttpException(`Invalid id ${id}`, HttpStatus.BAD_REQUEST);
+      }
+    }
+    catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+      // console.log(error);
+    }
+    return user;
+  }
+
   async getUsersByUserEmail(email: string) {
     let user;
     try {
