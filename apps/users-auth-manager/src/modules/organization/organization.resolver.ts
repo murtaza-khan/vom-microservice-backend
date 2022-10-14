@@ -15,7 +15,10 @@ export class OrganizationResolver {
 
   @Roles(UserRoles.AFFLIATE , UserRoles.SUPER_ADMIN)
   @Query()
-  async getOrgs(){
+  async getOrgs(@Args("orgId") orgId:string){
+    if(orgId){
+      return await this.organizationService.getSingleOrgs(orgId);
+    }
     return await this.organizationService.getOrgs();
   }
 
