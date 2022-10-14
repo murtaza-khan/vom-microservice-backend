@@ -19,10 +19,10 @@ export class GroupsResolver {
   async groups() {
     return await this.groupsService.getGroups();
   }
-
+  @Roles(UserRoles.ADMIN)
   @Query()
   async getGroupByOrgId(@Args('orgId') orgId: any) {
-    return await this.groupsService.getGroups();
+    return await this.groupsService.getGroupByOrgId(orgId);
   }
 
   @Roles(UserRoles.ADMIN)

@@ -30,6 +30,11 @@ export class UserResolver {
     }
   }
 
+  @Query(returns => UserType)
+  async getManagersByOrgID(@Args("orgId") orgId:string){
+    return await this.userService.getManagersByOrgID(orgId);
+  }
+
   @Mutation(returns => UserType)
   async createUser(@Args('createUser') createUser: any, @CurrentUser() currentUser: any) {
     if (createUser.userRole == undefined) {

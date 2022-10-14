@@ -4,11 +4,13 @@ import { GroupsResolver } from './groups.resolver';
 import { GroupSchema } from './groups.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from '../users/user.module';
+import { OrganizationModule } from '../organization/organization.module';
 
 @Module({
   imports:[
     MongooseModule.forFeature([{ name: 'Group', schema: GroupSchema }]),
-    forwardRef(() => UserModule)
+    forwardRef(() => UserModule),
+    forwardRef(() => OrganizationModule)
   ],
   providers: [GroupsResolver, GroupsService],
   exports:[

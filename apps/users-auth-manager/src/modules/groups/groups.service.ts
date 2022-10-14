@@ -5,12 +5,13 @@ import { Group } from '@vom/common';
 import { UserService } from '../users/user.service';
 import { GroupType } from './model/group.model';
 import { UserRoles } from '@vom/common';
+import { OrganizationService } from '../organization/organization.service';
 
 @Injectable()
 export class GroupsService {
     constructor(@InjectModel('Group') private readonly groupsModel: Model<GroupType>,
-        @Inject(forwardRef(() => UserService))
-        private userService: UserService) { }
+        @Inject(forwardRef(() => UserService)) private userService: UserService,
+        @Inject(forwardRef(() => OrganizationService)) private OrganizationService: OrganizationService) { }
 
     async getGroups(): Promise<any[]> {
         Logger.log("get all groups");
@@ -21,9 +22,21 @@ export class GroupsService {
         }
         return groups;
     }
+    async getGroupByOrgId(orgId:string): Promise<any[]> {
+        const oranization = await this.OrganizationService.getOrgById(orgId);
+        if(oranization){
+            Logger.log("get groups by organization id");
+            const groups = await this.groupsModel.find({organizationId :orgId });
+            for (const group of groups) {
+                const user = await this.userService.getUsersByGroupId(group.id);
+                group.users = user;
+            }
+            return groups;
+        }
+        
+    }
 
     async create(groupDTO: Group , currentUser:any): Promise<any> {
-        console.log("groupDTO",  groupDTO);
         const name = groupDTO.name;
         const group = await this.groupsModel.findOne({ name });
         if (group) {
