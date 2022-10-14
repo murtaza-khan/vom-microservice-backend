@@ -39,8 +39,8 @@ type OrgType {
     logo: String!
     BN: String!
     createdAt: String!
-    subscriptionDate: String!
-    subscriptionStatus: String!
+    subscriptionDate: String
+    subscriptionStatus: String
     groups: [GroupType]
     affiliateId: String
     admin: [UserTypet]
