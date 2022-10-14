@@ -6,22 +6,22 @@ const authProvider: AuthProvider = {
 
         const { data } = await dataProvider.login({ email: username, password: password });
 
-        localStorage.setItem('loginUser', JSON.stringify(data));
+        localStorage.setItem(process.env.authUser, JSON.stringify(data));
         return Promise.resolve();
     },
     logout: () => {
-        localStorage.removeItem('loginUser');
+        localStorage.removeItem(process.env.authUser);
         return Promise.resolve();
     },
     checkAuth: () => {
-        return localStorage.getItem('loginUser')
+        return localStorage.getItem(process.env.authUser)
             ? Promise.resolve()
             : Promise.reject();
     },
     checkError:  (error) => {
         const status = error.status;
         if (status === 401 || status === 403) {
-            localStorage.removeItem('loginUser');
+            localStorage.removeItem(process.env.authUser);
             return Promise.reject();
         }
         // other error code (404, 500, etc): no need to log out

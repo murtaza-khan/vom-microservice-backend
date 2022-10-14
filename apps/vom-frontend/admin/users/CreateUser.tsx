@@ -11,20 +11,22 @@ import {
 } from 'react-admin';
 import { Box } from '@mui/material';
 import { dataOrg } from './../providers/dataProvider';
-// For Create New User Form
-const basicauth=JSON.parse(localStorage.getItem('loginUser'));
-const ad="admin";
-const gm="group_manager";
-const af="affliate";
-const em="employee";
+
+import { getUserRole, UserRoles } from '../../utils/utils';
+const userRole = getUserRole();
+
 export const CreateUser = (props) => {
 
-  const organizationData: any = [
-      { id: '6349551ec60e820678851c66', name: 'techmania 1' },
-      { id: '63495530c60e820678851c6b', name: 'techmania 2' },
-      { id: '63495547c60e820678851c79', name: 'techmania 3' },
-      { id: '634957b2c60e820678851c84', name: 'techmania 4' },
-  ];
+  const [organizationData, setOrganizationData]: any = React.useState([]);
+  React.useEffect(() => {
+    if(userRole === UserRoles.AFFLIATE){
+      dataOrg.getOrganizations('633975b911d7bb7e640a1f52').then((data)=>{
+        debugger;
+        setOrganizationData(data);
+      });
+    }
+  }, []);
+  
   return (
    <>
     <Create {...props}>
@@ -51,13 +53,13 @@ export const CreateUser = (props) => {
           <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
             <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
                 {
-                    checkLoggedIn === sup?<TextInput source="userRole" defaultValue="affliate" disabled fullWidth />
-                    :checkLoggedIn === af?<TextInput source="userRole" defaultValue="admin" disabled fullWidth />
-                    :checkLoggedIn === ad?<SelectInput source="userRole" choices={[
+                    userRole === UserRoles.SUPER_ADMIN?<TextInput source="userRole" defaultValue="affliate" disabled fullWidth />
+                    :userRole === UserRoles.AFFLIATE?<TextInput source="userRole" defaultValue="admin" disabled fullWidth />
+                    :userRole === UserRoles.ADMIN?<SelectInput source="userRole" choices={[
                                 { id: 'group_manager', name: 'Group Manager' },
                                 { id: 'employee', name: 'Employee',},
                             ]} fullWidth />
-                    :checkLoggedIn === gm?<TextInput source="userRole" defaultValue="employee" disabled fullWidth />
+                    :userRole === UserRoles.GROUP_MANAGER?<TextInput source="userRole" defaultValue="employee" disabled fullWidth />
                     :null
 
 
@@ -68,8 +70,8 @@ export const CreateUser = (props) => {
             </Box>
           </Box>
           {
-            checkLoggedIn === af?<Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
-              <SelectInput source="companies" choices={organizationData} fullWidth />
+            userRole === UserRoles.AFFLIATE?<Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
+                <SelectInput source="organization" choices={organizationData} fullWidth />
             </Box>
             :null
           }

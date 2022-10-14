@@ -8,8 +8,7 @@ import {
 } from 'react-admin';
 import { Box } from '@mui/material';
 
-// For Create New User Form
-export const CreateOrg = props => {
+export const CreateOrg = (props) => {
 
   return (
     <Create {...props}>

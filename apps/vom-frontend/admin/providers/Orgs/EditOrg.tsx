@@ -7,6 +7,7 @@ export const OrganizationEdit = () => (
             <TextInput source="name" />
             <TextInput source="address" />
             <TextInput source="logo" />
+            <TextInput source="bn" />
 
         </SimpleForm>
     </Edit>

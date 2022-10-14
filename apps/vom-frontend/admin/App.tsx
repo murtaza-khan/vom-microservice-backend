@@ -4,15 +4,15 @@ import { Admin, EditGuesser, Resource } from 'react-admin';
 import { UserList } from "./users/Users";
 import { CreateUser } from "./users/CreateUser";
 import { GroupsList } from "./groups/Groups";
-import { OrganizationEdit } from "./providers/Orgs/EditUser";
+import { OrganizationEdit } from "./providers/Orgs/EditOrg";
 
 import CustomLayout from "../components/CustomLayout";
 import authProvider from "./providers/authProvider";
 import { userEdit } from "./users/UpdateUser";
-// const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
 import { dataProvider } from "./providers/dataProvider";
 import { orgList } from "./providers/Orgs/orgsList";
-import { CreateOrg } from "./Orgs/createOrg";
+import { CreateOrg } from "./Orgs/CreateOrg";
+
 const App = () => (
   <Admin authProvider={authProvider} dataProvider={dataProvider} layout={CustomLayout} >
     <Resource name="users"  list={UserList} edit={userEdit}  create={CreateUser} />

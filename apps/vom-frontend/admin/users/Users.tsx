@@ -9,18 +9,18 @@ import { Datagrid,
   EditButton,
  } from 'react-admin';
 import { ImportButton } from "react-admin-import-csv";
-const basicauth=JSON.parse(localStorage.getItem('loginUser'));
-const ad="admin";
-const gm="group_manager";
-const af="affliate";
-const em="employee";
+
+import { getUserRole, UserRoles } from '../../utils/utils';
+const userRole = getUserRole();
+
 // User File Import
 export const ListActions = (props)=> {
   const { className, basePath } = props;
   return (
     <TopToolbar className={className}>
       {/* <CreateButton {...props} /> */}
-      {basicauth.role === ad || basicauth.role ===gm || basicauth.role ===af ?<CreateButton {...props} />:null}
+      {userRole === UserRoles.ADMIN || userRole === UserRoles.GROUP_MANAGER || 
+        userRole === UserRoles.AFFLIATE ? <CreateButton {...props} />:null}
       <ExportButton {...props} />
       <ImportButton {...props} />
       <DeleteButton {...props} />

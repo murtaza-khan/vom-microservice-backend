@@ -24,7 +24,6 @@ export const ListActions = (props)=> {
   );
 };
 
-// User List
 export const orgList = (props) => (
     <List {...props}  actions={<ListActions />} >
         <Datagrid bulkActionButtons={false}>
