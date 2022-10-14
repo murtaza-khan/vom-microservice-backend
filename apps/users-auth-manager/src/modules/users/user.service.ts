@@ -243,6 +243,17 @@ export class UserService {
     return user;
   }
 
+  async getManagersByOrgID(orgId: string) : Promise<any>{
+    const user = await this.userModel.find({ organization: orgId , userRole: UserRoles.GROUP_MANAGER });
+
+    if (user === undefined || user === null) {
+      Logger.log(`User doesn't exists`);
+      throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
+    }
+    Logger.log(`Get manager by organization id ${orgId}`)
+    return user;
+  }
+
 
   async createUserFromCSV(csvFileData: any, organizationId: string, groupId: string) {
     let result: any;
