@@ -1,4 +1,5 @@
 import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
+import { resourceLimits } from 'worker_threads';
 
 const apiUrl = "http://localhost:3003/graphql";
 
@@ -6,7 +7,6 @@ const getToken = () => {
   const token = localStorage.getItem('loginUser') ? JSON.parse(localStorage.getItem('loginUser')).token : null;
   return "Bearer " + token;
 }
-
 const client = new ApolloClient({
 
     uri: apiUrl,
@@ -207,4 +207,26 @@ export const dataProvider =
           }))
         },
 
+
+
+
+}
+
+export const dataOrg ={
+  // Get Organizations By Affiliated
+      getOrganizations: async () => {
+        return await client
+            .query({
+                query: gql`
+              query getOrgsByAffiliateId($affiliateId : String!= "63454d507614684220f7e790" ){
+              getOrgsByAffiliateId(affiliateId:$affiliateId){
+              id
+              name
+              }`
+        })
+        .then(async (result) => ({
+                data: await result.data,
+            }
+          ));
+    },
 }
