@@ -45,7 +45,8 @@ type Auth {
 
 type Query {
   getUser(userId: String): [User!]
-  getUserById(userId: String): User!
+  getUserById(userId: String!): User!
+  getManagersByOrgID(orgId: String!): [User!]
 }
 
 type Mutation {
