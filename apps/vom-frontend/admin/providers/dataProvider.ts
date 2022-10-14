@@ -203,7 +203,14 @@ export const dataProvider =
                   id: params.id,
             },
           }).then(result=>({
+<<<<<<< Updated upstream
             data: result.data.getUser[0]
+=======
+
+            data:params
+
+
+>>>>>>> Stashed changes
           }))
         },
 
