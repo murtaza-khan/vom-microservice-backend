@@ -52,7 +52,7 @@ type OrgByAffliate {
 }
 
 type Query {
-    getOrgs:[OrgType!]
+    getOrgs(orgId:String):[OrgType!]
     getOrgsByAffiliateId(affiliateId : String!):[OrgByAffliate!]
 }
 
