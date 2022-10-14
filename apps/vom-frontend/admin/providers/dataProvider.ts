@@ -2,10 +2,15 @@ import { ApolloClient, InMemoryCache, gql } from '@apollo/client';
 
 const apiUrl = "http://localhost:3003/graphql";
 
+const getToken = () => {
+  const token = localStorage.getItem('loginUser') ? JSON.parse(localStorage.getItem('loginUser')).token : null;
+  return "Bearer " + token;
+}
+
 const client = new ApolloClient({
 
     uri: apiUrl,
-    headers: { "x-graphql-token": "YYY", Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyQGdtYWlsLmNvbSIsInJvbGUiOiJzdXBlciIsImlhdCI6MTY2NTUxMTg5MiwiZXhwIjoxNjY1NTU1MDkyfQ.UJwD-LmOBMLLQt9LDEjBFTCyCxZcUun2zm5Vf1OLmQA' },
+    headers: { "x-graphql-token": "YYY", Authorization: getToken() },
     cache: new InMemoryCache(),
     defaultOptions: {
         watchQuery: {
@@ -32,10 +37,11 @@ export const dataProvider =
               id
               firstName
               lastName
+              email
               phone
               groupId
               userRole
-      
+
             }
           }`,
             variables: {
@@ -53,14 +59,14 @@ export const dataProvider =
         })
         .then(async (result) => ({
             data: await (result.data.getUser),
-            total: 3
+            total: result.data.getUser.length
         }))
     },
     login: async (params: any) => {
         return await client
             .mutate({
                 mutation: gql`
-              mutation ($email: Email!, $password:String!) 
+              mutation ($email: Email!, $password:String!)
               {
                 login(email:$email,password:$password)
                 {
@@ -78,5 +84,127 @@ export const dataProvider =
                 data: await result.data.login,
             }
             ));
-    }
+    },
+    // For Create New User Provider
+     create: async (resource, params) => {
+        return await client
+          .mutate({
+            mutation: gql`
+              mutation createUser($userData: CreateUser!) {
+                createUser(createUser: $userData) {
+                  id
+                  firstName
+                  lastName
+                  email
+                  userRole
+                }
+              }
+            `,
+            variables: {
+              userData: {
+                firstName: params.data.firstName,
+                lastName: params.data.lastName,
+                email: params.data.email,
+                password: params.data.password,
+                phone: params.data.phone,
+                userRole: params.data.userRole
+              },
+            },
+          })
+          .then(async result => ({
+            data: await result.data.createUser,
+          }));
+      },
+    // Import CSV File  User Provider
+      createUserFromCSV: async (resource, params) => {
+          return await client
+            .mutate({
+              mutation: gql`
+                mutation createUserFromCSV($csv:csvFile){
+                  createUserFromCSV(csvFile:$csv){
+                }
+
+                }
+              `,
+              variables: {
+                csv: params.body,
+              },
+            })
+            .then(async result => ({
+              data: await result.data.create,
+            }));
+        },
+        // Delete user Provider
+       delete: async (resource, params) => {
+        return await client
+          .mutate({
+            mutation: gql`
+              mutation deleteUserById($id:String!){
+              deleteUserById(userId:$id){
+                firstName
+              }
+
+            }`,
+            variables: {
+                 id: params.id,
+            },
+          })
+          .then(async result => ({
+            data: await result.data
+          }));
+      },
+      // Update User provider
+      update: async (resource, params) => {
+        return await client
+          .mutate({
+            mutation: gql`
+              mutation editUser($id: String!, $userEditD: UpdateUser!) {
+                editUser(id: $id, user: $userEditD) {
+                    id
+                  firstName
+                  lastName
+                  email
+                  phone
+                  userRole
+                }
+              }
+            `,
+            variables: {
+              id: params.data.id,
+              userEditD: {
+                firstName: params.data.firstName,
+                lastName: params.data.lastName,
+                email: params.data.email,
+                password: params.data.password,
+                phone: params.data.phone,
+              },
+            },
+          })
+          .then(async result => ({
+            data: await result.data,
+          }));
+      },
+      // Get one for update Provider
+      getOne: async (resource, params) => {
+        console.log(params)
+        return await client.query({
+            query: gql`
+            query getUser($id:String){
+                getUser(userId:$id){
+                  id
+                  firstName
+                  lastName
+                  email
+                  phone
+                  userRole
+                }
+              }`,
+            variables: {
+                  id: params.id,
+            },
+          }).then(result=>({
+            data: result.data.getUser[0]
+          }))
+        },
+
 }
