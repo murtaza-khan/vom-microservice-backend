@@ -13,6 +13,10 @@ export class OrganizationService {
         const orgs = await this.orgModel.find();
         return orgs;
     }
+    async getSingleOrgs(orgId) {
+        const orgs = await this.orgModel.find({ _id : orgId});
+        return orgs;
+    }
 
     async createOrg(orgData: Organization) {
         const name = orgData.name;
