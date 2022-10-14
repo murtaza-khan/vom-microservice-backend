@@ -13,7 +13,7 @@ import { OrganizationService } from './organization.service';
 export class OrganizationResolver {
   constructor(private readonly organizationService: OrganizationService) {}
 
-  @Roles(UserRoles.AFFLIATE)
+  @Roles(UserRoles.AFFLIATE , UserRoles.SUPER_ADMIN)
   @Query()
   async getOrgs(){
     return await this.organizationService.getOrgs();
