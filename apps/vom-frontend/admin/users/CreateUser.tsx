@@ -3,15 +3,28 @@ import {
   Create,
   SimpleForm,
   TextInput,
-  SelectField,
-  SelectInput
+  SelectInput,
 } from 'react-admin';
 import { Box } from '@mui/material';
+import { listData } from './../providers/dataProvider';
 
-// For Create New User Form
-export const CreateUser = props => {
+import { getUserRole, UserRoles } from '../../utils/utils';
+const userRole = getUserRole();
+
+export const CreateUser = (props) => {
+
+  const [organizationData, setOrganizationData]: any = React.useState([]);
+  React.useEffect(() => {
+    if(userRole === UserRoles.AFFLIATE){
+      listData.getOrganizations('633975b911d7bb7e640a1f52').then((data)=>{
+
+        setOrganizationData(data);
+      });
+    }
+  }, []);
 
   return (
+   <>
     <Create {...props}>
       <>
         <SimpleForm sx={{ maxWidth: 500 }}>
@@ -35,20 +48,34 @@ export const CreateUser = props => {
 
           <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
             <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
-             <SelectInput source="userRole" choices={[
-                  { id: 'affliate', name: 'Affliate' },
-                  { id: 'admin', name: 'Admin' },
-                  { id: 'group_manager', name: 'Group Manager' },
-                  { id: 'employee', name: 'Employee' },
-              ]} fullWidth />
+                {
+                    userRole === UserRoles.SUPER_ADMIN?<TextInput source="userRole" defaultValue="affliate" disabled fullWidth />
+                    :userRole === UserRoles.AFFLIATE?<TextInput source="userRole" defaultValue="admin" disabled fullWidth />
+                    :userRole === UserRoles.ADMIN?<SelectInput source="userRole" choices={[
+                                { id: 'group_manager', name: 'Group Manager' },
+                                { id: 'employee', name: 'Employee',},
+                            ]} fullWidth />
+                    :userRole === UserRoles.GROUP_MANAGER?<TextInput source="userRole" defaultValue="employee" disabled fullWidth />
+                    :null
+
+
+                }
             </Box>
             <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
               <TextInput type="password" source="password" isRequired fullWidth />
             </Box>
           </Box>
+          {
+            userRole === UserRoles.AFFLIATE?<Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
+                <SelectInput source="organization" choices={organizationData} fullWidth />
+            </Box>
+            :null
+          }
 
         </SimpleForm>
       </>
     </Create>
+
+   </>
   );
 };

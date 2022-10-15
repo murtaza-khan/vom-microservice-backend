@@ -30,7 +30,12 @@ export const userEdit=(props)=>(
         </Box>
       </Box>
       <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
-          <TextInput source="userRole" fullWidth/>
+        <Box flex={1} mr={{ xs: 0, sm: '0.5em' }}>
+          <TextInput type='password' source="password" fullWidth />
+        </Box>
+        <Box flex={1} ml={{ xs: 0, sm: '0.5em' }}>
+          <TextInput source="userRole" fullWidth disabled/>
+        </Box>
       </Box>
 
       </SimpleForm>

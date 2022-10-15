@@ -10,17 +10,12 @@ import { Datagrid,
  } from 'react-admin';
 import { ImportButton } from "react-admin-import-csv";
 
-import { getUserRole, UserRoles } from '../../utils/utils';
-const userRole = getUserRole();
-
 // User File Import
 export const ListActions = (props)=> {
   const { className, basePath } = props;
   return (
     <TopToolbar className={className}>
-      {/* <CreateButton {...props} /> */}
-      {userRole === UserRoles.ADMIN || userRole === UserRoles.GROUP_MANAGER ||
-        userRole === UserRoles.AFFLIATE ? <CreateButton {...props} />:null}
+      <CreateButton {...props} />
       <ExportButton {...props} />
       <ImportButton {...props} />
       <DeleteButton {...props} />
@@ -29,20 +24,19 @@ export const ListActions = (props)=> {
   );
 };
 
-// User List
-export const UserList = (props) => (
+export const orgList = (props) => (
     <List {...props}  actions={<ListActions />} >
         <Datagrid bulkActionButtons={false}>
             <TextField source="id" />
-            <TextField source="firstName" />
+            <TextField source="name" />
             {/* <TextField source="username" /> */}
-              <TextField source="lastName" />
-              <TextField source="email" />
+              <TextField source="logo" />
+              <TextField source="createdAt" />
             {/* <TextField source="address.street" /> */}
-            <TextField source="phone" />
-            {/* <TextField source="website" /> */}
+            <TextField source="address" />
+            {/* <TextField source="website" />
             <TextField source="groupId" />
-            <TextField source="userRole" />
+            <TextField source="userRole" /> */}
             <EditButton/>
             <DeleteButton/>
         </Datagrid>
