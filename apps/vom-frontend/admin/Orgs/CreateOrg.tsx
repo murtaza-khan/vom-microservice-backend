@@ -3,8 +3,6 @@ import {
   Create,
   SimpleForm,
   TextInput,
-  SelectField,
-  SelectInput
 } from 'react-admin';
 import { Box } from '@mui/material';
 

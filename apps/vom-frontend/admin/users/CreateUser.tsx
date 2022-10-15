@@ -3,14 +3,10 @@ import {
   Create,
   SimpleForm,
   TextInput,
-  SelectField,
   SelectInput,
-  List,
-  TextField,
-  Datagrid
 } from 'react-admin';
 import { Box } from '@mui/material';
-import { dataOrg } from './../providers/dataProvider';
+import { listData } from './../providers/dataProvider';
 
 import { getUserRole, UserRoles } from '../../utils/utils';
 const userRole = getUserRole();
@@ -20,7 +16,7 @@ export const CreateUser = (props) => {
   const [organizationData, setOrganizationData]: any = React.useState([]);
   React.useEffect(() => {
     if(userRole === UserRoles.AFFLIATE){
-      dataOrg.getOrganizations('633975b911d7bb7e640a1f52').then((data)=>{
+      listData.getOrganizations('633975b911d7bb7e640a1f52').then((data)=>{
 
         setOrganizationData(data);
       });

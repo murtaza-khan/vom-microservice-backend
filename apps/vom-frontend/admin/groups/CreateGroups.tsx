@@ -1,12 +1,21 @@
 import * as React from "react";
 import {
   Create,
+  SelectInput,
   SimpleForm,
   TextInput,
 } from 'react-admin';
 import { Box } from '@mui/material';
+import { listData } from './../providers/dataProvider';
 
-export const CreateUser = (props) => {
+export const CreateGroup = (props) => {
+
+  const [managers, setManagers]: any = React.useState([]);
+  React.useEffect(() => {
+      listData.getManagers().then((data) => {
+        setManagers(data);
+      });
+  }, []);
 
   return (
    <>
@@ -18,7 +27,7 @@ export const CreateUser = (props) => {
           </Box>
 
           <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
-            <TextInput source="managerId" isRequired fullWidth />
+              <SelectInput source="manager" choices={managers} fullWidth />
           </Box>
 
         </SimpleForm>

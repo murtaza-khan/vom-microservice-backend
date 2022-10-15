@@ -139,6 +139,7 @@ export const GET_LIST_GROUPS = {
 export const CREATE_GROUPS = {
   mutation: gql`mutation createGroup($gd : GroupInput!){
         createGroup(groupData : $gd){
+          id
           name
           managerId
         }
@@ -149,8 +150,8 @@ export const CREATE_GROUPS = {
 // Delete Group Query
 export const DELETE_GROUPS = {
   mutation: gql`
-       mutation deleteGroupById($groupIdD : String!){
-        deleteGroupById(groupId : $groupIdD)
+       mutation deleteGroupById($groupID : String!){
+        deleteGroupById(groupId : $groupID)
       }`,
 };
 

@@ -199,7 +199,7 @@ export const dataProvider = {
       variable ={
         gd: {
           name: params.data.name,
-          managerId: params.data.managerId
+          managerId: params.data.manager
         },
       }
     }
@@ -266,7 +266,7 @@ export const dataProvider = {
       variable = { id: params.id };
     }else if(resource === "groups"){
       query = DELETE_GROUPS;
-      variable = { id: params.id };
+      variable = { groupID: params.id };
     }
 
     return await client
@@ -365,6 +365,7 @@ export const dataProvider = {
         throw new Error(error);
       });
     }
+  },
   // Get one for update Provider
   getOne: async (resource, params) => {
     let query: any = {};
@@ -407,9 +408,9 @@ export const dataProvider = {
         throw new Error(error);
       });
   },
-   },
+};
 
-export const dataOrg = {
+export const listData = {
 
   // Get Organizations By Affiliated
   getOrganizations: async (affiliateId) => {
@@ -431,4 +432,29 @@ export const dataOrg = {
         return response;
     });
   },
+
+  getManagers: async () => {
+    return await client
+      .query({
+        query: gql`
+        query getManagersByOrgID($orgId : String!){
+              getManagersByOrgID(orgId: $orgId){
+                id
+                firstName
+                lastName
+              }}`,
+        variables: {
+          orgId: "6349d6e0407e22fb72bb7fa7",
+        },
+      })
+      .then(async (result) => {
+        let data = await result.data.getManagersByOrgID;
+        let response = data.map((i: any) => {
+          return {
+            id: i.id, name: i.firstName + " " + i.lastName 
+          } 
+        });
+        return response;
+      });
+  }
 };
