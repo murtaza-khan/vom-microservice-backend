@@ -17,7 +17,7 @@ const App = () => (
   <Admin authProvider={authProvider} dataProvider={dataProvider} layout={CustomLayout} >
     <Resource name="users"  list={UserList} edit={userEdit}  create={CreateUser} />
     <Resource name="organizations"  list={orgList} edit={OrganizationEdit} create={CreateOrg} />
-    {/* <Resource name="groups" list={GroupsList} /> */}
+    <Resource name="groups" list={GroupsList} edit={GroupsEdit} create={CreateUser}/>
     {/* <Resource name="posts" list={ListGuesser} /> */}
   </Admin>
 );

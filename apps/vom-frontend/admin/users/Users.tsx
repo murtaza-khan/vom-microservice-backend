@@ -19,7 +19,7 @@ export const ListActions = (props)=> {
   return (
     <TopToolbar className={className}>
       {/* <CreateButton {...props} /> */}
-      {userRole === UserRoles.ADMIN || userRole === UserRoles.GROUP_MANAGER || 
+      {userRole === UserRoles.ADMIN || userRole === UserRoles.GROUP_MANAGER ||
         userRole === UserRoles.AFFLIATE ? <CreateButton {...props} />:null}
       <ExportButton {...props} />
       <ImportButton {...props} />

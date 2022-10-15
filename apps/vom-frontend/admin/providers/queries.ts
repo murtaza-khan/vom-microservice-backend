@@ -7,7 +7,7 @@ query{
     id
     firstName
     lastName
-    email    
+    email
     phone
     groupId
     userRole
@@ -45,7 +45,7 @@ export const CREATE_ORG = {
     createOrg(orgData:$oData){
       id
       name
-      
+
     }
   }`,
 };
@@ -71,10 +71,10 @@ export const EDIT_ORG = {
       name
       BN
       logo
-      
-  
+
+
     }
-    
+
   }`,
 };
 
@@ -123,3 +123,43 @@ export const DELETE_ORG = {
 }`,
 };
 
+// Get List Of Groups
+export const GET_LIST_GROUPS = {
+  query: gql`
+  query groups{
+    groups{
+      id
+      name
+      managerId
+    }
+  }`,
+};
+
+// Craete Groups Query
+export const CREATE_GROUPS = {
+  mutation: gql`mutation createGroup($gd : GroupInput!){
+        createGroup(groupData : $gd){
+          name
+          managerId
+        }
+      }
+    `,
+};
+
+// Delete Group Query
+export const DELETE_GROUPS = {
+  mutation: gql`
+       mutation deleteGroupById($groupIdD : String!){
+        deleteGroupById(groupId : $groupIdD)
+      }`,
+};
+
+// Edite Groups Query
+export const EDIT_GROUPS = {
+  mutation: gql`mutation updateGroup($gDataUp : UpdateeGroupInput!){
+    updateGroup(groupData :$gDataUp){
+      name
+      managerId
+    }
+  }`,
+};

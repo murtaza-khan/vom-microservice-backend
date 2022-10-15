@@ -21,12 +21,12 @@ export const CreateUser = (props) => {
   React.useEffect(() => {
     if(userRole === UserRoles.AFFLIATE){
       dataOrg.getOrganizations('633975b911d7bb7e640a1f52').then((data)=>{
-        debugger;
+
         setOrganizationData(data);
       });
     }
   }, []);
-  
+
   return (
    <>
     <Create {...props}>
