@@ -16,8 +16,13 @@ export class GroupsResolver {
 
   @Roles(UserRoles.ADMIN)
   @Query()
-  async groups() {
-    return await this.groupsService.getGroups();
+  async groups(@Args('groupId') groupId : string) {
+    if(groupId){
+      return await this.groupsService.getSingleGroup(groupId);
+    }
+    else{
+      return await this.groupsService.getGroups();
+    }
   }
   @Roles(UserRoles.ADMIN)
   @Query()

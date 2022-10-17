@@ -29,7 +29,7 @@ type GroupType {
 }
 
 type Query {
-    groups :[GroupType!]
+    groups(groupId : String) :[GroupType!]
     getGroupByOrgId(orgId: String!):[GroupType!]
 }
 
