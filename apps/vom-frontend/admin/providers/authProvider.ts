@@ -13,10 +13,10 @@ const authProvider: AuthProvider = {
         localStorage.removeItem(process.env.authUser);
         return Promise.resolve();
     },
-    checkAuth: () => {
-        return localStorage.getItem(process.env.authUser)
-            ? Promise.resolve()
-            : Promise.reject();
+  checkAuth:() => {
+        const auth=  dataProvider.checkToken
+
+        return (auth)? Promise.resolve(): Promise.reject();
     },
     checkError:  (error) => {
         const status = error.status;

@@ -130,7 +130,11 @@ export const GET_LIST_GROUPS = {
     groups{
       id
       name
-      managerId
+      manager{
+        id
+        firstName
+        lastName
+      }
     }
   }`,
 };
@@ -155,12 +159,35 @@ export const DELETE_GROUPS = {
       }`,
 };
 
+// Get Single Group by id for Update GET_GRP_BY_ID
+export const GET_GRP_BY_ID = {
+  query: gql`
+    query getGroup($groupId : String){
+    groups(groupId : $groupId){
+      id
+      name
+      manager{
+        id
+        firstName
+        lastName
+      }
+    }
+  }`,
+};
+
 // Edite Groups Query
 export const EDIT_GROUPS = {
   mutation: gql`mutation updateGroup($gDataUp : UpdateeGroupInput!){
     updateGroup(groupData :$gDataUp){
+      id
       name
-      managerId
+      manager{
+        id
+        firstName
+        lastName
+
+
+      }
     }
   }`,
 };

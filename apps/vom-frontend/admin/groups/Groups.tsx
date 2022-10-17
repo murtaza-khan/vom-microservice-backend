@@ -13,12 +13,14 @@ export const ListActions = (props)=> {
     </TopToolbar>
   );
 };
-export const GroupsList = () => (
-    <List>
-        <Datagrid rowClick="edit">
+export const GroupsList = (props) => (
+    <List  {...props}  actions={<ListActions />}>
+        <Datagrid bulkActionButtons={false}>
             <TextField source="id" />
             <TextField source="name" />
-            <TextField source="managerId" />
+            <TextField source="manager.id" />
+            <TextField source="manager.firstName" />
+            <TextField source="manager.lastName" />
             <EditButton/>
             <DeleteButton/>
         </Datagrid>

@@ -9,7 +9,11 @@ import { Box } from '@mui/material';
 import { listData } from './../providers/dataProvider';
 
 import { getUserRole, UserRoles } from '../../utils/utils';
+
 const userRole = getUserRole();
+
+
+console.log("userROLE,====",userRole)
 
 export const CreateUser = (props) => {
 
@@ -56,7 +60,14 @@ export const CreateUser = (props) => {
                                 { id: 'employee', name: 'Employee',},
                             ]} fullWidth />
                     :userRole === UserRoles.GROUP_MANAGER?<TextInput source="userRole" defaultValue="employee" disabled fullWidth />
-                    :null
+                    :<TextInput source="userRole" defaultValue="admin" disabled fullWidth />
+
+/// change required wrong iff condition
+
+
+
+
+
 
 
                 }
