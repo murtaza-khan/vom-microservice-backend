@@ -26,8 +26,8 @@ export class GroupsResolver {
   }
   @Roles(UserRoles.ADMIN)
   @Query()
-  async getGroupByOrgId(@Args('orgId') orgId: any) {
-    return await this.groupsService.getGroupByOrgId(orgId);
+  async getGroupByOrgId(@CurrentUser() currentUser:any) {
+    return await this.groupsService.getGroupByOrgId(currentUser.organization);
   }
 
   @Roles(UserRoles.ADMIN)

@@ -21,14 +21,18 @@ export class GroupsService {
             group.users = user;
             const manager = await this.userService.getSingleUser(group.managerId);
             group.manager = manager[0];
-            console.log(group.manager);
         }
         return groups;
     }
     async getSingleGroup(groupId: string) {
         Logger.log(`Get single group by id ${groupId}`);
-        const group = await this.groupsModel.find({ _id : groupId});
+        let group:any = await this.groupsModel.find({ _id : groupId});
+        console.log(group)
         if(group){
+            const user = await this.userService.getUsersByGroupId(group[0].id);
+            group[0].users = user;
+            const manager = await this.userService.getSingleUser(group[0].managerId);
+            group[0].manager = manager[0];
             return group;
         }
         else{
@@ -44,6 +48,8 @@ export class GroupsService {
             for (const group of groups) {
                 const user = await this.userService.getUsersByGroupId(group.id);
                 group.users = user;
+                const manager = await this.userService.getSingleUser(group.managerId);
+                group.manager = manager[0];
             }
             return groups;
         }

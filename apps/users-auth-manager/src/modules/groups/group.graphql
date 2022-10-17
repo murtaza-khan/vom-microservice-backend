@@ -30,7 +30,7 @@ type GroupType {
 
 type Query {
     groups(groupId : String) :[GroupType!]
-    getGroupByOrgId(orgId: String!):[GroupType!]
+    getGroupByOrgId:[GroupType!]
 }
 
 type Mutation {

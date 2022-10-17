@@ -44,8 +44,8 @@ export class OrganizationResolver {
 
   @Roles(UserRoles.AFFLIATE)
   @Query()
-  async getOrgsByAffiliateId(@Args("affiliateId") affiliateId:string){
-    return await this.organizationService.getOrgsByAffiliateId(affiliateId);
+  async getOrgsByAffiliateId(@CurrentUser() currentUser: any){
+    return await this.organizationService.getOrgsByAffiliateId(currentUser.id);
   }
   
 }

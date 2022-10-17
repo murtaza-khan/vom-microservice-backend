@@ -53,7 +53,7 @@ type OrgByAffliate {
 
 type Query {
     getOrgs(orgId:String):[OrgType!]
-    getOrgsByAffiliateId(affiliateId : String!):[OrgByAffliate!]
+    getOrgsByAffiliateId:[OrgByAffliate!]
 }
 
 type Mutation {
