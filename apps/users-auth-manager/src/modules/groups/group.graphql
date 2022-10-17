@@ -23,7 +23,7 @@ type UserTypet {
 type GroupType {
     id:ID!
     name:String!
-    managerId: String
+    manager:UserTypet
     createdAt:String!
     users:[UserTypet]
 }

@@ -23,6 +23,9 @@ export class GroupType {
   @IsOptional()
   createdAt: string;
 
+  @Field()
+  @IsOptional()
+  manager: CreateUserInput;
 
   @Field()
   @IsOptional()
