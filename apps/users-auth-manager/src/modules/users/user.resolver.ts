@@ -31,8 +31,13 @@ export class UserResolver {
   }
 
   @Query(returns => UserType)
-  async getManagersByOrgID(@Args("orgId") orgId:string){
-    return await this.userService.getManagersByOrgID(orgId);
+  async getManagersByOrgID(@CurrentUser() currentUser: any){
+    if(currentUser.userRole == UserRoles.ADMIN){
+      return await this.userService.getManagersByOrgID(currentUser.organization);
+    }
+    else{
+      throw new HttpException(`${currentUser.userRole} can't get managers` , HttpStatus.BAD_REQUEST);
+    }
   }
 
   @Mutation(returns => UserType)
