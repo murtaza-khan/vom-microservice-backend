@@ -14,9 +14,9 @@ const authProvider: AuthProvider = {
         return Promise.resolve();
     },
   checkAuth:() => {
-        const auth=  dataProvider.checkToken
+        // const auth =  dataProvider.checkToken
 
-        return (auth)? Promise.resolve(): Promise.reject();
+      return localStorage.getItem(process.env.authUser) ? Promise.resolve(): Promise.reject();
     },
     checkError:  (error) => {
         const status = error.status;

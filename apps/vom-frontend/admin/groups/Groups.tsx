@@ -18,9 +18,7 @@ export const GroupsList = (props) => (
         <Datagrid bulkActionButtons={false}>
             <TextField source="id" />
             <TextField source="name" />
-            <TextField source="manager.id" />
-            <TextField source="manager.firstName" />
-            <TextField source="manager.lastName" />
+            <TextField source="managerName" />
             <EditButton/>
             <DeleteButton/>
         </Datagrid>

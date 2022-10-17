@@ -104,8 +104,15 @@ export const dataProvider = {
               total: 10,
             };
           }else if (resource === "groups"){
+            let data = await result.data.groups;
+            let response = data.map((i: any) => {
+              return {
+                id: i.id, name: i.name, managerName: i.manager.firstName + " " + i.manager.lastName
+              }
+            });
+            
             return {
-              data: await result.data.groups,
+              data: response,
               total: 10,
             };
           }
@@ -439,7 +446,7 @@ export const dataProvider = {
 export const listData = {
 
   // Get Organizations By Affiliated
-  getOrganizations: async (affiliateId) => {
+  getOrganizations: async () => {
     return await client
       .query({
         query: gql`
