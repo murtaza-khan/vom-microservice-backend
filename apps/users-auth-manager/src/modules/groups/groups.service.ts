@@ -19,6 +19,9 @@ export class GroupsService {
         for (const group of groups) {
             const user = await this.userService.getUsersByGroupId(group.id);
             group.users = user;
+            const manager = await this.userService.getSingleUser(group.managerId);
+            group.manager = manager[0];
+            console.log(group.manager);
         }
         return groups;
     }
