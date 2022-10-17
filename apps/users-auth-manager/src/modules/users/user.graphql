@@ -47,6 +47,7 @@ type Query {
   getUser(userId: String): [User!]
   getUserById(userId: String!): User!
   getManagersByOrgID(orgId: String!): [User!]
+  validToken:Boolean
 }
 
 type Mutation {

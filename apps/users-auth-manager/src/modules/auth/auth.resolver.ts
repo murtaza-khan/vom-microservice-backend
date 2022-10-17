@@ -1,8 +1,12 @@
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Mutation, Args , Query } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { User, Payload, UserRoles } from '@vom/common';
 import { UserService } from '../users/user.service';
 import { AuthType } from '../../core/models/auth.type';
+import { UseGuards } from '@nestjs/common';
+import { GraphqlAuthGuard } from './guards/gql-auth.guard';
+import { ValidTokenGuard } from './guards/valid-token.guard';
+import { CurrentUser } from '../../core/decorators/user.decorator';
 
 @Resolver('Auth')
 export class AuthResolver {
@@ -49,5 +53,16 @@ export class AuthResolver {
 
     const token = await this.authService.signPayload(payload);
     return { email: response.email, role: response.userRole ,  token };
+  }
+
+  @UseGuards(ValidTokenGuard)
+  @Query(returns => Boolean)
+  async validToken(@CurrentUser() currentUser: any){
+    if(currentUser === 'invalid'){
+      return false
+    }
+    else{
+      return true;
+    }
   }
 }
