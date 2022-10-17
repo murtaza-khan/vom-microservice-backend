@@ -22,6 +22,17 @@ export class GroupsService {
         }
         return groups;
     }
+    async getSingleGroup(groupId: string) {
+        Logger.log(`Get single group by id ${groupId}`);
+        const group = await this.groupsModel.find({ _id : groupId});
+        if(group){
+            return group;
+        }
+        else{
+            Logger.log(`Invalid groupId ${groupId}`);
+            throw new HttpException(`Invalid groupId ${groupId}` , HttpStatus.BAD_REQUEST);
+        }
+    }
     async getGroupByOrgId(orgId:string): Promise<any[]> {
         const oranization = await this.OrganizationService.getOrgById(orgId);
         if(oranization){
