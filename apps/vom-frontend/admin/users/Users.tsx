@@ -12,7 +12,8 @@ import { ImportButton } from "react-admin-import-csv";
 
 import { getUserRole, UserRoles } from '../../utils/utils';
 const userRole = getUserRole();
-;
+
+
 // User File Import
 export const ListActions = (props)=> {
   const { className, basePath } = props;

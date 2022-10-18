@@ -2,7 +2,7 @@
 export const getUserRole = () => {
 
     let json = localStorage.getItem(process.env.authUser) ? JSON.parse(localStorage.getItem(process.env.authUser)) : null;
-    return json.role ? json.role : null;
+    return (json && json.role) ? json.role : null;
 }
 
 export enum UserRoles {
