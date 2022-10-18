@@ -16,7 +16,13 @@ export const GroupsEdit=(props)=>(
         <TextInput source="name" fullWidth />
       </Box>
       <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
-        <TextInput source="managerId" fullWidth />
+        <TextInput source="manager.id" fullWidth />
+      </Box>
+            <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
+        <TextInput source="manager.firstName" fullWidth />
+      </Box>
+            <Box display={{ xs: 'block', sm: 'flex', width: '100%' }}>
+        <TextInput source="manager.lastName" fullWidth />
       </Box>
 
       </SimpleForm>

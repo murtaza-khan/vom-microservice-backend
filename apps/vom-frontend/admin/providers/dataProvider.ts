@@ -17,6 +17,7 @@ import {
   CREATE_GROUPS,
   DELETE_GROUPS,
   EDIT_GROUPS,
+  GET_GRP_BY_ID,
 } from "./queries";
 
 const httpLink = createHttpLink({
@@ -103,15 +104,22 @@ export const dataProvider = {
               total: 10,
             };
           }else if (resource === "groups"){
+            let data = await result.data.groups;
+            let response = data.map((i: any) => {
+              return {
+                id: i.id, name: i.name, managerName: i.manager.firstName + " " + i.manager.lastName
+              }
+            });
+            
             return {
-              data: await result.data.groups,
+              data: response,
               total: 10,
             };
           }
         }
       })
       .catch((error) => {
-        debugger;
+
         throw new Error(error);
       });
   },
@@ -136,6 +144,20 @@ export const dataProvider = {
       .then(async (result) => ({
         data: await result.data.login,
       }));
+  },
+  checkToken: async (params: any) => {
+    return await client
+      .query({
+        query: gql`
+        query{
+          validToken
+        }`
+      })
+      .then(async (result) => ({
+        data: await result.data.validToken,
+      })).catch((error) => {
+        throw new Error(error);
+      });
   },
   // For Create New User Provider
   //  create: async (resource, params) => {
@@ -230,7 +252,7 @@ export const dataProvider = {
         }
       })
       .catch((error) => {
-        debugger;
+
         throw new Error(error);
       });
   },
@@ -331,8 +353,9 @@ export const dataProvider = {
       variable = {
         gDataUp: {
           id: params.data.id,
-          name: params.data.name,
-          managerId: params.data.managerId,
+        name: params.data.name
+
+
         },
     };
 
@@ -381,6 +404,12 @@ export const dataProvider = {
           o_id: params.id,
         });
     }
+    else if (resource === "groups") {
+      (query = GET_GRP_BY_ID);
+        (variable = {
+          groupId: params.id,
+        });
+    }
 
     return await client
       .query({
@@ -396,15 +425,19 @@ export const dataProvider = {
             return {
               data: await result.data.getUser[0],
             };
-          } else {
+          } else if (resource === "organizations") {
             return {
               data: await result.data.getOrgs[0],
             };
           }
-        }
+          else if (resource === "groups") {
+            return {
+              data: await result.data.groups[0]
+            };
+          }}
       })
       .catch((error) => {
-        debugger;
+
         throw new Error(error);
       });
   },
@@ -413,18 +446,15 @@ export const dataProvider = {
 export const listData = {
 
   // Get Organizations By Affiliated
-  getOrganizations: async (affiliateId) => {
+  getOrganizations: async () => {
     return await client
       .query({
         query: gql`
-        query getOrgsByAffiliateId($affiliateId : String!){
-              getOrgsByAffiliateId(affiliateId: $affiliateId){
+        query{
+        getOrgsByAffiliateId{
                 id
                 name
               }}`,
-        variables: {
-          affiliateId: affiliateId,
-        },
       })
       .then(async (result) => {
         let data = await result.data.getOrgsByAffiliateId;
@@ -437,22 +467,19 @@ export const listData = {
     return await client
       .query({
         query: gql`
-        query getManagersByOrgID($orgId : String!){
-              getManagersByOrgID(orgId: $orgId){
-                id
-                firstName
-                lastName
-              }}`,
-        variables: {
-          orgId: "6349d6e0407e22fb72bb7fa7",
-        },
-      })
+        query{
+  getManagersByOrgID{
+    id
+    firstName
+    lastName
+  }
+}`})
       .then(async (result) => {
         let data = await result.data.getManagersByOrgID;
         let response = data.map((i: any) => {
           return {
-            id: i.id, name: i.firstName + " " + i.lastName 
-          } 
+            id: i.id, name: i.firstName + " " + i.lastName
+          }
         });
         return response;
       });

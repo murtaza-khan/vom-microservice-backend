@@ -17,7 +17,6 @@ export const ListActions = (props)=> {
     <TopToolbar className={className}>
       <CreateButton {...props} />
       <ExportButton {...props} />
-      <ImportButton {...props} />
       <DeleteButton {...props} />
       <EditButton {...props} />
     </TopToolbar>

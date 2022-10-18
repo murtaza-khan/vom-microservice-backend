@@ -13,6 +13,7 @@ import { ImportButton } from "react-admin-import-csv";
 import { getUserRole, UserRoles } from '../../utils/utils';
 const userRole = getUserRole();
 
+
 // User File Import
 export const ListActions = (props)=> {
   const { className, basePath } = props;
@@ -22,7 +23,8 @@ export const ListActions = (props)=> {
       {userRole === UserRoles.ADMIN || userRole === UserRoles.GROUP_MANAGER ||
         userRole === UserRoles.AFFLIATE ? <CreateButton {...props} />:null}
       <ExportButton {...props} />
-      <ImportButton {...props} />
+      {userRole === UserRoles.ADMIN? <ImportButton {...props} />:null}
+
       <DeleteButton {...props} />
       <EditButton {...props} />
     </TopToolbar>

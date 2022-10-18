@@ -9,6 +9,7 @@ import { Box } from '@mui/material';
 import { listData } from './../providers/dataProvider';
 
 import { getUserRole, UserRoles } from '../../utils/utils';
+
 const userRole = getUserRole();
 
 export const CreateUser = (props) => {
@@ -16,7 +17,7 @@ export const CreateUser = (props) => {
   const [organizationData, setOrganizationData]: any = React.useState([]);
   React.useEffect(() => {
     if(userRole === UserRoles.AFFLIATE){
-      listData.getOrganizations('633975b911d7bb7e640a1f52').then((data)=>{
+      listData.getOrganizations().then((data)=>{
 
         setOrganizationData(data);
       });
@@ -56,8 +57,7 @@ export const CreateUser = (props) => {
                                 { id: 'employee', name: 'Employee',},
                             ]} fullWidth />
                     :userRole === UserRoles.GROUP_MANAGER?<TextInput source="userRole" defaultValue="employee" disabled fullWidth />
-                    :null
-
+                    :<TextInput source="userRole" defaultValue="admin" disabled fullWidth />
 
                 }
             </Box>
