@@ -4,7 +4,7 @@ import { UpdateUserInput } from './dto/update-user.input';
 import { UseGuards, UnauthorizedException, SetMetadata, Inject, HttpException, HttpStatus, BadRequestException } from '@nestjs/common';
 import { GraphqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { CurrentUser } from '../../core/decorators/user.decorator';
-import { User , UserRoles, validRole} from '@vom/common';
+import { User, UserRoles, validRole } from '@vom/common';
 import { UserType } from './model/user.model';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../../core/decorators/roles.decorator';
@@ -22,21 +22,21 @@ export class UserResolver {
   @Query(returns => UserType)
   async getUser(@Args('userId') userId: any, @CurrentUser() currentUser: any) {
     console.log("userId", userId);
-    if(userId){
+    if (userId) {
       return await this.userService.getSingleUser(userId);
     }
-    else{
+    else {
       return await this.userService.getUsers(currentUser);
     }
   }
 
   @Query(returns => UserType)
-  async getManagersByOrgID(@CurrentUser() currentUser: any){
-    if(currentUser.userRole == UserRoles.ADMIN){
+  async getManagersByOrgID(@CurrentUser() currentUser: any) {
+    if (currentUser.userRole == UserRoles.ADMIN) {
       return await this.userService.getManagersByOrgID(currentUser.organization);
     }
-    else{
-      throw new HttpException(`${currentUser.userRole} can't get managers` , HttpStatus.BAD_REQUEST);
+    else {
+      throw new HttpException(`${currentUser.userRole} can't get managers`, HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -47,10 +47,10 @@ export class UserResolver {
     }
     const validateTole = await validRole(currentUser.userRole, createUser.userRole);
     if (validateTole) {
-      if(createUser.userRole === UserRoles.ADMIN && !createUser.organization){
+      if (createUser.userRole === UserRoles.ADMIN && !createUser.organization) {
         throw new HttpException(`Orgnization Id is required for Admin`, HttpStatus.BAD_REQUEST);
       }
-      if(currentUser.userRole === UserRoles.ADMIN || currentUser.userRole === UserRoles.GROUP_MANAGER){
+      if (currentUser.userRole === UserRoles.ADMIN || currentUser.userRole === UserRoles.GROUP_MANAGER) {
         createUser.organization = currentUser.organization;
       }
       const response = await this.userService.create(createUser);
@@ -68,12 +68,12 @@ export class UserResolver {
     @CurrentUser() currentUser: User,
   ) {
     const isUser = await this.userService.getUsersByUserId(id);
-    if(isUser != null){
+    if (isUser != null) {
       const validateTole = await validRole(currentUser.userRole, isUser.userRole);
-      if(id === currentUser.id || validateTole){
+      if (id === currentUser.id || validateTole) {
         return await this.userService.update(id, user, currentUser);
       }
-      else{
+      else {
         throw new UnauthorizedException();
       }
     }
@@ -95,7 +95,7 @@ export class UserResolver {
     if (user != null) {
       const validateTole = await validRole(currentUser.userRole, user.userRole);
       if (validateTole) {
-        if(email == currentUser.email){
+        if (email == currentUser.email) {
           throw new HttpException(`You Can't delete Yourself`, HttpStatus.BAD_REQUEST);
         }
         return await this.userService.deleteUserByEmail(email);
@@ -117,7 +117,7 @@ export class UserResolver {
     const validateTole = await validRole(currentUser.userRole, user.userRole);
     if (user != null) {
       if (validateTole) {
-        if(userId == currentUser.id){
+        if (userId == currentUser.id) {
           throw new HttpException(`You Can't delete Yourself`, HttpStatus.BAD_REQUEST);
         }
         return await this.userService.deleteUserById(userId);

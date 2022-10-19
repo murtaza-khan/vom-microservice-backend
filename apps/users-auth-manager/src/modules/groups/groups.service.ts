@@ -1,4 +1,4 @@
-import { forwardRef, HttpException, HttpStatus, Inject, Injectable , Logger } from '@nestjs/common';
+import { forwardRef, HttpException, HttpStatus, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Group } from '@vom/common';
@@ -26,25 +26,25 @@ export class GroupsService {
     }
     async getSingleGroup(groupId: string) {
         Logger.log(`Get single group by id ${groupId}`);
-        let group:any = await this.groupsModel.find({ _id : groupId});
+        let group: any = await this.groupsModel.find({ _id: groupId });
         console.log(group)
-        if(group){
+        if (group) {
             const user = await this.userService.getUsersByGroupId(group[0].id);
             group[0].users = user;
             const manager = await this.userService.getSingleUser(group[0].managerId);
             group[0].manager = manager[0];
             return group;
         }
-        else{
+        else {
             Logger.log(`Invalid groupId ${groupId}`);
-            throw new HttpException(`Invalid groupId ${groupId}` , HttpStatus.BAD_REQUEST);
+            throw new HttpException(`Invalid groupId ${groupId}`, HttpStatus.BAD_REQUEST);
         }
     }
-    async getGroupByOrgId(orgId:string): Promise<any[]> {
+    async getGroupByOrgId(orgId: string): Promise<any[]> {
         const oranization = await this.OrganizationService.getOrgById(orgId);
-        if(oranization){
+        if (oranization) {
             Logger.log("get groups by organization id");
-            const groups = await this.groupsModel.find({organizationId :orgId });
+            const groups = await this.groupsModel.find({ organizationId: orgId });
             for (const group of groups) {
                 const user = await this.userService.getUsersByGroupId(group.id);
                 group.users = user;
@@ -53,10 +53,10 @@ export class GroupsService {
             }
             return groups;
         }
-        
+
     }
 
-    async create(groupDTO: Group , currentUser:any): Promise<any> {
+    async create(groupDTO: Group, currentUser: any): Promise<any> {
         const name = groupDTO.name;
         const group = await this.groupsModel.findOne({ name });
         if (group) {
@@ -88,13 +88,13 @@ export class GroupsService {
         const group = await this.groupsModel.findOne({ _id: id });
         if (group) {
             const updateUser = await this.groupsModel.findByIdAndUpdate(id, updateGroupDto, { new: true });
-            if(updateUser){
+            if (updateUser) {
                 const user = await this.userService.getUsersByGroupId(updateUser.id);
                 updateUser.users = user;
                 const manager = await this.userService.getSingleUser(updateUser.managerId);
                 updateUser.manager = manager[0];
                 Logger.log(`successfy update group again id ${id}`);
-                console.log("updateUser" , updateUser);
+                console.log("updateUser", updateUser);
                 return updateUser;
             }
         }

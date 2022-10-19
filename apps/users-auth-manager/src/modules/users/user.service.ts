@@ -25,22 +25,22 @@ export class UserService {
     @Inject(forwardRef(() => OrganizationService)) private OrganizationService: OrganizationService
   ) { }
 
-  async getUsers(currentUser:any): Promise<User[]> {
-    if(currentUser.userRole === UserRoles.SUPER_ADMIN){
+  async getUsers(currentUser: any): Promise<User[]> {
+    if (currentUser.userRole === UserRoles.SUPER_ADMIN) {
       Logger.log(`Users retreieved successfully by ${currentUser.userRole}`);
       return await this.userModel.find();
     }
-    else if(currentUser.userRole === UserRoles.AFFLIATE){
+    else if (currentUser.userRole === UserRoles.AFFLIATE) {
       const organization = await this.OrganizationService.getOrgsByAffiliateId(currentUser.id);
-      const organizationIds = organization.map((i: any) => {return i.id});
+      const organizationIds = organization.map((i: any) => { return i.id });
       Logger.log(`Users retreieved successfully by ${currentUser.userRole}`);
       return await this.userModel.find({ organization: organizationIds });
     }
-    else{
+    else {
       Logger.log(`Users retreieved successfully by ${currentUser.userRole}`);
       return await this.userModel.find({ organization: currentUser.organization });
     }
-    
+
   }
 
   async getUser(userId: any): Promise<UserType> {
@@ -90,7 +90,7 @@ export class UserService {
     }
   }
 
-  async update(id: string, newUser: UpdateUserInput, currentUser:any) {
+  async update(id: string, newUser: UpdateUserInput, currentUser: any) {
     const user: User = await this.userModel.findOne({ _id: id });
     const userWithEmail = await this.userModel.findOne({
       email: newUser.email,
@@ -150,7 +150,7 @@ export class UserService {
 
   async deleteUserById(id: string) {
     const user = await this.userModel.findOne({ _id: id });
-    if(user.userRole == UserRoles.SUPER_ADMIN){
+    if (user.userRole == UserRoles.SUPER_ADMIN) {
       Logger.log(`Super Can't be Deleted`);
       throw new HttpException(`Super Can't be Deleted`, HttpStatus.BAD_REQUEST);
     }
@@ -164,7 +164,7 @@ export class UserService {
 
   async deleteUserByEmail(email: string) {
     const user = await this.userModel.findOne({ email });
-    if(user.userRole == UserRoles.SUPER_ADMIN){
+    if (user.userRole == UserRoles.SUPER_ADMIN) {
       Logger.log(`Super Can't be Deleted`);
       throw new HttpException(`Super Can't be Deleted`, HttpStatus.BAD_REQUEST);
     }
@@ -249,8 +249,8 @@ export class UserService {
     return user;
   }
 
-  async getManagersByOrgID(orgId: string) : Promise<any>{
-    const user = await this.userModel.find({ organization: orgId , userRole: UserRoles.GROUP_MANAGER });
+  async getManagersByOrgID(orgId: string): Promise<any> {
+    const user = await this.userModel.find({ organization: orgId, userRole: UserRoles.GROUP_MANAGER });
 
     if (user === undefined || user === null) {
       Logger.log(`User doesn't exists`);
@@ -294,4 +294,3 @@ export class UserService {
   }
 
 }
-
