@@ -95,6 +95,9 @@ export class UserResolver {
     if (user != null) {
       const validateTole = await validRole(currentUser.userRole, user.userRole);
       if (validateTole) {
+        if(email == currentUser.email){
+          throw new HttpException(`You Can't delete Yourself`, HttpStatus.BAD_REQUEST);
+        }
         return await this.userService.deleteUserByEmail(email);
       }
       else {
@@ -114,6 +117,9 @@ export class UserResolver {
     const validateTole = await validRole(currentUser.userRole, user.userRole);
     if (user != null) {
       if (validateTole) {
+        if(userId == currentUser.id){
+          throw new HttpException(`You Can't delete Yourself`, HttpStatus.BAD_REQUEST);
+        }
         return await this.userService.deleteUserById(userId);
       }
       else {

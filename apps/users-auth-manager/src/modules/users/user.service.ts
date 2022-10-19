@@ -150,7 +150,10 @@ export class UserService {
 
   async deleteUserById(id: string) {
     const user = await this.userModel.findOne({ _id: id });
-
+    if(user.userRole == UserRoles.SUPER_ADMIN){
+      Logger.log(`Super Can't be Deleted`);
+      throw new HttpException(`Super Can't be Deleted`, HttpStatus.BAD_REQUEST);
+    }
     if (user === undefined || user === null) {
       Logger.log(`User doesn't exists aginst id: ${id}`);
       throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);
@@ -161,7 +164,10 @@ export class UserService {
 
   async deleteUserByEmail(email: string) {
     const user = await this.userModel.findOne({ email });
-
+    if(user.userRole == UserRoles.SUPER_ADMIN){
+      Logger.log(`Super Can't be Deleted`);
+      throw new HttpException(`Super Can't be Deleted`, HttpStatus.BAD_REQUEST);
+    }
     if (user === undefined || user === null) {
       Logger.log(`User doesn't exists against email: ${email}`);
       throw new HttpException(`User doesn't exists`, HttpStatus.BAD_REQUEST);

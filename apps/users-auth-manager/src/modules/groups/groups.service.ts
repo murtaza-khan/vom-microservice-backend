@@ -88,8 +88,15 @@ export class GroupsService {
         const group = await this.groupsModel.findOne({ _id: id });
         if (group) {
             const updateUser = await this.groupsModel.findByIdAndUpdate(id, updateGroupDto, { new: true });
-            Logger.log(`successfy update group again id ${id}`);
-            return updateUser;
+            if(updateUser){
+                const user = await this.userService.getUsersByGroupId(updateUser.id);
+                updateUser.users = user;
+                const manager = await this.userService.getSingleUser(updateUser.managerId);
+                updateUser.manager = manager[0];
+                Logger.log(`successfy update group again id ${id}`);
+                console.log("updateUser" , updateUser);
+                return updateUser;
+            }
         }
         else {
             Logger.log(`Group is not exist against id ${id}`);
