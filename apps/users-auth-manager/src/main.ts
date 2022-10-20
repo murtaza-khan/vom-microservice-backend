@@ -1,12 +1,28 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import 'dotenv/config';
+import { join } from 'path'
 
-async function bootstrap() {
-  
-  const port = process.env.PORT || 3003;
+import { NestFactory } from '@nestjs/core'
+import { Transport, MicroserviceOptions } from '@nestjs/microservices'
 
-  const app = await NestFactory.create(AppModule);
-  await app.listen(port);
+import { LoggerService, INestMicroservice } from '@nestjs/common'
+import { AppModule } from './app.module'
+
+async function main() {
+  const app: INestMicroservice = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule, {
+    transport: Transport.GRPC,
+    options: {
+      url: `${process.env.GRPC_HOST}:${process.env.GRPC_PORT}`,
+      package: 'user',
+      protoPath: join(__dirname, './_proto/user.proto'),
+      loader: {
+        keepCase: true,
+        enums: String,
+        oneofs: true,
+        arrays: true
+      }
+    }
+  })
+
+  return app.listen()
 }
-bootstrap();
+
+main()

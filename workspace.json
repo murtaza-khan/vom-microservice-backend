@@ -2,6 +2,7 @@
   "$schema": "./node_modules/nx/schemas/workspace-schema.json",
   "version": 2,
   "projects": {
+    "api-gateway": "apps/api-gateway",
     "common": "libs/common",
     "users-auth-manager": "apps/users-auth-manager",
     "vom-backend": "apps/vom-backend",
