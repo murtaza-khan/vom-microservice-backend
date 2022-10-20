@@ -1,4 +1,4 @@
-import { Controller, Get, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Query, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import { CsvParser } from "nest-csv-parser";
@@ -8,16 +8,17 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { GraphqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { Roles } from '../../core/decorators/roles.decorator';
-import { UserRoles } from '@vom/common';
+import { ForgotPswdPayload, UserRoles } from '@vom/common';
 import { CurrentUserController } from '../../core/decorators/user.decorator';
+import { sign , verify } from 'jsonwebtoken';
 
-@UseGuards(GraphqlAuthGuard)
-@UseGuards(RolesGuard)
+
 @Controller('user')
 export class UserController {
     constructor(private readonly userService: UserService,
         private readonly csvParser: CsvParser) { }
-
+    @UseGuards(GraphqlAuthGuard)
+    @UseGuards(RolesGuard)
     @Roles(UserRoles.ADMIN, UserRoles.GROUP_MANAGER)
     @Post('/createUsersFromCSV')
     @UseInterceptors(FileInterceptor('file'))
@@ -28,6 +29,27 @@ export class UserController {
             return this.userService.createUserFromCSV(entities.list, currentUser.organization, currentUser.groupId);
         } catch (error) {
             throw Error(error);
+        }
+    }
+
+
+    @Post('/forgotPassword')
+    async forgotPassword(@Body() body: any){
+       return await this.userService.forgotPassword(body.email);
+    }
+
+    @Get('/reset-password/:id/:token')
+    async resetPassword(@Param('id') id: any, @Param('token') token: any) {
+       return await this.userService.resetPassword(id , token);
+    }
+
+    @Post('/reset-password/:id/:token')
+    async resetPasswordUpdate(@Param('id') id: any, @Param('token') token: any, @Body() body: any) {
+        if(body.confirmPassword != body.newPassword){
+            throw new HttpException('Confirm Password is not matched' , HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return await this.userService.resetPasswordUpdate(id , token , body.newPassword);
         }
     }
 
