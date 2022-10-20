@@ -4,3 +4,8 @@ export interface Payload {
   organization : string;
   expiresIn?: string;
 }
+
+export interface ForgotPswdPayload {
+  email: string;
+  id : string;
+}

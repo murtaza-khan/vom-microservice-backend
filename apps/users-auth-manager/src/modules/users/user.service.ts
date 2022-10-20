@@ -9,13 +9,15 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User, UserRoles } from '@vom/common';
+import { ForgotPswdPayload, User, UserRoles } from '@vom/common';
 import { CreateUserInput } from './dto/user.input';
 import * as bcrypt from 'bcrypt';
 import { UpdateUserInput } from './dto/update-user.input';
 import { UserType } from './model/user.model';
 import { GroupsService } from '../groups/groups.service';
 import { OrganizationService } from '../organization/organization.service';
+import { sign , verify } from 'jsonwebtoken';
+
 
 @Injectable()
 export class UserService {
@@ -291,6 +293,72 @@ export class UserService {
       status: true
     };
 
+  }
+
+  async forgotPassword(email: string) {
+    const isUserExist = await this.getUsersByUserEmail(email);
+    if (isUserExist) {
+      const secret = "secretKey" + isUserExist.password;
+      const payload: ForgotPswdPayload = {
+        email: email,
+        id: isUserExist.id
+      };
+      const token = sign(payload, secret, { expiresIn: '15m' });
+      const link = `http://localhost:3003/user/reset-password/${isUserExist.id}/${token}`;
+      console.log(link);
+      return {
+        message: "Reset Password Link has been sent to your email.",
+        link: link
+      }
+    }
+  }
+
+  async resetPassword(id: any, token: any) {
+    const isUserExist = await this.getUsersByUserId(id);
+    if (isUserExist) {
+      const secret = "secretKey" + isUserExist.password;
+      const payload = verify(token, secret);
+      console.log("payload", payload);
+      if (payload) {
+        return {
+          status: true
+        }
+      }
+      else {
+        return {
+          status: false
+        }
+      }
+    }
+    else {
+      throw new HttpException("Invalid User", HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async resetPasswordUpdate(id: any, token: any, password: any) {
+    const isUserExist = await this.getUsersByUserId(id);
+    if (isUserExist) {
+      try {
+        const secret = "secretKey" + isUserExist.password;
+        const payload = verify(token, secret);
+        if (payload) {
+          const hashed = await bcrypt.hash(password, 10);
+          const updatedUser = await this.userModel.findByIdAndUpdate({ _id: id }, { ...{ password: hashed }, }, { new: true, },);
+          if (updatedUser) {
+            return { status: true, message: "Successfully Update Password" };
+          }
+          else {
+            return { status: false, message: "Failed to Update Password" };
+          }
+        }
+        else {
+          throw new HttpException("Failed to update password", HttpStatus.BAD_REQUEST);
+        }
+      }
+      catch {
+        throw new HttpException("Failed to update password", HttpStatus.BAD_REQUEST);
+      }
+    }
   }
 
 }
