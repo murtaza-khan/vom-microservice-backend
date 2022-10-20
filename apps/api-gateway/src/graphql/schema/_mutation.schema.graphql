@@ -17,6 +17,6 @@ type Mutation {
   # Users Mutations
   updateProfile(data: UpdateProfileInput!): UserPayload!
   updateEmail(data: UpdateEmailInput): UserPayload!
-  updatePassword(data: UpdatePasswordInput): UserPayload!
+  forgotPassword(data: ForgotPasswordInput): ForgotPassword!
   deleteAccount: DeleteAccountPayload!
 }

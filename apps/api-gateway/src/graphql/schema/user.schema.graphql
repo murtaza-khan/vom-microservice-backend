@@ -1,11 +1,26 @@
-
 type User {
   id: ID!
   name: String!
   email: String!
   age: UnsignedInt
-  posts(q: String, first: Int, last: Int, before: String, after: String, filterBy: JSONObject, orderBy: String): PostsConnection
-  comments(q: String, first: Int, last: Int, before: String, after: String, filterBy: JSONObject, orderBy: String): CommentsConnection
+  posts(
+    q: String
+    first: Int
+    last: Int
+    before: String
+    after: String
+    filterBy: JSONObject
+    orderBy: String
+  ): PostsConnection
+  comments(
+    q: String
+    first: Int
+    last: Int
+    before: String
+    after: String
+    filterBy: JSONObject
+    orderBy: String
+  ): CommentsConnection
   createdAt: DateTime!
   updatedAt: DateTime!
   version: Int!
@@ -57,4 +72,13 @@ input UpdatePasswordInput {
   currentPassword: String!
   newPassword: String!
   confirmPassword: String!
+}
+
+input ForgotPasswordInput {
+  email: String!
+}
+
+type ForgotPassword {
+  message: String!
+  link: String!
 }

@@ -2,7 +2,7 @@ import { Observable } from 'rxjs'
 import { Metadata } from '@grpc/grpc-js'
 
 import { IId, IQuery, ICount } from '../commons/commons.interface'
-import { User, UsersConnection } from '../graphql/typings'
+import { ForgotPassword, ForgotPasswordInput, User, UsersConnection } from '../graphql/typings'
 import { UserDto } from './user.dto'
 
 interface UpdateUserInput {
@@ -18,4 +18,6 @@ export interface IUsersService {
   create(input: UserDto, metadata?: Metadata): Observable<User>
   update(input: UpdateUserInput): Observable<User>
   destroy(query: IQuery, metadata?: Metadata): Observable<ICount>
+  forgotPassword(input: ForgotPasswordInput, metadata?: Metadata): Observable<ForgotPassword>
+
 }

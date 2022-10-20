@@ -71,9 +71,9 @@ export class UserController {
     }
   }
 
-  @Post('/forgotPassword')
-  async forgotPassword(@Body() body: any) {
-    return await this.userService.forgotPassword(body.email);
+  @GrpcMethod('UsersService', 'forgotPassword')
+  async forgotPassword({ email }) {
+    return await this.userService.forgotPassword(email);
   }
 
   @Get('/reset-password/:id/:token')

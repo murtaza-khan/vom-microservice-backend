@@ -1,17 +1,20 @@
-/** ------------------------------------------------------
+
+/*
+ * -------------------------------------------------------
  * THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
  * -------------------------------------------------------
  */
 
 /* tslint:disable */
 /* eslint-disable */
+
 export interface CreateCommentInput {
     text: string;
     post: string;
 }
 
 export interface UpdateCommentInput {
-    text?: string;
+    text?: Nullable<string>;
 }
 
 export interface CreatePostInput {
@@ -21,16 +24,16 @@ export interface CreatePostInput {
 }
 
 export interface UpdatePostInput {
-    title?: string;
-    body?: string;
-    published?: boolean;
+    title?: Nullable<string>;
+    body?: Nullable<string>;
+    published?: Nullable<boolean>;
 }
 
 export interface SignupUserInput {
     name: string;
     email: string;
     password: string;
-    age?: UnsignedInt;
+    age?: Nullable<UnsignedInt>;
 }
 
 export interface LoginUserInput {
@@ -39,8 +42,8 @@ export interface LoginUserInput {
 }
 
 export interface UpdateProfileInput {
-    name?: string;
-    age?: UnsignedInt;
+    name?: Nullable<string>;
+    age?: Nullable<UnsignedInt>;
 }
 
 export interface UpdateEmailInput {
@@ -54,9 +57,12 @@ export interface UpdatePasswordInput {
     confirmPassword: string;
 }
 
+export interface ForgotPasswordInput {
+    email: string;
+}
+
 export interface IMutation {
     signup(data: SignupUserInput): UserPayload | Promise<UserPayload>;
-    login(data: any): any | Promise<any>;
     refreshToken(): UserPayload | Promise<UserPayload>;
     logout(): boolean | Promise<boolean>;
     createComment(data: CreateCommentInput): CommentPayload | Promise<CommentPayload>;
@@ -66,21 +72,21 @@ export interface IMutation {
     updatePost(id: string, data: UpdatePostInput): PostPayload | Promise<PostPayload>;
     deletePost(id: string): DeletePostPayload | Promise<DeletePostPayload>;
     updateProfile(data: UpdateProfileInput): UserPayload | Promise<UserPayload>;
-    updateEmail(data?: UpdateEmailInput): UserPayload | Promise<UserPayload>;
-    updatePassword(data?: UpdatePasswordInput): UserPayload | Promise<UserPayload>;
+    updateEmail(data?: Nullable<UpdateEmailInput>): UserPayload | Promise<UserPayload>;
+    forgotPassword(data?: Nullable<ForgotPasswordInput>): ForgotPassword | Promise<ForgotPassword>;
     deleteAccount(): DeleteAccountPayload | Promise<DeleteAccountPayload>;
 }
 
 export interface IQuery {
-    comments(q?: string, first?: number, last?: number, before?: string, after?: string, filterBy?: JSONObject, orderBy?: string): CommentsConnection | Promise<CommentsConnection>;
-    commentCount(q?: string, filterBy?: JSONObject): number | Promise<number>;
+    comments(q?: Nullable<string>, first?: Nullable<number>, last?: Nullable<number>, before?: Nullable<string>, after?: Nullable<string>, filterBy?: Nullable<JSONObject>, orderBy?: Nullable<string>): Nullable<CommentsConnection> | Promise<Nullable<CommentsConnection>>;
+    commentCount(q?: Nullable<string>, filterBy?: Nullable<JSONObject>): number | Promise<number>;
     post(id: string): Post | Promise<Post>;
-    posts(q?: string, first?: number, last?: number, before?: string, after?: string, filterBy?: JSONObject, orderBy?: string): PostsConnection | Promise<PostsConnection>;
-    postCount(q?: string, filterBy?: JSONObject): number | Promise<number>;
-    myPosts(q?: string, first?: number, last?: number, before?: string, after?: string, filterBy?: JSONObject, orderBy?: string): PostsConnection | Promise<PostsConnection>;
+    posts(q?: Nullable<string>, first?: Nullable<number>, last?: Nullable<number>, before?: Nullable<string>, after?: Nullable<string>, filterBy?: Nullable<JSONObject>, orderBy?: Nullable<string>): Nullable<PostsConnection> | Promise<Nullable<PostsConnection>>;
+    postCount(q?: Nullable<string>, filterBy?: Nullable<JSONObject>): number | Promise<number>;
+    myPosts(q?: Nullable<string>, first?: Nullable<number>, last?: Nullable<number>, before?: Nullable<string>, after?: Nullable<string>, filterBy?: Nullable<JSONObject>, orderBy?: Nullable<string>): Nullable<PostsConnection> | Promise<Nullable<PostsConnection>>;
     user(id: string): User | Promise<User>;
-    users(q?: string, first?: number, last?: number, before?: string, after?: string, filterBy?: JSONObject, orderBy?: string): UsersConnection | Promise<UsersConnection>;
-    userCount(q?: string, filterBy?: JSONObject): number | Promise<number>;
+    users(q?: Nullable<string>, first?: Nullable<number>, last?: Nullable<number>, before?: Nullable<string>, after?: Nullable<string>, filterBy?: Nullable<JSONObject>, orderBy?: Nullable<string>): Nullable<UsersConnection> | Promise<Nullable<UsersConnection>>;
+    userCount(q?: Nullable<string>, filterBy?: Nullable<JSONObject>): number | Promise<number>;
     me(): User | Promise<User>;
 }
 
@@ -110,18 +116,18 @@ export interface CommentEdge {
 }
 
 export interface CommentPayload {
-    errors?: ErrorPayload[];
-    comment?: Comment;
+    errors?: Nullable<Nullable<ErrorPayload>[]>;
+    comment?: Nullable<Comment>;
 }
 
 export interface DeleteCommentPayload {
-    errors?: ErrorPayload[];
-    count?: number;
+    errors?: Nullable<Nullable<ErrorPayload>[]>;
+    count?: Nullable<number>;
 }
 
 export interface ErrorPayload {
-    field?: string;
-    message?: string[];
+    field?: Nullable<string>;
+    message?: Nullable<Nullable<string>[]>;
 }
 
 export interface PageInfo {
@@ -137,7 +143,7 @@ export interface Post {
     body: string;
     published: boolean;
     author: User;
-    comments?: CommentsConnection;
+    comments?: Nullable<CommentsConnection>;
     createdAt: DateTime;
     updatedAt: DateTime;
     version: number;
@@ -154,22 +160,22 @@ export interface PostEdge {
 }
 
 export interface PostPayload {
-    errors?: ErrorPayload[];
-    post?: Post;
+    errors?: Nullable<Nullable<ErrorPayload>[]>;
+    post?: Nullable<Post>;
 }
 
 export interface DeletePostPayload {
-    errors?: ErrorPayload[];
-    count?: number;
+    errors?: Nullable<Nullable<ErrorPayload>[]>;
+    count?: Nullable<number>;
 }
 
 export interface User {
     id: string;
     name: string;
     email: string;
-    age?: UnsignedInt;
-    posts?: PostsConnection;
-    comments?: CommentsConnection;
+    age?: Nullable<UnsignedInt>;
+    posts?: Nullable<PostsConnection>;
+    comments?: Nullable<CommentsConnection>;
     createdAt: DateTime;
     updatedAt: DateTime;
     version: number;
@@ -186,16 +192,22 @@ export interface UserEdge {
 }
 
 export interface UserPayload {
-    errors?: ErrorPayload[];
-    user?: User;
+    errors?: Nullable<Nullable<ErrorPayload>[]>;
+    user?: Nullable<User>;
 }
 
 export interface DeleteAccountPayload {
-    errors?: ErrorPayload[];
-    count?: number;
+    errors?: Nullable<Nullable<ErrorPayload>[]>;
+    count?: Nullable<number>;
+}
+
+export interface ForgotPassword {
+    message: string;
+    link: string;
 }
 
 export type DateTime = any;
 export type EmailAddress = any;
 export type UnsignedInt = any;
 export type JSONObject = any;
+type Nullable<T> = T | null;

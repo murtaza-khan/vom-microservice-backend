@@ -12,7 +12,7 @@ async function main() {
     options: {
       url: `${process.env.GRPC_HOST}:${process.env.GRPC_PORT}`,
       package: 'user',
-      protoPath: join(__dirname, './_proto/user.proto'),
+      protoPath: join(__dirname, '../_proto/user.proto'),
       loader: {
         keepCase: true,
         enums: String,

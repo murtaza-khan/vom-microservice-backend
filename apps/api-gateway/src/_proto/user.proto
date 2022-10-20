@@ -32,6 +32,15 @@ message UpdateUserInput {
   User data = 2;
 }
 
+message ForgotPasswordInput {
+  string email = 1;
+}
+
+message ForgotPassword {
+  string message = 1;
+  string link = 2;
+}
+
 message FindUsersPayload {
   repeated UserEdge edges = 1;
   commons.PageInfo pageInfo = 2;
@@ -45,4 +54,5 @@ service UsersService {
   rpc create (CreateUserInput) returns (User) {}
   rpc update (UpdateUserInput) returns (User) {}
   rpc destroy (commons.Query) returns (commons.Count) {}
+  rpc forgotPassword (ForgotPasswordInput) returns (ForgotPassword){}
 }
