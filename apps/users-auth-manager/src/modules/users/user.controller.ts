@@ -35,7 +35,6 @@ export class UserController {
   ) {}
   @GrpcMethod('UsersService', 'findById')
   async findById({ id }): Promise<any> {
-    console.log('*******************', id);
 
     // const result: User = await this.service.findById(id)
 
@@ -76,28 +75,22 @@ export class UserController {
     return await this.userService.forgotPassword(email);
   }
 
-  @Get('/reset-password/:id/:token')
-  async resetPassword(@Param('id') id: any, @Param('token') token: any) {
+  // @Get('/reset-password/:id/:token')
+  @GrpcMethod('UsersService', 'resetPassword')
+  async resetPassword({ id, token }) {
     return await this.userService.resetPassword(id, token);
   }
 
-  @Post('/reset-password/:id/:token')
-  async resetPasswordUpdate(
-    @Param('id') id: any,
-    @Param('token') token: any,
-    @Body() body: any
-  ) {
-    if (body.confirmPassword != body.newPassword) {
+  // @Post('/reset-password/:id/:token')
+  @GrpcMethod('UsersService', 'resetPasswordUpdate')
+  async resetPasswordUpdate({ id, token, newPassword, confirmPassword }) {
+    if (confirmPassword != newPassword) {
       throw new HttpException(
         'Confirm Password is not matched',
         HttpStatus.BAD_REQUEST
       );
     } else {
-      return await this.userService.resetPasswordUpdate(
-        id,
-        token,
-        body.newPassword
-      );
+      return await this.userService.resetPasswordUpdate(id, token, newPassword);
     }
   }
 }

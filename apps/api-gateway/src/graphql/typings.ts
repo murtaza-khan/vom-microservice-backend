@@ -29,6 +29,17 @@ export interface UpdatePostInput {
     published?: Nullable<boolean>;
 }
 
+export interface UserInPut {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    phone: string;
+    userRole?: Nullable<string>;
+    organization?: Nullable<string>;
+    groupId?: Nullable<string>;
+}
+
 export interface SignupUserInput {
     name: string;
     email: string;
@@ -61,6 +72,18 @@ export interface ForgotPasswordInput {
     email: string;
 }
 
+export interface ResetPasswordInput {
+    id: string;
+    token: string;
+}
+
+export interface ResetPasswordUpdateInput {
+    id: string;
+    token: string;
+    newPassword: string;
+    confirmPassword: string;
+}
+
 export interface IMutation {
     signup(data: SignupUserInput): UserPayload | Promise<UserPayload>;
     refreshToken(): UserPayload | Promise<UserPayload>;
@@ -71,9 +94,9 @@ export interface IMutation {
     createPost(data: CreatePostInput): PostPayload | Promise<PostPayload>;
     updatePost(id: string, data: UpdatePostInput): PostPayload | Promise<PostPayload>;
     deletePost(id: string): DeletePostPayload | Promise<DeletePostPayload>;
-    updateProfile(data: UpdateProfileInput): UserPayload | Promise<UserPayload>;
-    updateEmail(data?: Nullable<UpdateEmailInput>): UserPayload | Promise<UserPayload>;
     forgotPassword(data?: Nullable<ForgotPasswordInput>): ForgotPassword | Promise<ForgotPassword>;
+    createUser(data?: Nullable<UserInPut>): User | Promise<User>;
+    resetPasswordUpdate(data?: Nullable<ResetPasswordUpdateInput>): ResponseType | Promise<ResponseType>;
     deleteAccount(): DeleteAccountPayload | Promise<DeleteAccountPayload>;
 }
 
@@ -88,6 +111,7 @@ export interface IQuery {
     users(q?: Nullable<string>, first?: Nullable<number>, last?: Nullable<number>, before?: Nullable<string>, after?: Nullable<string>, filterBy?: Nullable<JSONObject>, orderBy?: Nullable<string>): Nullable<UsersConnection> | Promise<Nullable<UsersConnection>>;
     userCount(q?: Nullable<string>, filterBy?: Nullable<JSONObject>): number | Promise<number>;
     me(): User | Promise<User>;
+    resetPassword(data?: Nullable<ResetPasswordInput>): ResetPassword | Promise<ResetPassword>;
 }
 
 export interface ISubscription {
@@ -137,6 +161,11 @@ export interface PageInfo {
     hasPreviousPage: boolean;
 }
 
+export interface ResponseType {
+    status: boolean;
+    message: string;
+}
+
 export interface Post {
     id: string;
     title: string;
@@ -171,14 +200,14 @@ export interface DeletePostPayload {
 
 export interface User {
     id: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
-    age?: Nullable<UnsignedInt>;
-    posts?: Nullable<PostsConnection>;
-    comments?: Nullable<CommentsConnection>;
-    createdAt: DateTime;
-    updatedAt: DateTime;
-    version: number;
+    password: string;
+    phone: string;
+    userRole: string;
+    organization: string;
+    groupId: string;
 }
 
 export interface UsersConnection {
@@ -204,6 +233,10 @@ export interface DeleteAccountPayload {
 export interface ForgotPassword {
     message: string;
     link: string;
+}
+
+export interface ResetPassword {
+    status: boolean;
 }
 
 export type DateTime = any;

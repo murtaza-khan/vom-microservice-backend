@@ -25,3 +25,9 @@ message PageInfo {
 message Count {
   int32 count = 1;
 }
+
+
+message Response {
+  bool status = 1;
+  string message = 2;
+}

@@ -14,4 +14,6 @@ type Query {
   users(q: String, first: Int, last: Int, before: String, after: String, filterBy: JSONObject, orderBy: String): UsersConnection
   userCount(q: String, filterBy: JSONObject): Int!
   me: User!
+  resetPassword(data: ResetPasswordInput): ResetPassword!
+
 }

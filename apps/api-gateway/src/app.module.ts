@@ -14,7 +14,6 @@ import {
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 
 import { AuthModule } from './auth/auth.module';
-import { CommentsModule } from './comments/comments.module';
 import { PostsModule } from './posts/posts.module';
 import { UsersModule } from './users/users.module';
 
@@ -96,7 +95,6 @@ import { UsersModule } from './users/users.module';
     AuthModule,
     UsersModule,
     PostsModule,
-    CommentsModule,
   ],
 })
 export class AppModule {}

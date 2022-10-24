@@ -9,3 +9,8 @@ type PageInfo {
   hasNextPage: Boolean!
   hasPreviousPage: Boolean!
 }
+
+type ResponseType {
+  status: Boolean!
+  message: String!
+}

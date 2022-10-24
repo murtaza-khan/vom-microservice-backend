@@ -1,29 +1,25 @@
+
 type User {
-  id: ID!
-  name: String!
+  id:String!
+  firstName: String!
+  lastName: String!
   email: String!
-  age: UnsignedInt
-  posts(
-    q: String
-    first: Int
-    last: Int
-    before: String
-    after: String
-    filterBy: JSONObject
-    orderBy: String
-  ): PostsConnection
-  comments(
-    q: String
-    first: Int
-    last: Int
-    before: String
-    after: String
-    filterBy: JSONObject
-    orderBy: String
-  ): CommentsConnection
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  version: Int!
+  password: String!
+  phone: String!
+  userRole: String!
+  organization: String!
+  groupId: String!
+}
+
+input UserInPut {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  phone: String!
+  userRole: String
+  organization: String
+  groupId: String
 }
 
 type UsersConnection {
@@ -81,4 +77,20 @@ input ForgotPasswordInput {
 type ForgotPassword {
   message: String!
   link: String!
+}
+
+input ResetPasswordInput {
+  id: String!
+  token: String!
+}
+
+type ResetPassword {
+  status: Boolean!
+}
+
+input ResetPasswordUpdateInput {
+  id: String!
+  token: String!
+  newPassword: String!
+  confirmPassword: String!
 }

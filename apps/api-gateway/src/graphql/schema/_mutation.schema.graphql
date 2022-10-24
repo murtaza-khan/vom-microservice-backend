@@ -15,8 +15,8 @@ type Mutation {
   deletePost(id: ID!): DeletePostPayload!
 
   # Users Mutations
-  updateProfile(data: UpdateProfileInput!): UserPayload!
-  updateEmail(data: UpdateEmailInput): UserPayload!
   forgotPassword(data: ForgotPasswordInput): ForgotPassword!
+  createUser(data: UserInPut): User!
+  resetPasswordUpdate(data: ResetPasswordUpdateInput): ResponseType!
   deleteAccount: DeleteAccountPayload!
 }
