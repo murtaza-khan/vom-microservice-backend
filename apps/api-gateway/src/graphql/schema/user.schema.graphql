@@ -1,6 +1,5 @@
-
 type User {
-  id:String!
+  id: String!
   firstName: String!
   lastName: String!
   email: String!
@@ -20,6 +19,23 @@ input UserInPut {
   userRole: String
   organization: String
   groupId: String
+}
+
+input UserUpdateInPut {
+  id: Int!
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  phone: String
+  userRole: String
+  organization: String
+  groupId: String
+}
+
+input DeleteAccountInput {
+  id: Int
+  email: String
 }
 
 type UsersConnection {
@@ -47,6 +63,14 @@ input SignupUserInput {
   email: String!
   password: String!
   age: UnsignedInt
+}
+
+input OrgIdInput{
+orgId: String!
+}
+
+input GroupIdInput{
+groupIdInput: String!
 }
 
 input LoginUserInput {

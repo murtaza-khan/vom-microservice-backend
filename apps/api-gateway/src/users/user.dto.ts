@@ -1,5 +1,3 @@
-import { EmailAddress } from "../graphql/typings"
-
 export class UserDto {
   readonly id?: string
   readonly firstName?: string

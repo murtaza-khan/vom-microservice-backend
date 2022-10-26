@@ -40,11 +40,36 @@ export interface UserInPut {
     groupId?: Nullable<string>;
 }
 
+export interface UserUpdateInPut {
+    id: number;
+    firstName?: Nullable<string>;
+    lastName?: Nullable<string>;
+    email?: Nullable<string>;
+    password?: Nullable<string>;
+    phone?: Nullable<string>;
+    userRole?: Nullable<string>;
+    organization?: Nullable<string>;
+    groupId?: Nullable<string>;
+}
+
+export interface DeleteAccountInput {
+    id?: Nullable<number>;
+    email?: Nullable<string>;
+}
+
 export interface SignupUserInput {
     name: string;
     email: string;
     password: string;
     age?: Nullable<UnsignedInt>;
+}
+
+export interface OrgIdInput {
+    orgId: string;
+}
+
+export interface GroupIdInput {
+    groupIdInput: string;
 }
 
 export interface LoginUserInput {
@@ -96,6 +121,7 @@ export interface IMutation {
     deletePost(id: string): DeletePostPayload | Promise<DeletePostPayload>;
     forgotPassword(data?: Nullable<ForgotPasswordInput>): ForgotPassword | Promise<ForgotPassword>;
     createUser(data?: Nullable<UserInPut>): User | Promise<User>;
+    editUser(data?: Nullable<UserInPut>): User | Promise<User>;
     resetPasswordUpdate(data?: Nullable<ResetPasswordUpdateInput>): ResponseType | Promise<ResponseType>;
     deleteAccount(): DeleteAccountPayload | Promise<DeleteAccountPayload>;
 }
@@ -112,6 +138,9 @@ export interface IQuery {
     userCount(q?: Nullable<string>, filterBy?: Nullable<JSONObject>): number | Promise<number>;
     me(): User | Promise<User>;
     resetPassword(data?: Nullable<ResetPasswordInput>): ResetPassword | Promise<ResetPassword>;
+    getUsersByOrgId(data?: Nullable<OrgIdInput>): UserPayload | Promise<UserPayload>;
+    getUsersByGroupId(data?: Nullable<GroupIdInput>): UserPayload | Promise<UserPayload>;
+    getManagersByOrgID(data?: Nullable<OrgIdInput>): UserPayload | Promise<UserPayload>;
 }
 
 export interface ISubscription {

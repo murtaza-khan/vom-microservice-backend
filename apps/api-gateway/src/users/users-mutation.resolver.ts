@@ -22,6 +22,9 @@ import {
   ForgotPasswordInput,
   ResetPasswordUpdateInput,
   ResponseType,
+  UserInPut,
+  DeleteAccountInput,
+  UserUpdateInPut,
 } from '../graphql/typings';
 
 import { PasswordUtils } from '../utils/password.utils';
@@ -77,21 +80,26 @@ export class UsersMutationResolver implements OnModuleInit {
   @Mutation()
   @UseGuards(GqlAuthGuard)
   async deleteAccount(
-    @CurrentUser() user: User
-  ): Promise<DeleteAccountPayload> {
-    return this.usersService
-      .destroy({
-        where: JSON.stringify({
-          id: user.id,
-        }),
-      })
-      .toPromise();
+    @CurrentUser() user: User,
+    @Args('data') data: DeleteAccountInput
+  ): Promise<any> {
+    let where: any = {};
+    if (data.id) {
+      where.id = data.id;
+    } else {
+      where.email = data.email;
+    }
+    return this.usersService.destroy({
+      where: JSON.stringify({
+        id: user.id,
+      }),
+    });
   }
 
   @Mutation()
   async createUser(
-    @Args('createUser') createUser: any,
-    @CurrentUser() currentUser: any
+    @Args('createUser') createUser: UserInPut,
+    @CurrentUser() currentUser: User
   ) {
     if (createUser.userRole == undefined) {
       createUser.userRole = UserRoles.EMPLOYEE;
@@ -123,95 +131,11 @@ export class UsersMutationResolver implements OnModuleInit {
     }
   }
 
-  // @Mutation((returns) => UserType)
-  // async editUser(
-  //   @Args('id') id: string,
-  //   @Args('user') user: UpdateUserInput,
-  //   @CurrentUser() currentUser: User
-  // ) {
-  //   const isUser = await this.userService.getUsersByUserId(id);
-  //   if (isUser != null) {
-  //     const validateTole = await validRole(
-  //       currentUser.userRole,
-  //       isUser.userRole
-  //     );
-  //     if (id === currentUser.id || validateTole) {
-  //       return await this.userService.update(id, user, currentUser);
-  //     } else {
-  //       throw new UnauthorizedException();
-  //     }
-  //   } else {
-  //     throw new BadRequestException();
-  //   }
-  //   return;
-  //   if (id === currentUser.id || currentUser.userRole === UserRoles.ADMIN) {
-  //     return await this.userService.update(id, user, currentUser.userRole);
-  //   } else {
-  //     throw new UnauthorizedException();
-  //   }
-  // }
-
-  // @Mutation((returns) => UserType)
-  // async deleteUserByEmail(
-  //   @Args('email') email: string,
-  //   @CurrentUser() currentUser: User
-  // ) {
-  //   const user = await this.userService.getUsersByUserEmail(email);
-  //   if (user != null) {
-  //     const validateTole = await validRole(currentUser.userRole, user.userRole);
-  //     if (validateTole) {
-  //       if (email == currentUser.email) {
-  //         throw new HttpException(
-  //           `You Can't delete Yourself`,
-  //           HttpStatus.BAD_REQUEST
-  //         );
-  //       }
-  //       return await this.userService.deleteUserByEmail(email);
-  //     } else {
-  //       throw new HttpException(
-  //         `${currentUser.userRole} can't delete ${user.userRole}`,
-  //         HttpStatus.BAD_REQUEST
-  //       );
-  //     }
-  //   } else {
-  //     return user;
-  //   }
-  // }
-
-  // @Mutation((returns) => UserType)
-  // async deleteUserById(
-  //   @Args('userId') userId: string,
-  //   @CurrentUser() currentUser: User
-  // ) {
-  //   const user = await this.userService.getUsersByUserId(userId);
-  //   const validateTole = await validRole(currentUser.userRole, user.userRole);
-  //   if (user != null) {
-  //     if (validateTole) {
-  //       if (userId == currentUser.id) {
-  //         throw new HttpException(
-  //           `You Can't delete Yourself`,
-  //           HttpStatus.BAD_REQUEST
-  //         );
-  //       }
-  //       return await this.userService.deleteUserById(userId);
-  //     } else {
-  //       throw new HttpException(
-  //         `${currentUser.userRole} can't delete ${user.userRole}`,
-  //         HttpStatus.BAD_REQUEST
-  //       );
-  //     }
-  //   } else {
-  //     return user;
-  //   }
-  // }
-
-  // @Mutation((returns) => UserType)
-  // async getUsersByOrgId(@Args('orgId') orgId: string) {
-  //   return await this.userService.getUsersByOrgId(orgId);
-  // }
-
-  // @Mutation((returns) => UserType)
-  // async getUsersByGroupId(@Args('groupId') groupId: string) {
-  //   return await this.userService.getUsersByGroupId(groupId);
-  // }
+  @Mutation()
+  async editUser(
+    @Args('user') user: UserUpdateInPut,
+    @CurrentUser() currentUser: User
+  ) {
+    return await this.usersService.update(user);
+  }
 }

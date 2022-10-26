@@ -35,7 +35,6 @@ export class UserController {
   ) {}
   @GrpcMethod('UsersService', 'findById')
   async findById({ id }): Promise<any> {
-
     // const result: User = await this.service.findById(id)
 
     // this.logger.info('UsersController#findById.result %o', result)
@@ -92,6 +91,33 @@ export class UserController {
     } else {
       return await this.userService.resetPasswordUpdate(id, token, newPassword);
     }
+  }
+  @GrpcMethod('UsersService', 'createUser')
+  async createUser(data: any) {
+    return await this.userService.create(data);
+  }
+  @GrpcMethod('UsersService', 'deleteAccount')
+  async deleteAccount({ where }) {
+    const criteria = JSON.parse(where);
+    if (criteria.email) {
+      return await this.userService.deleteUserByEmail(criteria.email);
+    } else {
+      return await this.userService.deleteUserById(criteria.id);
+    }
+  }
+  @GrpcMethod('UsersService', 'getUsersByOrgId')
+  async getUsersByOrgId({ orgId }) {
+    return await this.userService.getUsersByOrgId(orgId);
+  }
+
+  @GrpcMethod('UsersService', 'getUsersByGroupId')
+  async getUsersByGroupId({ groupId }) {
+    return await this.userService.getUsersByGroupId(groupId);
+  }
+
+  @GrpcMethod('UsersService', 'getManagersByOrgID')
+  async getManagersByOrgID({ orgId }) {
+    return await this.userService.getManagersByOrgID(orgId);
   }
 }
 

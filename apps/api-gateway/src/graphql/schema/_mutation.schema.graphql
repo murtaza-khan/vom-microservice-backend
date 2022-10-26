@@ -17,6 +17,7 @@ type Mutation {
   # Users Mutations
   forgotPassword(data: ForgotPasswordInput): ForgotPassword!
   createUser(data: UserInPut): User!
+  editUser(data: UserInPut): User!
   resetPasswordUpdate(data: ResetPasswordUpdateInput): ResponseType!
   deleteAccount: DeleteAccountPayload!
 }

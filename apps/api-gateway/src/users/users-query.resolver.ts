@@ -1,17 +1,25 @@
-import { Inject, OnModuleInit, UseGuards } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Inject,
+  OnModuleInit,
+  UseGuards,
+} from '@nestjs/common';
 import { ClientGrpcProxy } from '@nestjs/microservices';
 import { Query, Resolver, Args } from '@nestjs/graphql';
 
 import { isEmpty, merge } from 'lodash';
 import { PinoLogger } from 'nestjs-pino';
 
-import { IUsersService } from './users.interface';
+import { IUsersService, UserRoles } from './users.interface';
 import {
   ForgotPassword,
   ForgotPasswordInput,
+  OrgIdInput,
   ResetPassword,
   ResetPasswordInput,
   User,
+  UserPayload,
   UsersConnection,
 } from '../graphql/typings';
 
@@ -109,9 +117,53 @@ export class UsersQueryResolver implements OnModuleInit {
   ): Promise<ResetPassword> {
     const response: any = await this.usersService.resetPassword({
       id: data.id,
-      token: data.token
+      token: data.token,
     });
     return response;
+  }
+
+  @Query('getUsersByOrgId')
+  async getUsersByOrgId(
+    @CurrentUser() user: any,
+    @Args('data') data: OrgIdInput
+  ): Promise<UserPayload> {
+    try {
+      const a = await this.usersService
+        .getUsersByOrgId({ orgId: data.orgId })
+        .toPromise();
+      return a;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Query('getUsersByGroupId')
+  async getUsersByGroupId(
+    @CurrentUser() user: any,
+    @Args('orgId') groupId: string
+  ): Promise<UserPayload> {
+    try {
+      const a = await this.usersService.getUsersByGroupId(groupId).toPromise();
+      return a;
+    } catch (error) {
+      throw new HttpException(error, HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @Query('getManagersByOrgID')
+  async getManagersByOrgID(
+    @CurrentUser() currentUser: any
+  ): Promise<UserPayload> {
+    if (currentUser.userRole == UserRoles.ADMIN) {
+      return await this.usersService
+        .getManagersByOrgID(currentUser.organization)
+        .toPromise();
+    } else {
+      throw new HttpException(
+        `${currentUser.userRole} can't get managers`,
+        HttpStatus.BAD_REQUEST
+      );
+    }
   }
 
   @Query('me')

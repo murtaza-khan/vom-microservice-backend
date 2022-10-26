@@ -5,14 +5,15 @@ package user;
 import "commons.proto";
 
 message User {
-  string id = 1;
-  string name = 2;
-  string email = 3;
-  string password = 4;
-  int32 age = 5;
-  string createdAt = 6;
-  string updatedAt = 7;
-  int32 version = 8;
+  string id=1;
+  string firstName= 2;
+  string lastName=3;
+  string email=4;
+  string password=5;
+  string phone=6;
+  string userRole=7;
+  string organization=8;
+  string groupId=9;
 }
 
 message UserEdge {
@@ -30,16 +31,16 @@ message CreateUserInput {
   optional string organization=8;
   optional string groupId=9;
 }
-message User {
-  string id=1;
-  string firstName= 2;
-  string lastName=3;
-  string email=4;
-  string password=5;
-  string phone=6;
-  string userRole=7;
-  string organization=8;
-  string groupId=9;
+message UpdateUserInput {
+           string id= 1;
+  optional string firstName= 2;
+  optional string lastName=3;
+  optional string email=4;
+  optional string password=5;
+  optional string phone=6;
+  optional string userRole=7;
+  optional string organization=8;
+  optional string groupId=9;
 }
 
 
@@ -55,7 +56,7 @@ message ForgotPassword {
 
 message ResetPasswordInput {
   string id = 1;
-  string token = 1;
+  string token = 2;
 }
 
 message ResetPassword {
@@ -73,11 +74,21 @@ message FindUsersPayload {
   commons.PageInfo pageInfo = 2;
 }
 
+message getUsersByOrgIdInput {
+  string orgId = 1;
+}
+message getUsersByGroupIdInput {
+  string groupId = 1;
+}
+
 service UsersService {
   rpc find (commons.Query) returns (FindUsersPayload) {}
   rpc findById (commons.Id) returns (User) {}
   rpc findOne (commons.Query) returns (User) {}
   rpc count (commons.Query) returns (commons.Count) {}
+  rpc getUsersByOrgId (getUsersByOrgIdInput) returns (User) {}
+  rpc getUsersByGroupId (getUsersByGroupIdInput) returns (User) {}
+  rpc getManagersByOrgID (getUsersByOrgIdInput) returns (User) {}
   rpc create (CreateUserInput) returns (User) {}
   rpc update (UpdateUserInput) returns (User) {}
   rpc destroy (commons.Query) returns (commons.Count) {}
