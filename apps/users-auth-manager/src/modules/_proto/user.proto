@@ -5,14 +5,15 @@ package user;
 import "commons.proto";
 
 message User {
-  string id = 1;
-  string name = 2;
-  string email = 3;
-  string password = 4;
-  int32 age = 5;
-  string createdAt = 6;
-  string updatedAt = 7;
-  int32 version = 8;
+  string id=1;
+  string firstName= 2;
+  string lastName=3;
+  string email=4;
+  string password=5;
+  string phone=6;
+  string userRole=7;
+  string organization=8;
+  string groupId=9;
 }
 
 message UserEdge {
@@ -21,20 +22,70 @@ message UserEdge {
 }
 
 message CreateUserInput {
-  string name = 1;
-  string email = 2;
-  string password = 3;
-  int32 age = 4;
+  string firstName= 2;
+  string lastName=3;
+  string email=4;
+  string password=5;
+  string phone=6;
+  optional string userRole=7;
+  optional string organization=8;
+  optional string groupId=9;
 }
-
 message UpdateUserInput {
-  string id = 1;
-  User data = 2;
+           string id= 1;
+  optional string firstName= 2;
+  optional string lastName=3;
+  optional string email=4;
+  optional string password=5;
+  optional string phone=6;
+  optional string userRole=7;
+  optional string organization=8;
+  optional string groupId=9;
 }
 
+
+message ForgotPasswordInput {
+  string email = 1;
+}
+
+message ForgotPassword {
+  string message = 1;
+  string link = 2;
+}
+
+
+message ResetPasswordInput {
+  string id = 1;
+  string token = 2;
+}
+
+message ResetPassword {
+  bool status = 1;
+}
+
+message ResetPasswordUpdateInput {
+  string id = 1;
+  string token = 2;
+  string newPassword = 3;
+  string confirmPassword = 4;
+}
 message FindUsersPayload {
   repeated UserEdge edges = 1;
   commons.PageInfo pageInfo = 2;
+}
+
+message getUsersByOrgIdInput {
+  string orgId = 1;
+}
+message getUsersByGroupIdInput {
+  string groupId = 1;
+}
+
+message SignupUserInput {
+  string name=1;
+  string  email=2;
+  string password =3;
+  int32 age =4;
 }
 
 service UsersService {
@@ -42,7 +93,13 @@ service UsersService {
   rpc findById (commons.Id) returns (User) {}
   rpc findOne (commons.Query) returns (User) {}
   rpc count (commons.Query) returns (commons.Count) {}
+  rpc getUsersByOrgId (getUsersByOrgIdInput) returns (User) {}
+  rpc getUsersByGroupId (getUsersByGroupIdInput) returns (User) {}
+  rpc getManagersByOrgID (getUsersByOrgIdInput) returns (User) {}
   rpc create (CreateUserInput) returns (User) {}
   rpc update (UpdateUserInput) returns (User) {}
   rpc destroy (commons.Query) returns (commons.Count) {}
+  rpc forgotPassword (ForgotPasswordInput) returns (ForgotPassword){}
+  rpc ResetPassword (ResetPasswordInput) returns (ResetPassword){}
+  rpc resetPasswordUpdate (ResetPasswordUpdateInput) returns (commons.Response){}
 }

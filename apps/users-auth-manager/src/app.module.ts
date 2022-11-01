@@ -1,52 +1,10 @@
-// import { Module } from '@nestjs/common';
-// import { GraphQLModule } from '@nestjs/graphql';
-// import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { MongooseModule } from '@nestjs/mongoose';
-// import { UserModule } from './modules/users/user.module';
-// import { AuthModule } from './modules/auth/auth.module';
-// import 'dotenv/config';
-// import { APP_INTERCEPTOR, APP_FILTER } from '@nestjs/core';
-// import { LoggingInterceptor } from './core/interceptors/logging.interceptor';
-// import { join } from 'path';
-// import { CsvModule } from 'nest-csv-parser'
-// import { GroupsModule } from './modules/groups/groups.module';
-// import { OrganizationModule } from './modules/organization/organization.module';
-// // import { HttpExceptionFilter } from './filters/http-exception.filter';
+import { AuthModule } from './modules/auth/auth.module';
+import 'dotenv/config';
 
-const host = process.env.DATABASE_HOST || 'localhost';
-const db = process.env.DB_NAME;
-
-// @Module({
-//   imports: [
-//     GraphQLModule.forRoot<ApolloDriverConfig>({
-//       typePaths: ['./**/*.graphql'],
-//       context: ({ req }) => ({ req }),
-//       playground: true,
-//       resolverValidationOptions: {
-//         // requireResolversForResolveType: false,
-//       },
-//       driver: ApolloDriver,
-//     }),
-//     MongooseModule.forRoot(`mongodb://${host}/${db}`),
-//     UserModule,
-//     AuthModule,
-//     CsvModule,
-//     GroupsModule,
-//     OrganizationModule
-//   ],
-//   controllers: [],
-//   providers: [
-//     {
-//       provide: APP_INTERCEPTOR,
-//       useClass: LoggingInterceptor,
-//     },
-//     // {
-//     //   provide: APP_FILTER,
-//     //   useClass: HttpExceptionFilter,
-//     // },
-//   ],
-// })
-// export class AppModule {}
+const host = process.env.DB_HOST || 'localhost';
+const port = process.env.DB_PORT || '27017';
+const db = process.env.DB_DATABASE || 'timekeeper';
 
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -57,7 +15,8 @@ import { UserModule } from './modules/users/user.module';
   imports: [
     ConfigModule.forRoot(),
     UserModule,
-    MongooseModule.forRoot(`mongodb://localhost:27017/${db}`),
+    AuthModule,
+    MongooseModule.forRoot(`mongodb://${host}:${port}/${db}`),
   ],
 })
 export class AppModule {}

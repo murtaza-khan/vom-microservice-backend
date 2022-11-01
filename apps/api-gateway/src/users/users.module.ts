@@ -3,18 +3,14 @@ import { Module, forwardRef } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { ClientProxyFactory, Transport, ClientGrpcProxy } from '@nestjs/microservices'
 
-import { UsersTypeResolver } from './users-type.resolver'
 import { UsersQueryResolver } from './users-query.resolver'
 import { UsersMutationResolver } from './users-mutation.resolver'
 
 import { UtilsModule } from '../utils/utils.module'
-import { CommentsModule } from '../comments/comments.module'
-import { PostsModule } from '../posts/posts.module'
 
 @Module({
-  imports: [ConfigModule, UtilsModule, forwardRef(() => CommentsModule), forwardRef(() => PostsModule)],
+  imports: [ConfigModule, UtilsModule],
   providers: [
-    UsersTypeResolver,
     UsersQueryResolver,
     UsersMutationResolver,
     {

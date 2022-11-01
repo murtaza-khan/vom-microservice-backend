@@ -58,13 +58,6 @@ type DeleteAccountPayload {
   count: Int
 }
 
-input SignupUserInput {
-  name: String!
-  email: String!
-  password: String!
-  age: UnsignedInt
-}
-
 input OrgIdInput{
 orgId: String!
 }
@@ -117,4 +110,9 @@ input ResetPasswordUpdateInput {
   token: String!
   newPassword: String!
   confirmPassword: String!
+}
+
+
+type Token {
+  token: String!
 }

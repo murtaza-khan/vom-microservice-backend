@@ -5,6 +5,7 @@ import { UserModule } from '../users/user.module';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { EmailScalar } from '../../core/scalars/email.scalar';
+import { AuthController } from './auth.controller';
 
 @Module({
   imports: [
@@ -14,5 +15,7 @@ import { EmailScalar } from '../../core/scalars/email.scalar';
     }),
   ],
   providers: [AuthResolver, AuthService, JwtStrategy, EmailScalar],
+  controllers: [AuthController],
+
 })
 export class AuthModule {}

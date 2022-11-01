@@ -57,13 +57,6 @@ export interface DeleteAccountInput {
     email?: Nullable<string>;
 }
 
-export interface SignupUserInput {
-    name: string;
-    email: string;
-    password: string;
-    age?: Nullable<UnsignedInt>;
-}
-
 export interface OrgIdInput {
     orgId: string;
 }
@@ -110,7 +103,6 @@ export interface ResetPasswordUpdateInput {
 }
 
 export interface IMutation {
-    signup(data: SignupUserInput): UserPayload | Promise<UserPayload>;
     refreshToken(): UserPayload | Promise<UserPayload>;
     logout(): boolean | Promise<boolean>;
     createComment(data: CreateCommentInput): CommentPayload | Promise<CommentPayload>;
@@ -119,8 +111,9 @@ export interface IMutation {
     createPost(data: CreatePostInput): PostPayload | Promise<PostPayload>;
     updatePost(id: string, data: UpdatePostInput): PostPayload | Promise<PostPayload>;
     deletePost(id: string): DeletePostPayload | Promise<DeletePostPayload>;
+    create(data: UserInPut): UserPayload | Promise<UserPayload>;
+    login(data: LoginUserInput): Token | Promise<Token>;
     forgotPassword(data?: Nullable<ForgotPasswordInput>): ForgotPassword | Promise<ForgotPassword>;
-    createUser(data?: Nullable<UserInPut>): User | Promise<User>;
     editUser(data?: Nullable<UserInPut>): User | Promise<User>;
     resetPasswordUpdate(data?: Nullable<ResetPasswordUpdateInput>): ResponseType | Promise<ResponseType>;
     deleteAccount(): DeleteAccountPayload | Promise<DeleteAccountPayload>;
@@ -266,6 +259,10 @@ export interface ForgotPassword {
 
 export interface ResetPassword {
     status: boolean;
+}
+
+export interface Token {
+    token: string;
 }
 
 export type DateTime = any;

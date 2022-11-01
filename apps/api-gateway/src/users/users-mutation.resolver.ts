@@ -8,29 +8,21 @@ import {
 import { ClientGrpcProxy } from '@nestjs/microservices';
 import { Resolver, Args, Mutation } from '@nestjs/graphql';
 
-import { PinoLogger } from 'nestjs-pino';
-
 import { IUsersService, UserRoles } from './users.interface';
 import {
   User,
-  UserPayload,
-  UpdateProfileInput,
-  UpdateEmailInput,
-  UpdatePasswordInput,
-  DeleteAccountPayload,
   ForgotPassword,
   ForgotPasswordInput,
   ResetPasswordUpdateInput,
   ResponseType,
-  UserInPut,
   DeleteAccountInput,
   UserUpdateInPut,
 } from '../graphql/typings';
 
 import { PasswordUtils } from '../utils/password.utils';
-import { GqlAuthGuard } from '../auth/gql-auth.guard';
-import { CurrentUser } from '../auth/user.decorator';
 import { validRole } from '@vom/common';
+import { CurrentUser } from '../auth/user.decorator';
+import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 
 @Resolver()
 export class UsersMutationResolver implements OnModuleInit {
@@ -40,9 +32,7 @@ export class UsersMutationResolver implements OnModuleInit {
 
     private readonly passwordUtils: PasswordUtils,
 
-    private readonly logger: PinoLogger
   ) {
-    logger.setContext(UsersMutationResolver.name);
   }
 
   private usersService: IUsersService;
@@ -94,41 +84,6 @@ export class UsersMutationResolver implements OnModuleInit {
         id: user.id,
       }),
     });
-  }
-
-  @Mutation()
-  async createUser(
-    @Args('createUser') createUser: UserInPut,
-    @CurrentUser() currentUser: User
-  ) {
-    if (createUser.userRole == undefined) {
-      createUser.userRole = UserRoles.EMPLOYEE;
-    }
-    const validateTole = await validRole(
-      currentUser.userRole,
-      createUser.userRole
-    );
-    if (validateTole) {
-      if (createUser.userRole === UserRoles.ADMIN && !createUser.organization) {
-        throw new HttpException(
-          `Organization Id is required for Admin`,
-          HttpStatus.BAD_REQUEST
-        );
-      }
-      if (
-        currentUser.userRole === UserRoles.ADMIN ||
-        currentUser.userRole === UserRoles.GROUP_MANAGER
-      ) {
-        createUser.organization = currentUser.organization;
-      }
-      const response = await this.usersService.create(createUser);
-      return response;
-    } else {
-      throw new HttpException(
-        `${currentUser.userRole} can't create ${createUser.userRole}`,
-        HttpStatus.BAD_REQUEST
-      );
-    }
   }
 
   @Mutation()

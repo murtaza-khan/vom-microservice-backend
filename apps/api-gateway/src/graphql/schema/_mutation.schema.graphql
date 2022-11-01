@@ -1,6 +1,5 @@
 type Mutation {
   # Auth Mutations
-  signup(data: SignupUserInput!): UserPayload!
   refreshToken: UserPayload!
   logout: Boolean!
 
@@ -15,8 +14,9 @@ type Mutation {
   deletePost(id: ID!): DeletePostPayload!
 
   # Users Mutations
+  create(data: UserInPut!): UserPayload!
+  login(data: LoginUserInput!): Token!
   forgotPassword(data: ForgotPasswordInput): ForgotPassword!
-  createUser(data: UserInPut): User!
   editUser(data: UserInPut): User!
   resetPasswordUpdate(data: ResetPasswordUpdateInput): ResponseType!
   deleteAccount: DeleteAccountPayload!

@@ -5,3 +5,10 @@ export const CurrentUser = createParamDecorator((data: unknown, context: Executi
   const ctx = GqlExecutionContext.create(context)
   return ctx.getContext().req.user
 })
+
+export const CurrentUserController = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    return request.user;
+  }
+);

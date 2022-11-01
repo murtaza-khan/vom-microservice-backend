@@ -3,7 +3,6 @@ import {
   NestExpressApplication,
   ExpressAdapter,
 } from '@nestjs/platform-express';
-import { Logger } from 'nestjs-pino';
 
 // @ts-ignore
 import * as cors from 'cors';
@@ -29,8 +28,6 @@ async function main() {
     )
   )
   app.use(cookieParser());
-
-  app.useLogger(app.get(Logger));
 
   return app.listen(configService.get<number>('GRAPHQL_PORT'));
 }

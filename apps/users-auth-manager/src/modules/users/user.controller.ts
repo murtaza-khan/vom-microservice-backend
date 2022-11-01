@@ -21,7 +21,7 @@ import { RolesGuard } from '../auth/guards/roles.guard';
 import { GraphqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { UseGuards } from '@nestjs/common';
 import { Roles } from '../../core/decorators/roles.decorator';
-import { ForgotPswdPayload, UserRoles } from '@vom/common';
+import { ForgotPswdPayload, Payload, User, UserRoles } from '@vom/common';
 import { CurrentUserController } from '../../core/decorators/user.decorator';
 import { GrpcMethod } from '@nestjs/microservices';
 
@@ -33,15 +33,11 @@ export class UserController {
     private readonly userService: UserService,
     private readonly csvParser: CsvParser
   ) {}
+
   @GrpcMethod('UsersService', 'findById')
   async findById({ id }): Promise<any> {
-    // const result: User = await this.service.findById(id)
-
-    // this.logger.info('UsersController#findById.result %o', result)
-
-    // if (isEmpty(result)) throw new Error('Record not found.')
-
-    return { id: '1', name: 'murtaza' };
+    const result: User = await this.userService.findByPayload(id)
+    return result;
   }
   @Roles(UserRoles.ADMIN, UserRoles.GROUP_MANAGER)
   @Post('/createUsersFromCSV')
@@ -74,13 +70,11 @@ export class UserController {
     return await this.userService.forgotPassword(email);
   }
 
-  // @Get('/reset-password/:id/:token')
   @GrpcMethod('UsersService', 'resetPassword')
   async resetPassword({ id, token }) {
     return await this.userService.resetPassword(id, token);
   }
 
-  // @Post('/reset-password/:id/:token')
   @GrpcMethod('UsersService', 'resetPasswordUpdate')
   async resetPasswordUpdate({ id, token, newPassword, confirmPassword }) {
     if (confirmPassword != newPassword) {
@@ -91,10 +85,6 @@ export class UserController {
     } else {
       return await this.userService.resetPasswordUpdate(id, token, newPassword);
     }
-  }
-  @GrpcMethod('UsersService', 'createUser')
-  async createUser(data: any) {
-    return await this.userService.create(data);
   }
   @GrpcMethod('UsersService', 'deleteAccount')
   async deleteAccount({ where }) {

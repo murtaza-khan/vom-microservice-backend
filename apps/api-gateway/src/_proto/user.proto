@@ -81,6 +81,15 @@ message getUsersByGroupIdInput {
   string groupId = 1;
 }
 
+message LoginUserInput {
+  string email = 1;
+  string password=2;
+}
+
+message Token {
+  string token = 1;
+}
+
 service UsersService {
   rpc find (commons.Query) returns (FindUsersPayload) {}
   rpc findById (commons.Id) returns (User) {}
@@ -95,4 +104,6 @@ service UsersService {
   rpc forgotPassword (ForgotPasswordInput) returns (ForgotPassword){}
   rpc ResetPassword (ResetPasswordInput) returns (ResetPassword){}
   rpc resetPasswordUpdate (ResetPasswordUpdateInput) returns (commons.Response){}
+  rpc login (LoginUserInput) returns (Token) {}
+
 }

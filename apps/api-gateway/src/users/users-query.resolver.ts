@@ -9,7 +9,6 @@ import { ClientGrpcProxy } from '@nestjs/microservices';
 import { Query, Resolver, Args } from '@nestjs/graphql';
 
 import { isEmpty, merge } from 'lodash';
-import { PinoLogger } from 'nestjs-pino';
 
 import { IUsersService, UserRoles } from './users.interface';
 import {
@@ -24,7 +23,7 @@ import {
 } from '../graphql/typings';
 
 import { QueryUtils } from '../utils/query.utils';
-import { GqlAuthGuard } from '../auth/gql-auth.guard';
+import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { CurrentUser } from '../auth/user.decorator';
 
 @Resolver('User')
@@ -35,9 +34,7 @@ export class UsersQueryResolver implements OnModuleInit {
 
     private readonly queryUtils: QueryUtils,
 
-    private readonly logger: PinoLogger
   ) {
-    logger.setContext(UsersQueryResolver.name);
   }
 
   private usersService: IUsersService;

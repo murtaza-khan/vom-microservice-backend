@@ -3,7 +3,6 @@ import { ConfigService } from '@nestjs/config'
 import { Injectable, OnModuleInit, Inject } from '@nestjs/common'
 import { ClientGrpcProxy } from '@nestjs/microservices'
 
-import { PinoLogger } from 'nestjs-pino'
 import { get } from 'lodash'
 import { Strategy, ExtractJwt } from 'passport-jwt'
 
@@ -18,7 +17,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') implements On
 
     private readonly configService: ConfigService,
 
-    private readonly logger: PinoLogger
   ) {
     super({
       // secretOrKey: configService.get<string>('JWT_ACCESSTOKEN_SECRET'),
@@ -28,7 +26,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') implements On
       jwtFromRequest: ExtractJwt.fromExtractors([(req) => get(req, 'cookies.access-token')])
     })
 
-    logger.setContext(JwtStrategy.name)
   }
 
   private usersService: IUsersService
