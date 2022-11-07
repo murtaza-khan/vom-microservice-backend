@@ -12,7 +12,7 @@ export class GraphqlAuthGuard extends AuthGuard('jwt') {
     return request;
   }
 
-  handleRequest(err: any, user: any, info: any) {
+  handleRequest(err: any, user: any, info: any) {    
     if (err || !user) {
       // throw err || new AuthenticationError('Could not authenticate with token');
       throw err || new HttpException(`UNAUTHORIZED`, HttpStatus.UNAUTHORIZED);

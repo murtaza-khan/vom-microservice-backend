@@ -22,7 +22,7 @@ import {
 import { PasswordUtils } from '../utils/password.utils';
 import { validRole } from '@vom/common';
 import { CurrentUser } from '../auth/user.decorator';
-import { GqlAuthGuard } from '../auth/guards/gql-auth.guard';
+import { GraphqlAuthGuard } from '../auth/guards/gql-auth.guard';
 
 @Resolver()
 export class UsersMutationResolver implements OnModuleInit {
@@ -68,11 +68,13 @@ export class UsersMutationResolver implements OnModuleInit {
   }
 
   @Mutation()
-  @UseGuards(GqlAuthGuard)
+  @UseGuards(GraphqlAuthGuard)
   async deleteAccount(
-    @CurrentUser() user: User,
+    // @CurrentUser() user: User,
     @Args('data') data: DeleteAccountInput
   ): Promise<any> {
+    console.log('**************',data);
+    
     let where: any = {};
     if (data.id) {
       where.id = data.id;
@@ -81,7 +83,7 @@ export class UsersMutationResolver implements OnModuleInit {
     }
     return this.usersService.destroy({
       where: JSON.stringify({
-        id: user.id,
+        id: data.id,
       }),
     });
   }

@@ -16,6 +16,7 @@ import {
 } from '../graphql/typings';
 import { IUsersService } from '../users/users.interface';
 import { ValidTokenGuard } from './guards/valid-token.guard';
+import { Payload } from '@vom/common';
 
 @Resolver('Auth')
 export class AuthResolver implements OnModuleInit {
@@ -46,7 +47,17 @@ export class AuthResolver implements OnModuleInit {
   @Mutation()
   async login(@Args('data') data: LoginUserInput): Promise<any> {
     const user: any = await this.usersService.login(data).toPromise();
-    return user;
+
+    const payload: Payload = {
+      email: user.email,
+      role: user.userRole,
+      organization: user.organization,
+    };
+
+    const token = await this.authService.generateAccessToken(payload);
+    console.log('LLLLLLLLLLLLL', token);
+
+    return { token };
   }
 
   @Mutation()

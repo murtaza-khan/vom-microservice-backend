@@ -104,6 +104,6 @@ service UsersService {
   rpc forgotPassword (ForgotPasswordInput) returns (ForgotPassword){}
   rpc ResetPassword (ResetPasswordInput) returns (ResetPassword){}
   rpc resetPasswordUpdate (ResetPasswordUpdateInput) returns (commons.Response){}
-  rpc login (LoginUserInput) returns (Token) {}
+  rpc login (LoginUserInput) returns (User) {}
 
 }

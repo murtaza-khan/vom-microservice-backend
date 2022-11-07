@@ -1,12 +1,13 @@
 import { ExecutionContext, Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { AuthenticationError } from 'apollo-server-core';
 
 @Injectable()
 export class ValidTokenGuard extends AuthGuard('jwt') {
 
   getRequest(context: ExecutionContext) {
+    console.log('##############');
+    
     const ctx = GqlExecutionContext.create(context);
     const request = ctx.getContext().req
     return request;

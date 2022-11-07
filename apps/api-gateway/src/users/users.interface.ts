@@ -60,5 +60,5 @@ export interface IUsersService {
     input: ResetPasswordUpdateInput,
     metadata?: Metadata
   ): Observable<ResponseType>;
-  login(data: LoginUserInput, metadata?: Metadata): Observable<Token>;
+  login(data: LoginUserInput, metadata?: Metadata): Observable<User>;
 }

@@ -38,14 +38,8 @@ export class AuthController {
   async login(data: any) {
     const response: User = await this.userService.findByLogin(data);
 
-    const payload: Payload = {
-      email: response.email,
-      role: response.userRole,
-      organization: response.organization,
-    };
-
-    const token = await this.authService.signPayload(payload);
-    return { token: token };
+  
+    return response;
   }
   @GrpcMethod('UsersService', 'create')
   async signup(user: any) {
