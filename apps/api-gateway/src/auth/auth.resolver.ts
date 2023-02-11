@@ -5,7 +5,6 @@ import { Resolver, Args, Mutation, Context } from '@nestjs/graphql';
 import { isEmpty } from 'lodash';
 
 import { AuthService } from './auth.service';
-import { RefreshAuthGuard } from './guards/refresh-auth.guard';
 import { CurrentUser } from './user.decorator';
 
 import {
@@ -15,7 +14,6 @@ import {
   LoginUserInput,
 } from '../graphql/typings';
 import { IUsersService } from '../users/users.interface';
-import { ValidTokenGuard } from './guards/valid-token.guard';
 import { Payload } from '@vom/common';
 
 @Resolver('Auth')
@@ -54,23 +52,23 @@ export class AuthResolver implements OnModuleInit {
       organization: user.organization,
     };
 
-    const token = await this.authService.generateAccessToken(payload);
+    const token = await this.authService.signPayload(payload);
     console.log('LLLLLLLLLLLLL', token);
 
     return { token };
   }
 
   @Mutation()
-  @UseGuards(RefreshAuthGuard)
+  @UseGuards()
   async refreshToken(
     @Context() context: any,
-    @CurrentUser() user: User
+    @CurrentUser() user: any
   ): Promise<UserPayload> {
     const { res } = context;
 
     res.cookie(
       'access-token',
-      await this.authService.generateAccessToken(user),
+      await this.authService.signPayload(user),
       {
         httpOnly: true,
         maxAge: 1.8e6,
@@ -78,7 +76,7 @@ export class AuthResolver implements OnModuleInit {
     );
     res.cookie(
       'refresh-token',
-      await this.authService.generateRefreshToken(user),
+      await this.authService.signPayload(user),
       {
         httpOnly: true,
         maxAge: 1.728e8,
@@ -104,13 +102,13 @@ export class AuthResolver implements OnModuleInit {
     return true;
   }
 
-  // @Query()
-  @UseGuards(ValidTokenGuard)
-  async validToken(@CurrentUser() currentUser: any) {
-    if (currentUser === 'invalid') {
-      return false;
-    } else {
-      return true;
-    }
-  }
+  // // @Query()
+  // @UseGuards(ValidTokenGuard)
+  // async validToken(@CurrentUser() currentUser: any) {
+  //   if (currentUser === 'invalid') {
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
 }

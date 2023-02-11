@@ -19,8 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') implements On
 
   ) {
     super({
-      // secretOrKey: configService.get<string>('JWT_ACCESSTOKEN_SECRET'),
-      secretOrKey: 'secretKey',
+      secretOrKey: configService.get<string>('JWT_ACCESSTOKEN_SECRET'),
       issuer: configService.get<string>('JWT_ISSUER'),
       audience: configService.get<string>('JWT_AUDIENCE'),
       jwtFromRequest: ExtractJwt.fromExtractors([(req) => get(req, 'cookies.access-token')])

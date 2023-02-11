@@ -22,7 +22,7 @@ import {
 import { PasswordUtils } from '../utils/password.utils';
 import { validRole } from '@vom/common';
 import { CurrentUser } from '../auth/user.decorator';
-import { GraphqlAuthGuard } from '../auth/guards/gql-auth.guard';
+import { GqlAuthGuard } from '../auth/gql-auth.guard';
 
 @Resolver()
 export class UsersMutationResolver implements OnModuleInit {
@@ -68,7 +68,7 @@ export class UsersMutationResolver implements OnModuleInit {
   }
 
   @Mutation()
-  @UseGuards(GraphqlAuthGuard)
+  @UseGuards(GqlAuthGuard)
   async deleteAccount(
     // @CurrentUser() user: User,
     @Args('data') data: DeleteAccountInput

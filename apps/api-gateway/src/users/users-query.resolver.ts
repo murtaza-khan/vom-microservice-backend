@@ -23,8 +23,8 @@ import {
 } from '../graphql/typings';
 
 import { QueryUtils } from '../utils/query.utils';
-import { GraphqlAuthGuard } from '../auth/guards/gql-auth.guard';
 import { CurrentUser } from '../auth/user.decorator';
+import { GqlAuthGuard } from '../auth/gql-auth.guard';
 
 @Resolver('User')
 export class UsersQueryResolver implements OnModuleInit {
@@ -45,7 +45,7 @@ export class UsersQueryResolver implements OnModuleInit {
   }
 
   @Query('users')
-  @UseGuards(GraphqlAuthGuard)
+  @UseGuards(GqlAuthGuard)
   async getUsers(
     @Args('q') q: string,
     @Args('first') first: number,
@@ -86,7 +86,7 @@ export class UsersQueryResolver implements OnModuleInit {
   }
 
   @Query('userCount')
-  @UseGuards(GraphqlAuthGuard)
+  @UseGuards(GqlAuthGuard)
   async getUserCount(
     @Args('q') q: string,
     @Args('filterBy') filterBy: any
@@ -164,7 +164,7 @@ export class UsersQueryResolver implements OnModuleInit {
   }
 
   @Query('me')
-  @UseGuards(GraphqlAuthGuard)
+  @UseGuards(GqlAuthGuard)
   async getProfile(@CurrentUser() user: User): Promise<User> {
     return this.usersService.findById({ id: user.id }).toPromise();
   }

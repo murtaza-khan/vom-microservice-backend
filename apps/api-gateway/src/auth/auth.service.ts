@@ -1,35 +1,27 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
-import { Payload } from '@vom/common';
-
-import { User } from '../graphql/typings';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @Inject('JwtAccessTokenService')
-    private readonly accessTokenService: JwtService,
-
-    @Inject('JwtRefreshTokenService')
-    private readonly refreshTokenService: JwtService
+    private usersService: UsersService,
+    private jwtService: JwtService
   ) {}
 
-  async generateAccessToken(user: any): Promise<string> {
-    return this.accessTokenService.sign(user);
+  async validateUser(username: string, pass: string): Promise<any> {
+    const user = await this.usersService.findOne(username);
+    if (user && user.password === pass) {
+      const { password, ...result } = user;
+      return result;
+    }
+    return null;
   }
 
-  async generateRefreshToken(user: User): Promise<string> {
-    return this.refreshTokenService.sign(
-      {
-        user: user.email,
-      },
-      {
-        subject: user.id,
-      }
-    );
+  async login(user: any) {
+    const payload = { username: user.username, sub: user.userId };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
-
-  // async validateUser(payload: Payload) {
-  //   return await this.userService.findByPayload(payload);
-  // }
 }

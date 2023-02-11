@@ -11,14 +11,12 @@ import { UsersModule } from '../users/users.module'
 import { UtilsModule } from '../utils/utils.module'
 import { ClientGrpcProxy, ClientProxyFactory, Transport } from '@nestjs/microservices'
 import { join } from 'path'
-import { JwtRefreshStrategy } from './strategy/jwt-refresh.strategy'
 
 @Module({
   imports: [ConfigModule, UtilsModule, PassportModule.register({ defaultStrategy: 'jwt' }), forwardRef(() => UsersModule)],
   providers: [
     AuthService,
     JwtStrategy,
-    JwtRefreshStrategy,
     AuthResolver,
     {
       provide: 'JwtAccessTokenService',
